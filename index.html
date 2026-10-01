@@ -104,10 +104,9 @@
 <div id="personalization-badge">
     🎯 Personalized for <span id="user-location-tag">you</span>
 </div>
-
 <script>
 // ============================================
-// CONFIGURATION - Put your API keys here
+// CONFIGURATION
 // ============================================
 const CONFIG = {
     makeWebhookURL: 'hc9dnfjd2rpgyr7dro8hwp6invyo3jrc@hook.eu1.make.com', // We will fill this tomorrow
@@ -179,12 +178,49 @@ function getTimeContext() {
     return 'night';
 }
 
-// 6. Master Function: Gather Everything & Run Test Update
+// 6. Send payload to Make.com Webhook & Get Personalized AI Content
+async function getPersonalizedContent(userData) {
+    if (!CONFIG.makeWebhookURL || CONFIG.makeWebhookURL.includes('YOUR_MAKE_WEBHOOK')) {
+        console.warn('⚠️ Webhook URL not set yet.');
+        return null;
+    }
+    try {
+        const response = await fetch(CONFIG.makeWebhookURL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData)
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Personalization fetch failed:', error);
+        return null;
+    }
+}
+
+// 7. Update Page DOM Elements
+function updatePage(content) {
+    if (!content) return;
+
+    const hero = document.getElementById('hero-section');
+    hero.style.opacity = '0';
+
+    setTimeout(() => {
+        if (content.headline) document.getElementById('headline').textContent = content.headline;
+        if (content.subheadline) document.getElementById('subheadline').textContent = content.subheadline;
+        if (content.cta) document.getElementById('cta-button').textContent = content.cta;
+        if (content.proofText) document.getElementById('proof-text').textContent = content.proofText;
+        if (content.backgroundColor) hero.style.background = content.backgroundColor;
+
+        hero.style.opacity = '1';
+    }, 300);
+}
+
+// 8. MASTER FUNCTION
 async function shapeShift() {
     console.log('🔄 Shape-Shifter data collection started...');
     const hero = document.getElementById('hero-section');
-    
-    // Gather client profile data
+
     const utm = getUTMParams();
     const device = getDeviceType();
     const location = await getUserLocation();
@@ -192,15 +228,20 @@ async function shapeShift() {
     const timeOfDay = getTimeContext();
 
     const userData = { utm, device, location, weather, timeOfDay, timestamp: new Date().toISOString() };
-    console.log('📊 Collected Visitor Data Payload:', userData);
+    console.log('📊 Visitor Payload:', userData);
 
-    // Remove loading blur
     hero.classList.remove('loading');
 
-    // Show location tag on badge if city detected
     if (location.city !== 'Unknown') {
         document.getElementById('user-location-tag').textContent = `${location.city}, ${location.country}`;
         document.getElementById('personalization-badge').style.display = 'block';
+    }
+
+    // Call Make.com Webhook
+    const personalized = await getPersonalizedContent(userData);
+    if (personalized) {
+        console.log('✨ Received AI Personalization:', personalized);
+        updatePage(personalized);
     }
 }
 
