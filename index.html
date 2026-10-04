@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Personalizing Landing Page — Enterprise Edition</title>
+    <title>Smart Personalizing Landing Page — Master 12-Upgrade Edition</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: white; overflow-x: hidden; }
@@ -46,7 +46,7 @@
             100% { opacity: 0.3; }
         }
 
-        /* Weather Particle Animation Layer */
+        /* UPGRADE 6: Weather Particle Animation Layer */
         #weather-canvas {
             position: absolute;
             top: 0;
@@ -65,7 +65,7 @@
             align-items: center;
         }
 
-        /* Local Greeting Tag */
+        /* UPGRADE 9: Local Greeting Tag */
         #local-greeting {
             font-size: 1.1rem;
             font-weight: 700;
@@ -74,6 +74,37 @@
             letter-spacing: 0.05em;
             text-transform: uppercase;
             text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        }
+
+        /* UPGRADE 10: Local Service Radar Badge */
+        .radar-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: #38bdf8;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            backdrop-filter: blur(6px);
+        }
+
+        .radar-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #38bdf8;
+            border-radius: 50%;
+            box-shadow: 0 0 0 rgba(56, 189, 248, 0.7);
+            animation: radar-pulse 1.8s infinite;
+        }
+
+        @keyframes radar-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(56, 189, 248, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
         }
 
         #headline {
@@ -96,12 +127,12 @@
             text-shadow: 0 2px 8px rgba(0,0,0,0.8);
         }
 
-        /* Price Tag Styling */
+        /* UPGRADE 5: Price Tag Styling */
         .price-container {
             font-size: 2.2rem;
             font-weight: 800;
             color: #38bdf8;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.6);
         }
 
@@ -113,7 +144,7 @@
             font-weight: 500;
         }
 
-        /* NEW UPGRADE 7: Local Stock Bar */
+        /* UPGRADE 7: Local Stock Bar */
         .stock-bar-container {
             background: rgba(15, 23, 42, 0.7);
             border: 1px solid rgba(251, 146, 60, 0.4);
@@ -129,16 +160,16 @@
             gap: 8px;
         }
 
-        .pulse-dot {
+        .pulse-dot-orange {
             width: 8px;
             height: 8px;
             background-color: #f97316;
             border-radius: 50%;
             box-shadow: 0 0 0 rgba(249, 115, 22, 0.7);
-            animation: pulse-ring 1.5s infinite;
+            animation: pulse-orange 1.5s infinite;
         }
 
-        @keyframes pulse-ring {
+        @keyframes pulse-orange {
             0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7); }
             70% { box-shadow: 0 0 0 8px rgba(249, 115, 22, 0); }
             100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
@@ -159,9 +190,9 @@
         
         #cta-button:hover { transform: translateY(-2px) scale(1.03); background: #e11d48; }
 
-        /* NEW UPGRADE 8: Local Trust Badges */
+        /* UPGRADE 8: Local Trust Badges */
         .trust-badges {
-            margin-top: 25px;
+            margin-top: 22px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -195,7 +226,7 @@
             z-index: 100;
         }
 
-        /* Live Social Proof Notification Popup */
+        /* UPGRADE 4: Live Social Proof Ticker Popup */
         #purchase-popup {
             position: fixed;
             bottom: 24px;
@@ -259,14 +290,20 @@
 <body>
 
 <div class="hero loading" id="hero-section">
-    <!-- Weather Particle Canvas -->
+    <!-- UPGRADE 6: Weather Particle Canvas -->
     <canvas id="weather-canvas"></canvas>
 
     <div class="hero-content">
-        <!-- Local Native Greeting -->
+        <!-- UPGRADE 9: Local Native Greeting -->
         <div id="local-greeting">👋 WELCOME</div>
 
-        <!-- Local Express Shipping Banner -->
+        <!-- UPGRADE 10: Local Service Radar Badge -->
+        <div class="radar-badge" id="radar-container" style="display: none;">
+            <div class="radar-dot"></div>
+            <span>Active Server Node: <strong id="radar-location" style="color:white;">Regional Hub</strong></span>
+        </div>
+
+        <!-- UPGRADE 3: Local Express Shipping Banner -->
         <div id="shipping-banner" style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; padding: 8px 18px; border-radius: 50px; font-size: 0.9rem; font-weight: 600; margin-bottom: 16px; backdrop-filter: blur(6px); display: none;">
             🚚 Express Delivery to <span id="shipping-city">your area</span> by <span id="delivery-date">...</span>
         </div>
@@ -274,26 +311,27 @@
         <h1 id="headline">Transform Your Business Today</h1>
         <p id="subheadline">The smartest solution for modern entrepreneurs who want to scale fast.</p>
 
-        <!-- Auto-Local Price Container -->
+        <!-- UPGRADE 5: Auto-Local Price Container -->
         <div class="price-container">
             <span id="product-price">$49.99</span>
             <span class="strike-price" id="original-price">$99.99</span>
         </div>
 
-        <!-- NEW UPGRADE 7: Local Stock Bar -->
+        <!-- UPGRADE 7: Regional Stock Bar -->
         <div class="stock-bar-container" id="stock-container" style="display: none;">
-            <div class="pulse-dot"></div>
+            <div class="pulse-dot-orange"></div>
             <span>Limited Regional Stock: Only <strong id="stock-count" style="color:#f97316;">4</strong> left in <span id="stock-city">your city</span> warehouse</span>
         </div>
         
+        <!-- UPGRADE 12: Device-Smart CTA Button -->
         <button id="cta-button">Get Started Free</button>
 
-        <!-- NEW UPGRADE 8: Local Trust Badges -->
+        <!-- UPGRADE 8: Localized Trust Badges -->
         <div class="trust-badges" id="trust-container">
-            🔒 256-Bit Secure Checkout &nbsp;|&nbsp; <span id="payment-methods">GPay • UPI • PhonePe • Cards</span>
+            🔒 256-Bit Encryption &nbsp;|&nbsp; <span id="payment-methods">GPay • UPI • PhonePe • Cards</span>
         </div>
 
-        <!-- Local Midnight Scarcity Countdown Timer -->
+        <!-- UPGRADE 2: Local Midnight Scarcity Countdown Timer -->
         <div id="countdown-container" style="margin-top: 20px; font-size: 0.9rem; color: #f87171; font-weight: 600; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 20px; border-radius: 50px; backdrop-filter: blur(6px); display: none;">
             🔥 <span id="scarcity-city">Local</span> Offer Ends Tonight: <span id="timer" style="font-family: monospace; font-size: 1rem; color: #fca5a5;">00h 00m 00s</span>
         </div>
@@ -308,7 +346,7 @@
     🎯 Personalized for <span id="user-location-tag">you</span>
 </div>
 
-<!-- Live Social Proof Ticker Popup -->
+<!-- UPGRADE 4: Live Social Proof Ticker Popup -->
 <div id="purchase-popup">
     <div class="popup-icon">⚡</div>
     <div>
@@ -353,6 +391,16 @@ function getDeviceType() {
     return 'desktop';
 }
 
+// UPGRADE 12: Device-Smart CTA Button Adjuster
+function setDeviceSmartCTA(device, defaultCTAText) {
+    const ctaButton = document.getElementById('cta-button');
+    if (device === 'mobile') {
+        ctaButton.textContent = '⚡ Instant One-Tap Checkout';
+    } else if (defaultCTAText) {
+        ctaButton.textContent = defaultCTAText;
+    }
+}
+
 // 3. Detect Visitor Location
 async function getUserLocation() {
     try {
@@ -372,7 +420,7 @@ async function getUserLocation() {
     }
 }
 
-// Local Native Greeting Engine
+// UPGRADE 9: Local Native Greeting Engine
 function setNativeGreeting(countryCode, city) {
     const greetingEl = document.getElementById('local-greeting');
     const greetings = {
@@ -390,7 +438,15 @@ function setNativeGreeting(countryCode, city) {
     greetingEl.textContent = `${localWord} TO ${city ? city.toUpperCase() : 'OUR STORE'}`;
 }
 
-// NEW UPGRADE 8: Localized Trust & Payment Badges
+// UPGRADE 10: Local Service Radar
+function initLocalRadar(city, country) {
+    const radarContainer = document.getElementById('radar-container');
+    const radarLoc = document.getElementById('radar-location');
+    radarContainer.style.display = 'inline-flex';
+    radarLoc.textContent = (city && city !== 'Unknown') ? `${city}, ${country}` : 'Global Edge Network';
+}
+
+// UPGRADE 8: Localized Trust Badges
 function setLocalTrustBadges(countryCode) {
     const paymentEl = document.getElementById('payment-methods');
     if (countryCode === 'IN') {
@@ -404,7 +460,7 @@ function setLocalTrustBadges(countryCode) {
     }
 }
 
-// NEW UPGRADE 7: Local Stock Indicator Bar
+// UPGRADE 7: Local Stock Bar
 function setLocalStockCount(city) {
     const stockContainer = document.getElementById('stock-container');
     const stockCity = document.getElementById('stock-city');
@@ -413,12 +469,11 @@ function setLocalStockCount(city) {
     stockContainer.style.display = 'flex';
     stockCity.textContent = (city && city !== 'Unknown') ? city : 'regional';
     
-    // Generate realistic low stock number (3 to 6)
     const count = Math.floor(Math.random() * 4) + 3;
     stockCount.textContent = count;
 }
 
-// 4. Fetch Dynamic Unsplash Photo
+// UPGRADE 1: Fetch Dynamic Unsplash Photo
 async function getHeroBackground(city, weatherCondition) {
     const fallbackPhoto = `https://images.unsplash.com/photo-1477959858617-67f30ac4ce65?auto=format&fit=crop&w=1920&q=80`;
 
@@ -457,7 +512,7 @@ async function getWeather(lat, lon) {
     }
 }
 
-// Animated Weather Particle Canvas Effect
+// UPGRADE 6: Animated Weather Particle Canvas Effect
 function initWeatherParticles(condition) {
     const canvas = document.getElementById('weather-canvas');
     const ctx = canvas.getContext('2d');
@@ -510,7 +565,7 @@ function initWeatherParticles(condition) {
     animate();
 }
 
-// 6. Local Time Context
+// 6. Local Time Context & UPGRADE 11: Time-of-Day Ambient Theme
 function getTimeContext() {
     const hour = new Date().getHours();
     if (hour >= 5 && hour < 12) return 'morning';
@@ -519,7 +574,7 @@ function getTimeContext() {
     return 'night';
 }
 
-// Auto-Local Currency
+// UPGRADE 5: Auto-Local Currency
 function formatLocalPrice(countryCode) {
     const priceEl = document.getElementById('product-price');
     const origPriceEl = document.getElementById('original-price');
@@ -539,7 +594,7 @@ function formatLocalPrice(countryCode) {
     }
 }
 
-// Social Proof Ticker
+// UPGRADE 4: Social Proof Ticker
 function startSocialProofTicker(city) {
     const popup = document.getElementById('purchase-popup');
     const nameEl = document.getElementById('popup-name');
@@ -562,7 +617,7 @@ function startSocialProofTicker(city) {
     setInterval(showPopup, 12000);
 }
 
-// Countdown Timer
+// UPGRADE 2: Countdown Timer
 function startScarcityTimer(city) {
     document.getElementById('countdown-container').style.display = 'inline-block';
     if (city && city !== 'Unknown') document.getElementById('scarcity-city').textContent = city;
@@ -584,7 +639,7 @@ function startScarcityTimer(city) {
     setInterval(updateTimer, 1000);
 }
 
-// Delivery Date Calculator
+// UPGRADE 3: Delivery Date Calculator
 function calculateDeliveryDate(city, country) {
     document.getElementById('shipping-banner').style.display = 'inline-block';
     if (city && city !== 'Unknown') document.getElementById('shipping-city').textContent = `${city}, ${country}`;
@@ -621,7 +676,7 @@ function getABVariant() {
 }
 
 // 8. Update Page DOM
-function updatePage(content) {
+function updatePage(content, device) {
     if (!content) return;
     if (typeof content === 'string') { try { content = JSON.parse(content); } catch(e) {} }
 
@@ -634,7 +689,10 @@ function updatePage(content) {
     setTimeout(() => {
         if (activeContent && activeContent.headline) document.getElementById('headline').textContent = activeContent.headline;
         if (activeContent && activeContent.subheadline) document.getElementById('subheadline').textContent = activeContent.subheadline;
-        if (activeContent && activeContent.cta) document.getElementById('cta-button').textContent = activeContent.cta;
+        
+        // Handle Device CTA Override
+        setDeviceSmartCTA(device, activeContent.cta);
+
         if (activeContent && activeContent.proofText) document.getElementById('proof-text').textContent = activeContent.proofText;
 
         if (window.currentHeroPhoto) {
@@ -693,7 +751,7 @@ async function trackEvent(eventName) {
 
 // 9. MASTER FUNCTION
 async function shapeShift() {
-    console.log('🔄 Master Engine initializing...');
+    console.log('🔄 Master Engine initializing all 12 upgrades...');
     const hero = document.getElementById('hero-section');
 
     const utm = getUTMParams();
@@ -702,8 +760,9 @@ async function shapeShift() {
     const weather = await getWeather(location.latitude, location.longitude);
     const timeOfDay = getTimeContext();
 
-    // Trigger Clean High-Converting Features
+    // Trigger All 12 Upgrades
     setNativeGreeting(location.country_code, location.city);
+    initLocalRadar(location.city, location.country);
     formatLocalPrice(location.country_code);
     setLocalTrustBadges(location.country_code);
     setLocalStockCount(location.city);
@@ -739,7 +798,7 @@ async function shapeShift() {
 
     const personalized = await getPersonalizedContent(userData);
     if (personalized) {
-        updatePage(personalized);
+        updatePage(personalized, device);
     }
 
     initConversionTracking();
