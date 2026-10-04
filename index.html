@@ -277,7 +277,63 @@ async function shapeShift() {
         updatePage(personalized);
     }
 }
+// ============================================
+// CONVERSION & EVENT TRACKING ENGINE
+// ============================================
 
+// Unique Session ID for this visitor
+const visitorSessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+
+// 1. Track CTA Button Clicks
+function initConversionTracking() {
+    const ctaButton = document.getElementById('cta-button');
+    if (ctaButton) {
+        ctaButton.addEventListener('click', function() {
+            console.log('🎯 CTA Button Clicked!');
+            trackEvent('cta_click');
+            
+            // Visual Feedback
+            ctaButton.textContent = '🎉 Offer Claimed!';
+            ctaButton.style.background = '#10b981';
+        });
+    }
+
+    // 2. Track Scroll Depth
+    let maxScroll = 0;
+    window.addEventListener('scroll', function() {
+        const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+        if (scrollPercent > maxScroll) {
+            maxScroll = scrollPercent;
+            if (maxScroll >= 50 && maxScroll < 75) trackEvent('scroll_50');
+            if (maxScroll >= 90) trackEvent('scroll_100');
+        }
+    });
+
+    // 3. Track Time on Page (30 Seconds)
+    setTimeout(() => {
+        trackEvent('time_30s');
+    }, 30000);
+}
+
+// Send Tracking Event to Make.com
+async function trackEvent(eventName) {
+    if (!CONFIG.makeWebhookURL) return;
+    try {
+        await fetch(CONFIG.makeWebhookURL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                event_type: eventName,
+                session_id: visitorSessionId,
+                page_url: window.location.href,
+                timestamp: new Date().toISOString()
+            })
+        });
+    } catch (e) {
+        console.warn('Event tracking failed:', e);
+    }
+}
+    
 document.addEventListener('DOMContentLoaded', shapeShift);
 </script>
 
