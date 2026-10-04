@@ -51,17 +51,34 @@
             margin-bottom: 24px;
             line-height: 1.2;
             letter-spacing: -0.02em;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.7); /* Hard shadow for photo backgrounds */
+            text-shadow: 0 4px 12px rgba(0,0,0,0.7);
         }
         
         #subheadline {
             font-size: 1.35rem;
             max-width: 650px;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
             opacity: 0.95;
             line-height: 1.6;
             color: #f1f5f9;
             text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+        }
+
+        /* Price Tag Styling */
+        .price-container {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #38bdf8;
+            margin-bottom: 25px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .price-container .strike-price {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            text-decoration: line-through;
+            margin-left: 10px;
+            font-weight: 500;
         }
         
         #cta-button {
@@ -95,6 +112,51 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
             z-index: 100;
         }
+
+        /* UPGRADE 4: Live Social Proof Notification Popup */
+        #purchase-popup {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: white;
+            padding: 14px 20px;
+            border-radius: 16px;
+            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            transform: translateY(150px);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            z-index: 999;
+        }
+
+        #purchase-popup.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .popup-icon {
+            font-size: 1.5rem;
+            background: rgba(16, 185, 129, 0.2);
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .popup-text span {
+            font-weight: 700;
+            color: #38bdf8;
+        }
+
+        .popup-time {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
         
         #social-proof {
             background: #020617;
@@ -108,6 +170,7 @@
         @media (max-width: 768px) {
             #headline { font-size: 2.2rem; }
             #subheadline { font-size: 1.1rem; }
+            #purchase-popup { bottom: 80px; left: 12px; right: 12px; }
         }
     </style>
 </head>
@@ -121,6 +184,12 @@
 
     <h1 id="headline">Transform Your Business Today</h1>
     <p id="subheadline">The smartest solution for modern entrepreneurs who want to scale fast.</p>
+
+    <!-- UPGRADE 5: Auto-Local Price Container -->
+    <div class="price-container">
+        <span id="product-price">$49.99</span>
+        <span class="strike-price" id="original-price">$99.99</span>
+    </div>
     
     <button id="cta-button">Get Started Free</button>
 
@@ -136,6 +205,15 @@
 
 <div id="personalization-badge">
     🎯 Personalized for <span id="user-location-tag">you</span>
+</div>
+
+<!-- UPGRADE 4: Live Social Proof Ticker Popup -->
+<div id="purchase-popup">
+    <div class="popup-icon">⚡</div>
+    <div>
+        <div class="popup-text"><span id="popup-name">Priya</span> from <span id="popup-city">Jaipur</span> just claimed this offer!</div>
+        <div class="popup-time" id="popup-time-ago">2 minutes ago</div>
+    </div>
 </div>
 
 <script>
@@ -182,13 +260,14 @@ async function getUserLocation() {
         return {
             city: data.city || 'Unknown',
             country: data.country_name || 'Unknown',
+            country_code: data.country_code2 || 'US',
             region: data.state_prov || 'Unknown',
             latitude: data.latitude,
             longitude: data.longitude
         };
     } catch (error) {
         console.warn('Geolocation lookup failed:', error);
-        return { city: 'Unknown', country: 'Unknown', region: 'Unknown' };
+        return { city: 'Unknown', country: 'Unknown', country_code: 'US', region: 'Unknown' };
     }
 }
 
@@ -243,30 +322,55 @@ function getTimeContext() {
     return 'night';
 }
 
-// 7. Send payload to Make.com Webhook & Get Personalized AI Content
-async function getPersonalizedContent(userData) {
-    if (!CONFIG.makeWebhookURL || CONFIG.makeWebhookURL.includes('YOUR_MAKE_WEBHOOK')) return null;
-    try {
-        const response = await fetch(CONFIG.makeWebhookURL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userData)
-        });
-        return await response.json();
-    } catch (error) {
-        console.error('Personalization fetch failed:', error);
-        return null;
+// UPGRADE 5: Auto-Local Currency & Price Formatter
+function formatLocalPrice(countryCode) {
+    const priceEl = document.getElementById('product-price');
+    const origPriceEl = document.getElementById('original-price');
+
+    if (countryCode === 'IN') {
+        priceEl.textContent = '₹3,999';
+        origPriceEl.textContent = '₹7,999';
+    } else if (countryCode === 'GB') {
+        priceEl.textContent = '£39.99';
+        origPriceEl.textContent = '£79.99';
+    } else if (['FR', 'DE', 'IT', 'ES', 'NL'].includes(countryCode)) {
+        priceEl.textContent = '€45.99';
+        origPriceEl.textContent = '€89.99';
+    } else {
+        priceEl.textContent = '$49.99';
+        origPriceEl.textContent = '$99.99';
     }
 }
 
-// 50/50 A/B Variant Assignment
-function getABVariant() {
-    let variant = sessionStorage.getItem('ab_variant');
-    if (!variant) {
-        variant = Math.random() < 0.5 ? 'version_a' : 'version_b';
-        sessionStorage.setItem('ab_variant', variant);
+// UPGRADE 4: Local Live Social Proof Notification Ticker
+function startSocialProofTicker(city) {
+    const popup = document.getElementById('purchase-popup');
+    const nameEl = document.getElementById('popup-name');
+    const cityEl = document.getElementById('popup-city');
+    const timeEl = document.getElementById('popup-time-ago');
+
+    const sampleNames = ['Priya', 'Rahul', 'Alex', 'Sarah', 'David', 'Ananya', 'Marcus', 'Elena'];
+    const sampleTimes = ['2 minutes ago', '4 minutes ago', 'just now', '7 minutes ago'];
+
+    function showPopup() {
+        const randomName = sampleNames[Math.floor(Math.random() * sampleNames.length)];
+        const randomTime = sampleTimes[Math.floor(Math.random() * sampleTimes.length)];
+
+        nameEl.textContent = randomName;
+        cityEl.textContent = (city && city !== 'Unknown') ? city : 'your area';
+        timeEl.textContent = randomTime;
+
+        popup.classList.add('show');
+
+        // Hide after 5 seconds
+        setTimeout(() => {
+            popup.classList.remove('show');
+        }, 5000);
     }
-    return variant;
+
+    // First popup after 4 seconds, then repeat every 12 seconds
+    setTimeout(showPopup, 4000);
+    setInterval(showPopup, 12000);
 }
 
 // UPGRADE 2: Local Midnight Countdown Timer
@@ -297,13 +401,39 @@ function calculateDeliveryDate(city, country) {
     if (city && city !== 'Unknown') document.getElementById('shipping-city').textContent = `${city}, ${country}`;
 
     const deliveryDate = new Date();
-    deliveryDate.setDate(deliveryDate.getDate() + 2); // 2 days express
+    deliveryDate.setDate(deliveryDate.getDate() + 2);
 
     const options = { weekday: 'short', month: 'short', day: 'numeric' };
     document.getElementById('delivery-date').textContent = deliveryDate.toLocaleDateString('en-US', options);
 }
 
-// 8. Update Page DOM Elements (Smart Parsing for Any Payload Shape)
+// 7. Send payload to Make.com Webhook & Get Personalized AI Content
+async function getPersonalizedContent(userData) {
+    if (!CONFIG.makeWebhookURL || CONFIG.makeWebhookURL.includes('YOUR_MAKE_WEBHOOK')) return null;
+    try {
+        const response = await fetch(CONFIG.makeWebhookURL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData)
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Personalization fetch failed:', error);
+        return null;
+    }
+}
+
+// 50/50 A/B Variant Assignment
+function getABVariant() {
+    let variant = sessionStorage.getItem('ab_variant');
+    if (!variant) {
+        variant = Math.random() < 0.5 ? 'version_a' : 'version_b';
+        sessionStorage.setItem('ab_variant', variant);
+    }
+    return variant;
+}
+
+// 8. Update Page DOM Elements
 function updatePage(content) {
     if (!content) return;
 
@@ -401,7 +531,10 @@ async function shapeShift() {
     const weather = await getWeather(location.latitude, location.longitude);
     const timeOfDay = getTimeContext();
 
-    // Init Upgrades 2 & 3
+    // Trigger All 5 Upgrades
+    formatLocalPrice(location.country_code);
+    startSocialProofTicker(location.city);
+
     if (location.city !== 'Unknown') {
         startScarcityTimer(location.city);
         calculateDeliveryDate(location.city, location.country);
@@ -441,6 +574,9 @@ async function shapeShift() {
 
 document.addEventListener('DOMContentLoaded', shapeShift);
 </script>
+
+</body>
+</html>
 
 </body>
 </html>
