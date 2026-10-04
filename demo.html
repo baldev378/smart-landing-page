@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Shape-Shifting Landing Page — Live Interactive Demo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: white; min-height: 100vh; }
+        
+        .demo-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Control Panel Sidebar */
+        .control-panel {
+            background: #1e293b;
+            padding: 30px 20px;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .control-panel h2 {
+            font-size: 1.3rem;
+            color: #38bdf8;
+            margin-bottom: 5px;
+        }
+
+        .control-panel p {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #cbd5e1;
+        }
+
+        .form-group select, .form-group input {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .btn-transform {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            transition: transform 0.2s, opacity 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-transform:hover { transform: translateY(-2px); }
+        .btn-transform:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Preview Canvas */
+        .preview-area {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: #020617;
+        }
+
+        .hero-preview {
+            width: 100%;
+            max-width: 800px;
+            padding: 60px 40px;
+            border-radius: 24px;
+            text-align: center;
+            background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: background 0.5s ease, opacity 0.3s ease;
+        }
+
+        .hero-preview.loading {
+            opacity: 0.4;
+            filter: blur(4px);
+        }
+
+        #demo-headline {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        #demo-subheadline {
+            font-size: 1.2rem;
+            color: #c7d2fe;
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        #demo-cta {
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            background: #f43f5e;
+            color: white;
+            cursor: pointer;
+        }
+
+        #demo-proof {
+            margin-top: 25px;
+            font-size: 0.95rem;
+            color: #94a3b8;
+        }
+
+        @media (max-width: 900px) {
+            .demo-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="demo-container">
+    <!-- Sidebar Control Panel -->
+    <div class="control-panel">
+        <div>
+            <h2>⚡ AI Shape-Shifter Demo</h2>
+            <p>Simulate different visitor scenarios to watch the landing page personalize live.</p>
+        </div>
+
+        <div class="form-group">
+            <label>Location & Weather</label>
+            <select id="sim-location">
+                <option value='{"city":"New York","country":"United States","condition":"Rain","temp":42}'>New York (Rain, 42°F)</option>
+                <option value='{"city":"Miami","country":"United States","condition":"Sunny","temp":88}'>Miami (Sunny, 88°F)</option>
+                <option value='{"city":"London","country":"United Kingdom","condition":"Fog","temp":50}'>London (Foggy, 50°F)</option>
+                <option value='{"city":"Dubai","country":"United Arab Emirates","condition":"Hot","temp":104}'>Dubai (Extreme Heat, 104°F)</option>
+                <option value='{"city":"Tokyo","country":"Japan","condition":"Clear","temp":65}'>Tokyo (Clear, 65°F)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Time of Day</label>
+            <select id="sim-time">
+                <option value="morning">Morning (Focus / Routine)</option>
+                <option value="afternoon">Afternoon (Workday High)</option>
+                <option value="evening">Evening (Planning / Relaxation)</option>
+                <option value="night">Late Night (Urgency / Last Chance)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Ad Campaign</label>
+            <select id="sim-campaign">
+                <option value="winter_flash_sale">Winter Flash Sale Ad</option>
+                <option value="productivity_growth">Productivity & Growth Ad</option>
+                <option value="luxury_lifestyle">VIP Luxury Experience Ad</option>
+            </select>
+        </div>
+
+        <button class="btn-transform" onclick="triggerTransform()" id="transform-btn">
+            ✨ Transform Page Now
+        </button>
+    </div>
+
+    <!-- Live Preview Canvas -->
+    <div class="preview-area">
+        <div class="hero-preview" id="preview-hero">
+            <h1 id="demo-headline">Transform Your Business Today</h1>
+            <p id="demo-subheadline">The smartest solution for modern entrepreneurs who want to scale fast.</p>
+            <button id="demo-cta">Get Started Free</button>
+            <p id="demo-proof">Trusted by 10,000+ businesses worldwide</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// MAKE.COM WEBHOOK CONFIG
+const MAKE_WEBHOOK_URL = 'PASTE_YOUR_MAKE_WEBHOOK_URL_HERE'; // Replace with your webhook URL
+
+async function triggerTransform() {
+    const btn = document.getElementById('transform-btn');
+    const hero = document.getElementById('preview-hero');
+    
+    const locationData = JSON.parse(document.getElementById('sim-location').value);
+    const timeOfDay = document.getElementById('sim-time').value;
+    const campaign = document.getElementById('sim-campaign').value;
+
+    const simulatedPayload = {
+        client_id: 'client_001',
+        session_id: 'demo_' + Date.now(),
+        brand_name: 'StormShield Co.',
+        product_description: 'Premium waterproof jackets and focus gear.',
+        template_id: 'ecommerce',
+        location: { city: locationData.city, country: locationData.country },
+        weather: { condition: locationData.condition, temperature: locationData.temp },
+        timeOfDay: timeOfDay,
+        device: 'desktop',
+        utm: { source: 'facebook', campaign: campaign }
+    };
+
+    btn.disabled = true;
+    btn.textContent = '🔄 AI Transforming...';
+    hero.classList.add('loading');
+
+    try {
+        const res = await fetch(MAKE_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(simulatedPayload)
+        });
+        const data = await res.json();
+
+        // Support A/B variant output
+        const activeContent = data.version_a || data;
+
+        setTimeout(() => {
+            if (activeContent.headline) document.getElementById('demo-headline').textContent = activeContent.headline;
+            if (activeContent.subheadline) document.getElementById('demo-subheadline').textContent = activeContent.subheadline;
+            if (activeContent.cta) document.getElementById('demo-cta').textContent = activeContent.cta;
+            if (activeContent.proofText) document.getElementById('demo-proof').textContent = activeContent.proofText;
+            if (activeContent.backgroundColor) hero.style.background = activeContent.backgroundColor;
+
+            hero.classList.remove('loading');
+            btn.disabled = false;
+            btn.textContent = '✨ Transform Page Now';
+        }, 300);
+
+    } catch (e) {
+        console.error('Demo transformation error:', e);
+        alert('Transformation failed. Check webhook URL.');
+        hero.classList.remove('loading');
+        btn.disabled = false;
+        btn.textContent = '✨ Transform Page Now';
+    }
+}
+</script>
+
+</body>
+</html>
