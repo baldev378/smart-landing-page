@@ -251,16 +251,16 @@ async function shapeShift() {
     const timeOfDay = getTimeContext();
 
     const userData = { 
-    utm, 
-    device, 
-    location, 
-    weather, 
-    timeOfDay, 
-    timestamp: new Date().toISOString(),
-    template_id: CONFIG.templateId,
-    brand_name: CONFIG.brandName,
-    product_description: CONFIG.productDescription
-};
+        utm, 
+        device, 
+        location, 
+        weather, 
+        timeOfDay, 
+        timestamp: new Date().toISOString(),
+        template_id: CONFIG.templateId,
+        brand_name: CONFIG.brandName,
+        product_description: CONFIG.productDescription
+    };
     console.log('📊 Visitor Payload:', userData);
 
     hero.classList.remove('loading');
@@ -276,7 +276,11 @@ async function shapeShift() {
         console.log('✨ Received AI Personalization:', personalized);
         updatePage(personalized);
     }
+
+    // Initialize Conversion & Click Tracking
+    initConversionTracking();
 }
+
 // ============================================
 // CONVERSION & EVENT TRACKING ENGINE
 // ============================================
@@ -336,6 +340,3 @@ async function trackEvent(eventName) {
     
 document.addEventListener('DOMContentLoaded', shapeShift);
 </script>
-
-</body>
-</html>
