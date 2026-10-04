@@ -207,17 +207,32 @@ async function triggerTransform() {
     const timeOfDay = document.getElementById('sim-time').value;
     const campaign = document.getElementById('sim-campaign').value;
 
-    const simulatedPayload = {
+        const simulatedPayload = {
         client_id: 'client_001',
         session_id: 'demo_' + Date.now(),
         brand_name: 'StormShield Co.',
         product_description: 'Premium waterproof jackets and focus gear.',
         template_id: 'ecommerce',
-        location: { city: locationData.city, country: locationData.country },
-        weather: { condition: locationData.condition, temperature: locationData.temp },
+        location: { 
+            city: locationData.city, 
+            country: locationData.country,
+            region: 'Demo'
+        },
+        weather: { 
+            condition: locationData.condition, 
+            temperature: locationData.temp,
+            description: locationData.condition
+        },
         timeOfDay: timeOfDay,
         device: 'desktop',
-        utm: { source: 'facebook', campaign: campaign }
+        utm: { 
+            utm_source: 'facebook', 
+            utm_medium: 'cpc',
+            utm_campaign: campaign,
+            utm_content: 'demo',
+            utm_term: 'none'
+        },
+        timestamp: new Date().toISOString()
     };
 
     btn.disabled = true;
