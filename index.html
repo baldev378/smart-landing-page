@@ -4,90 +4,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Personalizing Landing Page</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: white; }
-        
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
-            transition: all 0.5s ease;
-        }
+   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: white; }
+    
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 40px 20px;
+        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+        transition: background 0.5s ease, opacity 0.3s ease;
+    }
 
-        .hero.loading #headline, .hero.loading #subheadline {
-            opacity: 0.5;
-            filter: blur(4px);
-        }
-        
-        #headline {
-            font-size: 3.2rem;
-            font-weight: 800;
-            max-width: 850px;
-            margin-bottom: 24px;
-            line-height: 1.2;
-            letter-spacing: -0.02em;
-        }
-        
-        #subheadline {
-            font-size: 1.35rem;
-            max-width: 650px;
-            margin-bottom: 40px;
-            opacity: 0.9;
-            line-height: 1.6;
-            color: #c7d2fe;
-        }
-        
-        #cta-button {
-            padding: 18px 48px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            border: none;
-            border-radius: 50px;
-            background: #f43f5e;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 10px 25px -5px rgba(244, 63, 94, 0.4);
-            transition: transform 0.2s ease, background 0.2s ease;
-        }
-        
-        #cta-button:hover { transform: translateY(-2px) scale(1.03); background: #e11d48; }
-        
-        #personalization-badge {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #38bdf8;
-            padding: 12px 18px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: none;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-        }
-        
-        #social-proof {
-            background: #020617;
-            padding: 30px 20px;
-            text-align: center;
-            font-size: 1.1rem;
-            color: #94a3b8;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
+    /* Skeleton Loading Effect */
+    .skeleton-loading #headline {
+        background: rgba(255, 255, 255, 0.15);
+        color: transparent !important;
+        border-radius: 12px;
+        animation: shimmer 1.5s infinite ease-in-out;
+        user-select: none;
+    }
 
-        @media (max-width: 768px) {
-            #headline { font-size: 2.2rem; }
-            #subheadline { font-size: 1.1rem; }
-        }
-    </style>
+    .skeleton-loading #subheadline {
+        background: rgba(255, 255, 255, 0.1);
+        color: transparent !important;
+        border-radius: 8px;
+        animation: shimmer 1.5s infinite ease-in-out;
+        animation-delay: 0.2s;
+        user-select: none;
+    }
+
+    @keyframes shimmer {
+        0% { opacity: 0.3; }
+        50% { opacity: 0.8; }
+        100% { opacity: 0.3; }
+    }
+
+    #headline {
+        font-size: 3.2rem;
+        font-weight: 800;
+        max-width: 850px;
+        margin-bottom: 24px;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+    }
+    
+    #subheadline {
+        font-size: 1.35rem;
+        max-width: 650px;
+        margin-bottom: 40px;
+        opacity: 0.9;
+        line-height: 1.6;
+        color: #c7d2fe;
+    }
+    
+    #cta-button {
+        padding: 18px 48px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        border: none;
+        border-radius: 50px;
+        background: #f43f5e;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0 10px 25px -5px rgba(244, 63, 94, 0.4);
+        transition: transform 0.2s ease, background 0.2s ease;
+    }
+    
+    #cta-button:hover { transform: translateY(-2px) scale(1.03); background: #e11d48; }
+    
+    #personalization-badge {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: #38bdf8;
+        padding: 12px 18px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: none;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    }
+    
+    #social-proof {
+        background: #020617;
+        padding: 30px 20px;
+        text-align: center;
+        font-size: 1.1rem;
+        color: #94a3b8;
+        border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    @media (max-width: 768px) {
+        #headline { font-size: 2.2rem; }
+        #subheadline { font-size: 1.1rem; }
+    }
+</style>
 </head>
 <body>
 
