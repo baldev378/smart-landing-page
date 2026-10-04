@@ -257,36 +257,61 @@ function getABVariant() {
     return variant;
 }
 
-// 8. Update Page DOM Elements with A/B Variant & Unsplash Photo Support
+// 8. Update Page DOM Elements (Smart Parsing for Any Payload Shape)
 function updatePage(content) {
     if (!content) return;
 
-    // Pick active variant (version_a or version_b)
-    const selectedVariantKey = getABVariant();
-    const activeContent = content[selectedVariantKey] || content.version_a || content;
+    // 1. If payload is a stringified JSON string, parse it first
+    if (typeof content === 'string') {
+        try { content = JSON.parse(content); } catch(e) {}
+    }
 
-    console.log(`🅰️/🅱️ Active Variant: ${selectedVariantKey.toUpperCase()}`, activeContent);
+    console.log('📦 Raw Received Payload:', content);
+
+    // 2. Safely find headline/subheadline whether flat or inside version_a/version_b
+    const selectedVariantKey = getABVariant(); // 'version_a' or 'version_b'
+    
+    let activeContent = content;
+    if (content[selectedVariantKey]) {
+        activeContent = content[selectedVariantKey];
+    } else if (content.version_a) {
+        activeContent = content.version_a;
+    } else if (content.headline) {
+        activeContent = content;
+    } else if (content.result) {
+        activeContent = content.result;
+    }
+
+    console.log(`🅰️/🅱️ Active Content Used:`, activeContent);
 
     const hero = document.getElementById('hero-section');
     hero.style.opacity = '0';
 
     setTimeout(() => {
-        if (activeContent.headline) document.getElementById('headline').textContent = activeContent.headline;
-        if (activeContent.subheadline) document.getElementById('subheadline').textContent = activeContent.subheadline;
-        if (activeContent.cta) document.getElementById('cta-button').textContent = activeContent.cta;
-        if (activeContent.proofText) document.getElementById('proof-text').textContent = activeContent.proofText;
+        if (activeContent && activeContent.headline) {
+            document.getElementById('headline').textContent = activeContent.headline;
+        }
+        if (activeContent && activeContent.subheadline) {
+            document.getElementById('subheadline').textContent = activeContent.subheadline;
+        }
+        if (activeContent && activeContent.cta) {
+            document.getElementById('cta-button').textContent = activeContent.cta;
+        }
+        if (activeContent && activeContent.proofText) {
+            document.getElementById('proof-text').textContent = activeContent.proofText;
+        }
 
-        // Apply Dynamic Unsplash Background Photo if available, else fallback to AI gradient
+        // Apply Dynamic Unsplash Background Photo or Gradient Fallback
         if (window.currentHeroPhoto) {
+            console.log('📸 Setting Hero Background Photo:', window.currentHeroPhoto);
             hero.style.background = `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.85)), url('${window.currentHeroPhoto}') center/cover no-repeat`;
-        } else if (activeContent.backgroundColor) {
+        } else if (activeContent && activeContent.backgroundColor) {
             hero.style.background = activeContent.backgroundColor;
         }
 
         hero.style.opacity = '1';
     }, 300);
 }
-
 // ============================================
 // CONVERSION & EVENT TRACKING ENGINE
 // ============================================
