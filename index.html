@@ -391,9 +391,11 @@ function getDeviceType() {
     return 'desktop';
 }
 
-// UPGRADE 12: Device-Smart CTA Button Adjuster
+// UPGRADE 12: Device-Smart CTA Button Adjuster (Crash-Proof)
 function setDeviceSmartCTA(device, defaultCTAText) {
     const ctaButton = document.getElementById('cta-button');
+    if (!ctaButton) return;
+
     if (device === 'mobile') {
         ctaButton.textContent = '⚡ Instant One-Tap Checkout';
     } else if (defaultCTAText) {
@@ -423,6 +425,8 @@ async function getUserLocation() {
 // UPGRADE 9: Local Native Greeting Engine
 function setNativeGreeting(countryCode, city) {
     const greetingEl = document.getElementById('local-greeting');
+    if (!greetingEl) return;
+
     const greetings = {
         'IN': '🙏 NAMASTE',
         'FR': '🇫🇷 BONJOUR',
@@ -442,6 +446,8 @@ function setNativeGreeting(countryCode, city) {
 function initLocalRadar(city, country) {
     const radarContainer = document.getElementById('radar-container');
     const radarLoc = document.getElementById('radar-location');
+    if (!radarContainer || !radarLoc) return;
+
     radarContainer.style.display = 'inline-flex';
     radarLoc.textContent = (city && city !== 'Unknown') ? `${city}, ${country}` : 'Global Edge Network';
 }
@@ -449,6 +455,8 @@ function initLocalRadar(city, country) {
 // UPGRADE 8: Localized Trust Badges
 function setLocalTrustBadges(countryCode) {
     const paymentEl = document.getElementById('payment-methods');
+    if (!paymentEl) return;
+
     if (countryCode === 'IN') {
         paymentEl.textContent = 'GPay • UPI • Paytm • PhonePe • Cards';
     } else if (countryCode === 'GB' || countryCode === 'US') {
@@ -465,6 +473,7 @@ function setLocalStockCount(city) {
     const stockContainer = document.getElementById('stock-container');
     const stockCity = document.getElementById('stock-city');
     const stockCount = document.getElementById('stock-count');
+    if (!stockContainer || !stockCity || !stockCount) return;
 
     stockContainer.style.display = 'flex';
     stockCity.textContent = (city && city !== 'Unknown') ? city : 'regional';
@@ -515,6 +524,8 @@ async function getWeather(lat, lon) {
 // UPGRADE 6: Animated Weather Particle Canvas Effect
 function initWeatherParticles(condition) {
     const canvas = document.getElementById('weather-canvas');
+    if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -565,7 +576,7 @@ function initWeatherParticles(condition) {
     animate();
 }
 
-// 6. Local Time Context & UPGRADE 11: Time-of-Day Ambient Theme
+// 6. Local Time Context & UPGRADE 11: Time-of-Day Theme
 function getTimeContext() {
     const hour = new Date().getHours();
     if (hour >= 5 && hour < 12) return 'morning';
@@ -578,6 +589,7 @@ function getTimeContext() {
 function formatLocalPrice(countryCode) {
     const priceEl = document.getElementById('product-price');
     const origPriceEl = document.getElementById('original-price');
+    if (!priceEl || !origPriceEl) return;
 
     if (countryCode === 'IN') {
         priceEl.textContent = '₹3,999';
@@ -600,6 +612,7 @@ function startSocialProofTicker(city) {
     const nameEl = document.getElementById('popup-name');
     const cityEl = document.getElementById('popup-city');
     const timeEl = document.getElementById('popup-time-ago');
+    if (!popup || !nameEl || !cityEl || !timeEl) return;
 
     const sampleNames = ['Priya', 'Rahul', 'Alex', 'Sarah', 'David', 'Ananya', 'Marcus'];
     const sampleTimes = ['2 minutes ago', '4 minutes ago', 'just now', '7 minutes ago'];
@@ -619,8 +632,13 @@ function startSocialProofTicker(city) {
 
 // UPGRADE 2: Countdown Timer
 function startScarcityTimer(city) {
-    document.getElementById('countdown-container').style.display = 'inline-block';
-    if (city && city !== 'Unknown') document.getElementById('scarcity-city').textContent = city;
+    const container = document.getElementById('countdown-container');
+    const cityEl = document.getElementById('scarcity-city');
+    const timerEl = document.getElementById('timer');
+    if (!container || !timerEl) return;
+
+    container.style.display = 'inline-block';
+    if (city && city !== 'Unknown' && cityEl) cityEl.textContent = city;
     
     function updateTimer() {
         const now = new Date();
@@ -633,7 +651,7 @@ function startScarcityTimer(city) {
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
         const pad = (n) => n < 10 ? '0' + n : n;
-        document.getElementById('timer').textContent = `${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
+        timerEl.textContent = `${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
     }
     updateTimer();
     setInterval(updateTimer, 1000);
@@ -641,14 +659,19 @@ function startScarcityTimer(city) {
 
 // UPGRADE 3: Delivery Date Calculator
 function calculateDeliveryDate(city, country) {
-    document.getElementById('shipping-banner').style.display = 'inline-block';
-    if (city && city !== 'Unknown') document.getElementById('shipping-city').textContent = `${city}, ${country}`;
+    const banner = document.getElementById('shipping-banner');
+    const cityEl = document.getElementById('shipping-city');
+    const dateEl = document.getElementById('delivery-date');
+    if (!banner || !dateEl) return;
+
+    banner.style.display = 'inline-block';
+    if (city && city !== 'Unknown' && cityEl) cityEl.textContent = `${city}, ${country}`;
 
     const deliveryDate = new Date();
     deliveryDate.setDate(deliveryDate.getDate() + 2);
 
     const options = { weekday: 'short', month: 'short', day: 'numeric' };
-    document.getElementById('delivery-date').textContent = deliveryDate.toLocaleDateString('en-US', options);
+    dateEl.textContent = deliveryDate.toLocaleDateString('en-US', options);
 }
 
 // 7. Get Personalization from Make.com
@@ -675,30 +698,47 @@ function getABVariant() {
     return variant;
 }
 
-// 8. Update Page DOM
+// 8. Update Page DOM (Crash-Proof)
 function updatePage(content, device) {
     if (!content) return;
     if (typeof content === 'string') { try { content = JSON.parse(content); } catch(e) {} }
 
     const selectedVariantKey = getABVariant();
-    let activeContent = content[selectedVariantKey] || content.version_a || (content.headline ? content : content.result);
+    
+    let activeContent = content;
+    if (content && content[selectedVariantKey]) {
+        activeContent = content[selectedVariantKey];
+    } else if (content && content.version_a) {
+        activeContent = content.version_a;
+    } else if (content && content.headline) {
+        activeContent = content;
+    } else if (content && content.result) {
+        activeContent = content.result;
+    }
+
+    console.log('🅰️/🅱️ Active Content:', activeContent);
 
     const hero = document.getElementById('hero-section');
+    if (!hero) return;
+
     hero.style.opacity = '0';
 
     setTimeout(() => {
-        if (activeContent && activeContent.headline) document.getElementById('headline').textContent = activeContent.headline;
-        if (activeContent && activeContent.subheadline) document.getElementById('subheadline').textContent = activeContent.subheadline;
-        
-        // Handle Device CTA Override
-        setDeviceSmartCTA(device, activeContent.cta);
+        if (activeContent) {
+            if (activeContent.headline) document.getElementById('headline').textContent = activeContent.headline;
+            if (activeContent.subheadline) document.getElementById('subheadline').textContent = activeContent.subheadline;
+            if (activeContent.proofText) document.getElementById('proof-text').textContent = activeContent.proofText;
 
-        if (activeContent && activeContent.proofText) document.getElementById('proof-text').textContent = activeContent.proofText;
+            const ctaText = activeContent.cta || 'Get Started Free';
+            setDeviceSmartCTA(device, ctaText);
+
+            if (activeContent.backgroundColor && !window.currentHeroPhoto) {
+                hero.style.background = activeContent.backgroundColor;
+            }
+        }
 
         if (window.currentHeroPhoto) {
             hero.style.background = `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.85)), url('${window.currentHeroPhoto}') center/cover no-repeat`;
-        } else if (activeContent && activeContent.backgroundColor) {
-            hero.style.background = activeContent.backgroundColor;
         }
 
         hero.style.opacity = '1';
@@ -789,11 +829,13 @@ async function shapeShift() {
         product_description: CONFIG.productDescription
     };
 
-    hero.classList.remove('loading');
+    if (hero) hero.classList.remove('loading');
 
     if (location.city !== 'Unknown') {
-        document.getElementById('user-location-tag').textContent = `${location.city}, ${location.country}`;
-        document.getElementById('personalization-badge').style.display = 'block';
+        const locTag = document.getElementById('user-location-tag');
+        const badge = document.getElementById('personalization-badge');
+        if (locTag) locTag.textContent = `${location.city}, ${location.country}`;
+        if (badge) badge.style.display = 'block';
     }
 
     const personalized = await getPersonalizedContent(userData);
