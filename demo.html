@@ -2,45 +2,120 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shape-Shifter Sales Control Panel</title>
+  
+  <!-- Tab Lightning Icon (Stops 404) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  
+  <!-- Clean CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" crossorigin="anonymous">
+
   <script>
     console.warn = () => {}; 
     console.info = () => {};
   </script>
-  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-900 text-white p-6">
-  <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
-    <!-- Sidebar -->
-    <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700">
-      <h2 class="font-bold mb-4 text-yellow-500">CONTROL PANEL</h2>
-      <form onsubmit="event.preventDefault(); updatePreview();" class="space-y-4">
-        <div>
-          <label class="block text-xs text-gray-400 mb-1">City</label>
-          <select id="s_city" class="w-full bg-gray-900 border border-gray-700 p-2 rounded text-sm">
-            <option value="Sahibzada Ajit Singh Nagar">Mohali (SAS Nagar)</option>
-            <option value="Mumbai">Mumbai</option>
-            <option value="London">London</option>
-            <option value="New York">New York</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs text-gray-400 mb-1">Weather</label>
-          <select id="s_weather" class="w-full bg-gray-900 border border-gray-700 p-2 rounded text-sm">
-            <option value="Clear">Clear</option>
-            <option value="Rain">Rain</option>
-          </select>
-        </div>
-        <button type="submit" class="w-full bg-indigo-600 p-3 rounded-xl font-bold hover:bg-indigo-500">Mutate Page</button>
-      </form>
-    </div>
+<body class="bg-gray-950 text-white min-h-screen p-4 sm:p-6 font-sans">
+
+  <div class="max-w-7xl mx-auto space-y-4">
     
-    <!-- Preview -->
-    <div class="lg:col-span-3">
-      <div class="bg-gray-800 p-2 rounded-t-2xl border-t border-l border-r border-gray-700 text-xs text-gray-500 px-4">
-        Live Client View: <span id="url-text">index.html</span>
+    <!-- Top Header -->
+    <header class="flex items-center justify-between bg-gray-900 border border-gray-800 p-4 rounded-2xl shadow-lg">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-xl text-white">⚡</div>
+        <div>
+          <h1 class="font-bold text-base text-white">Shape-Shifter Sales Sandbox</h1>
+          <p class="text-xs text-gray-400">Live Client personalizer & conversion preview</p>
+        </div>
       </div>
-      <iframe id="preview" src="index.html" class="w-full h-[700px] rounded-b-2xl border border-gray-700 bg-white"></iframe>
+      <a href="index.html" target="_blank" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 px-3 py-2 rounded-lg border border-gray-700 transition">
+        Open Full Page ↗
+      </a>
+    </header>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      
+      <!-- Left Controls Sidebar -->
+      <div class="lg:col-span-4 bg-gray-900 p-5 rounded-2xl border border-gray-800 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+          <span class="text-xs font-bold text-yellow-500 uppercase tracking-wider">Visitor Controls</span>
+          <span class="text-[10px] bg-green-500 bg-opacity-20 text-green-400 px-2 py-0.5 rounded font-bold">LIVE</span>
+        </div>
+
+        <form onsubmit="event.preventDefault(); updatePreview();" class="space-y-4">
+          <!-- City -->
+          <div>
+            <label class="block text-xs text-gray-400 font-semibold mb-1">Target City</label>
+            <select id="s_city" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-indigo-500">
+              <option value="Sahibzada Ajit Singh Nagar">Sahibzada Ajit Singh Nagar (Mohali), India</option>
+              <option value="Mumbai">Mumbai, India</option>
+              <option value="Jaipur">Jaipur, India</option>
+              <option value="New York">New York, USA</option>
+              <option value="London">London, UK</option>
+              <option value="Paris">Paris, France</option>
+              <option value="Tokyo">Tokyo, Japan</option>
+            </select>
+          </div>
+
+          <!-- Weather -->
+          <div>
+            <label class="block text-xs text-gray-400 font-semibold mb-1">Weather Context</label>
+            <select id="s_weather" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-indigo-500">
+              <option value="Clear">Clear / Sunny</option>
+              <option value="Rain">Rain (Activates Weather Rain Canvas)</option>
+              <option value="Snow">Snow (Activates Cold Canvas)</option>
+            </select>
+          </div>
+
+          <!-- Time of Day -->
+          <div>
+            <label class="block text-xs text-gray-400 font-semibold mb-1">Time of Day</label>
+            <select id="s_time" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-indigo-500">
+              <option value="Evening">Evening (Night Scarcity)</option>
+              <option value="Morning">Morning</option>
+              <option value="Afternoon">Afternoon</option>
+            </select>
+          </div>
+
+          <!-- Device -->
+          <div>
+            <label class="block text-xs text-gray-400 font-semibold mb-1">Device Layout</label>
+            <select id="s_device" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-indigo-500">
+              <option value="desktop">Desktop Layout</option>
+              <option value="mobile">Mobile (1-Tap Checkout)</option>
+            </select>
+          </div>
+
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl shadow-lg transition active:scale-95 text-sm">
+            ⚡ Mutate Landing Page Now
+          </button>
+        </form>
+
+        <div class="pt-3 border-t border-gray-800 text-[11px] text-gray-400 space-y-1">
+          <p>✔ Auto Currency Swapper Active</p>
+          <p>✔ Local Warehouse Stock Bar Active</p>
+          <p>✔ Local Trust Badges Active</p>
+        </div>
+      </div>
+      
+      <!-- Right Live Preview (Fixed Full Height) -->
+      <div class="lg:col-span-8 bg-gray-900 rounded-2xl border border-gray-800 shadow-xl overflow-hidden flex flex-col">
+        <div class="bg-gray-950 border-b border-gray-800 px-4 py-2.5 flex items-center justify-between text-xs text-gray-400">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+            <span class="font-mono text-gray-300 ml-2">Live Visitor Display</span>
+          </div>
+          <span id="url-text" class="font-mono text-indigo-400 text-[11px] truncate max-w-xs">index.html</span>
+        </div>
+        
+        <!-- EXPLICIT 820px HEIGHT: WILL NEVER BE SHORT OR CUT OFF -->
+        <iframe id="preview" src="index.html" style="width: 100%; height: 820px; border: none; display: block;" class="bg-gray-900"></iframe>
+      </div>
+
     </div>
   </div>
 
@@ -48,12 +123,21 @@
     function updatePreview() {
       const city = document.getElementById('s_city').value;
       const weather = document.getElementById('s_weather').value;
-      const country = (city === 'London') ? 'GB' : (city === 'New York') ? 'US' : 'IN';
+      const time = document.getElementById('s_time').value;
+      const device = document.getElementById('s_device').value;
       
-      const query = `index.html?city=${encodeURIComponent(city)}&country=${country}&weather=${weather}`;
+      let country = 'IN';
+      if (city === 'New York') country = 'US';
+      else if (city === 'London') country = 'GB';
+      else if (city === 'Paris') country = 'FR';
+      else if (city === 'Tokyo') country = 'JP';
+
+      const query = `index.html?city=${encodeURIComponent(city)}&country=${country}&weather=${weather}&time=${time}&device=${device}`;
       document.getElementById('url-text').innerText = query;
       document.getElementById('preview').src = query;
     }
+
+    window.onload = updatePreview;
   </script>
 </body>
 </html>
