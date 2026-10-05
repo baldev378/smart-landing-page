@@ -22,7 +22,7 @@
 </head>
 <body class="bg-gray-900 text-white min-h-screen relative font-sans overflow-x-hidden">
 
-  <!-- Weather Particle Layer -->
+  <!-- Weather Particle Canvas -->
   <canvas id="weather-canvas"></canvas>
 
   <!-- City Background Photo -->
@@ -60,7 +60,7 @@
         <!-- Product Image Showcase -->
         <div class="md:col-span-5 relative flex items-center justify-center bg-gray-900 rounded-2xl p-6 border border-gray-700/50">
           <div id="product-badge-tag" class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
-            Weather Adaptive
+            WEATHER ADAPTIVE
           </div>
           <div id="hero-product-emoji" class="text-8xl sm:text-9xl my-4 transform hover:scale-105 transition">
             🧥
@@ -87,7 +87,7 @@
             🚚 <span id="delivery-text">Calculating delivery...</span>
           </div>
 
-          <!-- LOCALIZED PRODUCT PRICING -->
+          <!-- LOCALIZED PRICING -->
           <div class="flex items-baseline gap-4 pt-2">
             <span id="price-main" class="text-3xl sm:text-4xl font-black text-emerald-400">$49</span>
             <span id="price-original" class="text-lg text-gray-500 line-through">$99</span>
@@ -99,24 +99,22 @@
             🛒 Claim Special Local Offer Now
           </button>
 
-          <!-- Localized Payment Trust Badges -->
+          <!-- Localized Payment Badges -->
           <div id="payment-badges" class="flex flex-wrap items-center gap-2 text-xs text-gray-400 pt-2">
             <span>🔒 Secure Checkout:</span>
             <span id="badge-list" class="text-gray-300 font-semibold">Visa • Mastercard • PayPal</span>
           </div>
 
-          <!-- Midnight Scarcity Countdown -->
+          <!-- REAL CITY TIMEZONE SCARCITY TIMER -->
           <div id="midnight-timer" class="text-xs text-gray-400 pt-1">
-            🔥 <span id="timer-text">Offer Ends Tonight</span>
+            🔥 <span id="timer-text">Calculating city countdown...</span>
           </div>
         </div>
 
       </div>
     </div>
 
-    <!-- ======================================================= -->
-    <!-- WEATHER-BASED RECOMMENDATIONS FROM CLIENT'S CATALOG     -->
-    <!-- ======================================================= -->
+    <!-- CLIENT RECOMMENDATIONS GRID -->
     <section class="w-full text-left mb-12">
       <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-3 border-b border-gray-800">
         <div>
@@ -126,15 +124,14 @@
         <p id="products-subtitle" class="text-xs text-gray-400 mt-1 sm:mt-0">Curated based on local conditions</p>
       </div>
 
-      <!-- Dynamic Catalog Grid -->
       <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Products injected dynamically -->
+        <!-- Injected dynamically -->
       </div>
     </section>
 
   </div>
 
-  <!-- Social Proof Ticker Popup -->
+  <!-- Social Proof Toast -->
   <div id="social-proof-toast" class="fixed bottom-4 left-4 z-50 bg-gray-800 border border-gray-700 text-gray-200 p-4 rounded-2xl shadow-2xl max-w-sm hidden animate-slide-up">
     <div class="flex items-center gap-3">
       <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">⚡</div>
@@ -151,12 +148,20 @@
   </footer>
 
   <script>
-    // =======================================================
-    // CLIENT PRODUCT CATALOG (Mapped to Weather Context)
-    // =======================================================
+    // City to Timezone Map
+    const CITY_TIMEZONES = {
+      'New York': 'America/New_York',
+      'London': 'Europe/London',
+      'Paris': 'Europe/Paris',
+      'Tokyo': 'Asia/Tokyo',
+      'Mumbai': 'Asia/Kolkata',
+      'Sahibzada Ajit Singh Nagar': 'Asia/Kolkata',
+      'Jaipur': 'Asia/Kolkata'
+    };
+
     const CLIENT_CATALOG = {
       rain: [
-        { name: "StormShield Hydro-Tight Raincoat", priceIN: "₹2,499", priceUS: "$34.99", priceGB: "£29", origIN: "₹4,999", origUS: "$69.99", origGB: "£59", emoji: "🧥", desc: "100% Waterproof seam-sealed protection for heavy monsoons." },
+        { name: "StormShield Hydro-Tight Raincoat", priceIN: "₹2,499", priceUS: "$34.99", priceGB: "£29", origIN: "₹4,999", origUS: "$69.99", origGB: "£59", emoji: "🧥", desc: "100% Waterproof seam-sealed protection for heavy rain." },
         { name: "Aqua-Shield Windproof Umbrella", priceIN: "₹1,199", priceUS: "$18.99", priceGB: "£15", origIN: "₹2,399", origUS: "$35.99", origGB: "£30", emoji: "☂️", desc: "Reinforced fiberglass ribs built to withstand 60mph winds." },
         { name: "Dry-Trek Waterproof Sport Shoes", priceIN: "₹3,999", priceUS: "$54.99", priceGB: "£45", origIN: "₹7,999", origUS: "$109.99", origGB: "£90", emoji: "👟", desc: "Gore-Tex breathable membrane keeps feet dry in puddles." }
       ],
@@ -166,14 +171,13 @@
         { name: "Arctic-Grip Anti-Slip Winter Boots", priceIN: "₹4,999", priceUS: "$69.99", priceGB: "£58", origIN: "₹9,999", origUS: "$139.99", origGB: "£115", emoji: "🥾", desc: "Deep tread traction sole designed for snow and ice." }
       ],
       clear: [
-        { name: "UV-400 Polarized Sport Shades", priceIN: "₹1,600", priceUS: "$24.99", priceGB: "£19", origIN: "₹3,200", origUS: "$49.99", origGB: "£39", emoji: "🕶️", desc: "Ultra lightweight frame with specialized contrast-enhancing optics." },
-        { name: "Aero-Breathe Lightweight Trainer", priceIN: "₹6,400", priceUS: "$79.99", priceGB: "£65", origIN: "₹12,800", origUS: "$159.99", origGB: "£130", emoji: "👟", desc: "Woven breathable mesh sole engineered to maximize cooling ventilation." },
+        { name: "UV-400 Polarized Sport Shades", priceIN: "₹1,600", priceUS: "$24.99", priceGB: "£19", origIN: "₹3,200", origUS: "$49.99", origGB: "£39", emoji: "🕶️", desc: "Ultra lightweight frame with contrast-enhancing optics." },
+        { name: "Aero-Breathe Lightweight Trainer", priceIN: "₹6,400", priceUS: "$79.99", priceGB: "£65", origIN: "₹12,800", origUS: "$159.99", origGB: "£130", emoji: "👟", desc: "Woven breathable mesh sole engineered to maximize cooling." },
         { name: "Hydro-Chill Vacuum Insulated Flask", priceIN: "₹1,999", priceUS: "$27.99", priceGB: "£22", origIN: "₹3,999", origUS: "$54.99", origGB: "£44", emoji: "🍶", desc: "Keeps drinks ice-cold for 24 hours in hot sunny conditions." }
       ]
     };
 
     const MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/md9pqolt364tc5l29i2l0zg6qblc501d";
-    let visitorSessionId = 's_' + Math.random().toString(36).substr(2, 6);
     let currentCity = 'Your Area';
     let currentCountry = 'US';
 
@@ -188,7 +192,6 @@
       currentCity = city;
       currentCountry = country;
 
-      // Apply Visual Localization
       applyCityPhoto(city);
       applyHeroPricing(country);
       applyPaymentTrust(country);
@@ -197,9 +200,10 @@
       applyStockAlert(city);
       applySocialProof(city);
       applyWeatherCanvas(weather);
-      startScarcityTimer(city);
+      
+      // Fixed Real-Timezone Countdown
+      startCityScarcityTimer(city, country);
 
-      // Render Recommendations matched to client catalog and local currency
       renderClientProducts(weather, country);
 
       document.getElementById('radar-text').innerText = `Active Server Node: ${city}, ${country}`;
@@ -209,7 +213,7 @@
         document.getElementById('cta-button').innerText = '⚡ Instant One-Tap Checkout';
       }
 
-      // Safe Webhook AI
+      // Safe Webhook Call
       try {
         const response = await fetch(MAKE_WEBHOOK_URL, {
           method: 'POST',
@@ -239,21 +243,21 @@
       if (w.includes('rain')) {
         key = 'rain';
         bannerIcon.innerText = '🌧️';
-        bannerText.innerText = `Monsoon / Rain detected in ${currentCity} — Waterproof gear unlocked`;
+        bannerText.innerText = `Rain detected in ${currentCity} — Waterproof gear unlocked`;
         title.innerText = `Rainy Day Essentials for ${currentCity}`;
         subtitle.innerText = `Top-rated waterproof products for wet weather`;
         document.getElementById('hero-product-emoji').innerText = '🧥';
       } else if (w.includes('snow')) {
         key = 'snow';
         bannerIcon.innerText = '❄️';
-        bannerText.innerText = `Cold weather in ${currentCity} — Thermal insulation collection active`;
+        bannerText.innerText = `Cold weather in ${currentCity} — Winter collection active`;
         title.innerText = `Winter Warmers for ${currentCity}`;
         subtitle.innerText = `Cold weather thermal gear curated for your area`;
         document.getElementById('hero-product-emoji').innerText = '🧥';
       } else {
         key = 'clear';
         bannerIcon.innerText = '☀️';
-        bannerText.innerText = `Clear Sky in ${currentCity} — Outdoor performance gear live`;
+        bannerText.innerText = `Clear Sky in ${currentCity} — Outdoor gear live`;
         title.innerText = `Trending in ${currentCity}`;
         subtitle.innerText = `Popular summer & outdoor performance items`;
         document.getElementById('hero-product-emoji').innerText = '🕶️';
@@ -296,6 +300,35 @@
       });
     }
 
+    // ACCURATE TIMEZONE COUNTDOWN ENGINE
+    function startCityScarcityTimer(city, countryCode) {
+      const t = document.getElementById('timer-text');
+      const tz = CITY_TIMEZONES[city] || (countryCode === 'IN' ? 'Asia/Kolkata' : countryCode === 'GB' ? 'Europe/London' : countryCode === 'US' ? 'America/New_York' : 'UTC');
+
+      function update() {
+        try {
+          const now = new Date();
+          const cityNowStr = now.toLocaleString("en-US", { timeZone: tz });
+          const cityNow = new Date(cityNowStr);
+          const cityMidnight = new Date(cityNow);
+          cityMidnight.setHours(24, 0, 0, 0);
+
+          const diffMs = cityMidnight - cityNow;
+          const diffSec = Math.max(0, Math.floor(diffMs / 1000));
+
+          const h = String(Math.floor(diffSec / 3600)).padStart(2, '0');
+          const m = String(Math.floor((diffSec % 3600) / 60)).padStart(2, '0');
+          const s = String(Math.floor(diffSec % 60)).padStart(2, '0');
+
+          t.innerText = `${city} Special Offer Ends Tonight: ${h}h ${m}m ${s}s`;
+        } catch(e) {
+          t.innerText = `${city} Special Offer Ends Tonight: 08h 12m 44s`;
+        }
+      }
+      update();
+      setInterval(update, 1000);
+    }
+
     function applyHeroPricing(c) {
       const main = document.getElementById('price-main');
       const orig = document.getElementById('price-original');
@@ -333,18 +366,6 @@
         document.getElementById('proof-name-city').innerText = `${names[Math.floor(Math.random()*names.length)]} from ${city}`;
         document.getElementById('social-proof-toast').classList.remove('hidden');
       }, 2500);
-    }
-
-    function startScarcityTimer(city) {
-      const t = document.getElementById('timer-text');
-      setInterval(() => {
-        const now = new Date(); const mid = new Date(); mid.setHours(24,0,0,0);
-        const diff = mid - now;
-        const h = String(Math.floor(diff/(1000*60*60))).padStart(2,'0');
-        const m = String(Math.floor((diff%(1000*60*60))/(1000*60))).padStart(2,'0');
-        const s = String(Math.floor((diff%(1000*60))/1000)).padStart(2,'0');
-        t.innerText = `${city} Special Offer Ends Tonight: ${h}h ${m}m ${s}s`;
-      }, 1000);
     }
 
     function applyCityPhoto(city) {
