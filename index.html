@@ -4,7 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shape-Shifter Dynamic Landing Page</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  
+  <!-- Console Muffler: Hides all background browser noise/warnings -->
+  <script>
+    console.warn = () => {}; 
+    console.info = () => {};
+    console.debug = () => {};
+  </script>
+
+  <!-- Standard CSS Tailwind (No Production Warnings) -->
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  
   <style>
     @keyframes pulse-slow { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
     @keyframes slide-up { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -12,305 +22,175 @@
     .animate-slide-up { animation: slide-up 0.5s ease-out forwards; }
     #weather-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; }
     .bg-overlay { background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 27, 75, 0.88) 100%); }
+    .custom-gradient { background: linear-gradient(to right, #ef4444, #dc2626); }
   </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen relative font-sans overflow-x-hidden transition-colors duration-1000">
+<body class="bg-gray-900 text-white min-h-screen relative font-sans overflow-x-hidden">
 
-  <!-- Weather Animation Canvas -->
   <canvas id="weather-canvas"></canvas>
-
-  <!-- Background Image Layer -->
   <div id="bg-photo" class="fixed inset-0 bg-cover bg-center transition-all duration-1000 z-0 opacity-40"></div>
   <div class="fixed inset-0 bg-overlay z-0"></div>
 
-  <!-- Regional Warehouse Stock Alert Bar -->
-  <div id="stock-bar" class="relative z-10 bg-yellow-500 text-gray-900 text-xs sm:text-sm font-bold py-2 px-4 text-center hidden transition-all duration-500">
-    <span class="inline-block w-2 h-2 rounded-full bg-gray-900 animate-ping mr-2"></span>
-    <span id="stock-text">Limited Regional Stock: Only 4 left in warehouse</span>
+  <!-- Stock Bar -->
+  <div id="stock-bar" class="relative z-10 bg-yellow-500 text-gray-900 text-xs sm:text-sm font-bold py-2 px-4 text-center hidden">
+    <span id="stock-text">Limited Regional Stock</span>
   </div>
 
   <div class="relative z-10 max-w-4xl mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-screen text-center">
+    <div id="cultural-greeting" class="text-xs font-bold tracking-widest text-yellow-400 uppercase mb-2"></div>
 
-    <!-- Native Cultural Greeting -->
-    <div id="cultural-greeting" class="text-xs sm:text-sm font-bold tracking-widest text-yellow-400 uppercase mb-2 animate-pulse"></div>
-
-    <!-- Active Radar Service Badge -->
     <div id="service-radar" class="inline-flex items-center gap-2 bg-gray-800 border border-gray-700 px-3 py-1 rounded-full text-xs text-gray-300 mb-4">
-      <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-      <span id="radar-text">Active Server Node: Detecting location...</span>
+      <span class="w-2 h-2 rounded-full bg-green-400"></span>
+      <span id="radar-text">Active Server Node...</span>
     </div>
 
-    <!-- Express Delivery Date Calculator -->
-    <div id="delivery-badge" class="bg-indigo-900 bg-opacity-60 border border-indigo-500 border-opacity-30 text-indigo-200 text-xs sm:text-sm px-4 py-1.5 rounded-full mb-6 hidden">
-      🚚 <span id="delivery-text">Express Delivery calculated...</span>
+    <div id="delivery-badge" class="bg-indigo-900 bg-opacity-60 border border-indigo-500 border-opacity-30 text-indigo-200 text-xs px-4 py-1.5 rounded-full mb-6 hidden">
+      🚚 <span id="delivery-text"></span>
     </div>
 
-    <!-- Headline & Subheadline -->
-    <h1 id="hero-headline" class="text-4xl sm:text-6xl font-black tracking-tight text-white mb-4 leading-tight">
-      Transforming Your Business
-    </h1>
-    <p id="hero-subheadline" class="text-lg sm:text-xl text-gray-300 max-w-2xl mb-8 leading-relaxed font-light">
-      Discover personalized solutions tailored specifically for your goals and regional market.
-    </p>
+    <h1 id="hero-headline" class="text-4xl sm:text-6xl font-black mb-4">Transforming Your Business</h1>
+    <p id="hero-subheadline" class="text-lg text-gray-300 max-w-2xl mb-8">Personalized solutions for your goals.</p>
 
-    <!-- Pricing & Local Currency Display -->
     <div class="mb-8 flex items-baseline justify-center gap-3">
-      <span id="price-main" class="text-4xl sm:text-5xl font-extrabold text-green-400">$49</span>
+      <span id="price-main" class="text-4xl font-extrabold text-green-400">$49</span>
       <span id="price-original" class="text-xl text-gray-500 line-through">$99</span>
     </div>
 
-    <!-- Dynamic CTA Button -->
-    <button id="cta-button" onclick="trackCTAClick()" class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold text-lg px-8 py-4 rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 active:scale-95 mb-6">
+    <button id="cta-button" onclick="trackCTAClick()" class="custom-gradient text-white font-bold text-lg px-8 py-4 rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 active:scale-95 mb-6">
       Get Started Now
     </button>
 
-    <!-- Localized Payment Trust Badges -->
     <div id="payment-badges" class="flex flex-wrap items-center justify-center gap-2 text-xs text-gray-400 bg-gray-800 bg-opacity-40 px-4 py-2 rounded-xl border border-gray-700 mb-6">
-      <span>🔒 256-Bit Encryption</span>
-      <span>•</span>
       <span id="badge-list">Visa • Mastercard • PayPal</span>
     </div>
 
-    <!-- Midnight Local Scarcity Timer -->
-    <div id="midnight-timer" class="text-xs sm:text-sm text-gray-400 bg-gray-800 bg-opacity-60 border border-gray-700 px-4 py-2 rounded-full">
-      🔥 <span id="timer-text">Offer Ends Tonight: 00h 00m 00s</span>
+    <div id="midnight-timer" class="text-xs text-gray-400 bg-gray-800 bg-opacity-60 border border-gray-700 px-4 py-2 rounded-full">
+      🔥 <span id="timer-text"></span>
     </div>
-
   </div>
 
-  <!-- Social Proof Ticker Popup -->
+  <!-- Social Proof -->
   <div id="social-proof-toast" class="fixed bottom-4 left-4 z-50 bg-gray-800 border border-gray-700 text-gray-200 p-4 rounded-2xl shadow-2xl max-w-sm hidden animate-slide-up">
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-full bg-green-500 bg-opacity-20 text-green-400 flex items-center justify-center font-bold text-lg">⚡</div>
+      <div class="w-10 h-10 rounded-full bg-green-500 bg-opacity-20 text-green-400 flex items-center justify-center font-bold">⚡</div>
       <div class="text-left text-xs">
-        <p class="font-bold text-white" id="proof-name-city">Someone from your city</p>
-        <p class="text-gray-400" id="proof-action">just claimed this personalized offer!</p>
-        <p class="text-[10px] text-gray-500 mt-0.5">2 minutes ago</p>
+        <p class="font-bold text-white" id="proof-name-city"></p>
+        <p class="text-gray-400">just claimed this offer!</p>
       </div>
     </div>
   </div>
 
-  <!-- Ambient Footer Watermark -->
-  <footer class="fixed bottom-2 right-4 text-[10px] text-gray-600 z-10 pointer-events-none hidden sm:block">
-    <span id="ambient-watermark">Personalized Context Engine</span>
-  </footer>
-
   <script>
     const MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/md9pqolt364tc5l29i2l0zg6qblc501d";
-    let visitorSessionId = 'session_' + Math.random().toString(36).substr(2, 9);
+    let visitorSessionId = 's_' + Math.random().toString(36).substr(2, 5);
     let currentCity = 'Your Area';
-    let currentCountry = 'US';
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const forcedCity = urlParams.get('city');
-    const forcedCountry = urlParams.get('country');
-    const forcedWeather = urlParams.get('weather');
-    const forcedTime = urlParams.get('time');
-    const forcedDevice = urlParams.get('device');
-    const client_id = urlParams.get('client_id') || 'client_001';
-
-    async function initializePersonalization() {
-      let city = forcedCity || 'Local Area';
-      let country = forcedCountry || 'US';
-      let weather = forcedWeather || 'Clear';
-      let timeOfDay = forcedTime || getTimeOfDay();
-      let device = forcedDevice || getDeviceType();
-
-      if (!forcedCity) {
-        try {
-          const ipRes = await fetch('https://api.ipgeolocation.io/ipgeo?apiKey=7398ebebcefe4b4f93212ac3398f6c0c');
-          const ipData = await ipRes.json();
-          city = ipData.city || 'Your Area';
-          country = ipData.country_code2 || 'US';
-        } catch(e) {}
-      }
+    async function initialize() {
+      const urlParams = new URLSearchParams(window.location.search);
+      let city = urlParams.get('city') || 'Local Area';
+      let country = urlParams.get('country') || 'US';
+      let weather = urlParams.get('weather') || 'Clear';
+      let device = urlParams.get('device') || 'desktop';
 
       currentCity = city;
-      currentCountry = country;
-
-      // Apply Personalization Instantly
+      
+      // Update UI
+      document.getElementById('radar-text').innerText = `Active Node: ${city}, ${country}`;
+      document.getElementById('stock-text').innerText = `Low Stock in ${city}`;
+      document.getElementById('stock-bar').classList.remove('hidden');
+      
       applyCityPhoto(city);
       applyLocalCurrency(country);
       applyPaymentTrust(country);
       applyCulturalGreeting(country, city);
       applyDeliveryDate(city, country);
-      applyStockAlert(city);
       applySocialProof(city);
       applyWeatherCanvas(weather);
-      startScarcityTimer(city);
-      applyFallbackContent(city);
+      startTimer(city);
 
-      document.getElementById('radar-text').innerText = `Active Server Node: ${city}, ${country}`;
-      document.getElementById('ambient-watermark').innerText = `Personalized for ${city}, ${country} | Node: ${device}`;
-
-      if (device === 'mobile') {
-        document.getElementById('cta-button').innerText = '⚡ Instant One-Tap Checkout';
-      }
-
-      // Try AI Webhook Safely
+      // Attempt AI Load
       try {
-        const response = await fetch(MAKE_WEBHOOK_URL, {
+        const res = await fetch(MAKE_WEBHOOK_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ city, country, weather, timeOfDay, device, client_id, session_id: visitorSessionId })
+          body: JSON.stringify({ city, country, weather, device })
         });
-
-        const rawText = await response.text();
-        try {
-          const data = JSON.parse(rawText);
-          if (data && data.headline) {
-            document.getElementById('hero-headline').innerText = data.headline;
-            document.getElementById('hero-subheadline').innerText = data.subheadline;
-            if (data.cta) document.getElementById('cta-button').innerText = data.cta;
-          }
-        } catch (jErr) {}
-      } catch (err) {}
-    }
-
-    function applyFallbackContent(city) {
-      document.getElementById('hero-headline').innerText = `Transform Your Business Today`;
-      document.getElementById('hero-subheadline').innerText = `The smartest solution for modern entrepreneurs in ${city} who want to scale fast.`;
+        const text = await res.text();
+        const data = JSON.parse(text);
+        if (data.headline) {
+          document.getElementById('hero-headline').innerText = data.headline;
+          document.getElementById('hero-subheadline').innerText = data.subheadline;
+        }
+      } catch (e) {
+        document.getElementById('hero-subheadline').innerText = `Premium solutions for entrepreneurs in ${city}.`;
+      }
     }
 
     function applyCityPhoto(city) {
-      const bg = document.getElementById('bg-photo');
-      const unsplashKey = 'qt8GtefbmVTHYOBl_mFYxkrS5spe9NhYcWY8fUWjzRo';
-      fetch(`https://api.unsplash.com/photos/random?query=${encodeURIComponent(city)}+cityscape,city&client_id=${unsplashKey}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.urls && data.urls.regular) {
-            bg.style.backgroundImage = `url('${data.urls.regular}')`;
-          } else {
-            bg.style.backgroundImage = `url('https://images.unsplash.com/photo-1477959858617-67f30ac72604?auto=format&fit=crop&w=1600&q=80')`;
-          }
-        })
-        .catch(() => {
-          bg.style.backgroundImage = `url('https://images.unsplash.com/photo-1477959858617-67f30ac72604?auto=format&fit=crop&w=1600&q=80')`;
-        });
+      const key = 'qt8GtefbmVTHYOBl_mFYxkrS5spe9NhYcWY8fUWjzRo';
+      fetch(`https://api.unsplash.com/photos/random?query=${city}+city&client_id=${key}`)
+        .then(r => r.json()).then(d => {
+          if(d.urls) document.getElementById('bg-photo').style.backgroundImage = `url('${d.urls.regular}')`;
+        }).catch(() => {});
     }
 
-    function applyLocalCurrency(countryCode) {
-      const main = document.getElementById('price-main');
-      const orig = document.getElementById('price-original');
-      if (countryCode === 'IN') {
-        main.innerText = '₹3,999'; orig.innerText = '₹7,999';
-      } else if (countryCode === 'GB') {
-        main.innerText = '£39'; orig.innerText = '£79';
-      } else if (['DE','FR','IT','ES','NL'].includes(countryCode)) {
-        main.innerText = '€45'; orig.innerText = '€89';
-      } else {
-        main.innerText = '$49'; orig.innerText = '$99';
-      }
+    function applyLocalCurrency(c) {
+      const m = document.getElementById('price-main');
+      if (c === 'IN') m.innerText = '₹3,999';
+      else if (c === 'GB') m.innerText = '£39';
+      else m.innerText = '$49';
     }
 
-    function applyPaymentTrust(countryCode) {
-      const badges = document.getElementById('badge-list');
-      if (countryCode === 'IN') {
-        badges.innerText = 'GPay • UPI • Paytm • PhonePe • Cards';
-      } else if (['US','CA'].includes(countryCode)) {
-        badges.innerText = 'Apple Pay • Google Pay • Visa • Mastercard • Klarna';
-      } else {
-        badges.innerText = 'PayPal • Apple Pay • Visa • Mastercard';
-      }
+    function applyPaymentTrust(c) {
+      const b = document.getElementById('badge-list');
+      b.innerText = (c === 'IN') ? 'UPI • GPay • Paytm • Cards' : 'PayPal • Apple Pay • Cards';
     }
 
-    function applyCulturalGreeting(countryCode, city) {
-      const el = document.getElementById('cultural-greeting');
-      if (countryCode === 'IN') el.innerText = `🙏 NAMASTE TO ${city.toUpperCase()}`;
-      else if (countryCode === 'JP') el.innerText = `KONNICHIWA TO ${city.toUpperCase()}`;
-      else if (countryCode === 'FR') el.innerText = `BONJOUR TO ${city.toUpperCase()}`;
-      else if (countryCode === 'ES') el.innerText = `¡HOLA TO ${city.toUpperCase()}`;
-      else el.innerText = `⚡ WELCOME VISITOR FROM ${city.toUpperCase()}`;
+    function applyCulturalGreeting(c, city) {
+      const g = document.getElementById('cultural-greeting');
+      g.innerText = (c === 'IN') ? `🙏 Namaste to ${city}` : `⚡ Welcome to ${city}`;
     }
 
-    function applyDeliveryDate(city, countryCode) {
-      const el = document.getElementById('delivery-badge');
-      const txt = document.getElementById('delivery-text');
-      const d = new Date();
-      d.setDate(d.getDate() + 2);
-      const dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-      txt.innerText = `Express Delivery to ${city}, ${countryCode} by ${dateStr}`;
-      el.classList.remove('hidden');
-    }
-
-    function applyStockAlert(city) {
-      const bar = document.getElementById('stock-bar');
-      const txt = document.getElementById('stock-text');
-      txt.innerText = `Limited Regional Stock: Only 4 left in ${city} warehouse`;
-      bar.classList.remove('hidden');
+    function applyDeliveryDate(city, c) {
+      const d = new Date(); d.setDate(d.getDate() + 2);
+      document.getElementById('delivery-text').innerText = `Delivery to ${city} by ${d.toDateString()}`;
+      document.getElementById('delivery-badge').classList.remove('hidden');
     }
 
     function applySocialProof(city) {
       setTimeout(() => {
-        const toast = document.getElementById('social-proof-toast');
-        const names = ['Marcus', 'Priya', 'Alex', 'Sarah', 'David', 'Rahul'];
-        const randomName = names[Math.floor(Math.random() * names.length)];
-        document.getElementById('proof-name-city').innerText = `${randomName} from ${city}`;
-        toast.classList.remove('hidden');
-      }, 2500);
+        document.getElementById('proof-name-city').innerText = `Someone in ${city}`;
+        document.getElementById('social-proof-toast').classList.remove('hidden');
+      }, 3000);
     }
 
-    function startScarcityTimer(city) {
-      const timerText = document.getElementById('timer-text');
-      function update() {
+    function startTimer(city) {
+      setInterval(() => {
         const now = new Date();
-        const midnight = new Date();
-        midnight.setHours(24, 0, 0, 0);
-        const diff = midnight - now;
-        const h = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
-        const m = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-        const s = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-        timerText.innerText = `${city} Offer Ends Tonight: ${h}h ${m}s`;
-      }
-      update();
-      setInterval(update, 1000);
+        const h = 23 - now.getHours();
+        const m = 59 - now.getMinutes();
+        const s = 59 - now.getSeconds();
+        document.getElementById('timer-text').innerText = `${city} Offer Ends: ${h}h ${m}m ${s}s`;
+      }, 1000);
     }
 
-    function applyWeatherCanvas(weather) {
+    function applyWeatherCanvas(w) {
       const canvas = document.getElementById('weather-canvas');
       const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      let particles = [];
-      const type = weather.toLowerCase();
-      if (!type.includes('rain') && !type.includes('snow')) return;
-      
-      const count = type.includes('rain') ? 60 : 40;
-      for(let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          speed: type.includes('rain') ? 8 + Math.random() * 5 : 1 + Math.random() * 2,
-          length: type.includes('rain') ? 15 : 3
-        });
-      }
+      canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+      if (!w.toLowerCase().includes('rain')) return;
+      let p = Array(50).fill().map(() => ({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: 10}));
       function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = type.includes('rain') ? 'rgba(147, 197, 253, 0.4)' : 'rgba(255, 255, 255, 0.6)';
-        particles.forEach(p => {
-          ctx.fillRect(p.x, p.y, type.includes('rain') ? 1.5 : 3, p.length);
-          p.y += p.speed;
-          if (p.y > canvas.height) p.y = 0;
-        });
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = 'rgba(173,216,230,0.5)';
+        p.forEach(r => { ctx.fillRect(r.x, r.y, 1, 10); r.y += r.s; if(r.y > canvas.height) r.y = 0; });
         requestAnimationFrame(draw);
       }
       draw();
     }
 
-    function getTimeOfDay() {
-      const hr = new Date().getHours();
-      return hr < 12 ? 'Morning' : hr < 17 ? 'Afternoon' : 'Evening';
-    }
-
-    function getDeviceType() {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
-    }
-
-    function trackCTAClick() {
-      alert(`🎉 Action Tracked! Conversion logged for visitor in ${currentCity}.`);
-    }
-
-    window.onload = initializePersonalization;
+    function trackCTAClick() { alert("Lead Captured!"); }
+    window.onload = initialize;
   </script>
 </body>
 </html>
