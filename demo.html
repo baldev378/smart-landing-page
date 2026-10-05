@@ -2,261 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shape-Shifter Interactive Sales Demo</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @keyframes pulse-ring { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.8; } }
-    .animate-ring { animation: pulse-ring 3s infinite ease-in-out; }
-  </style>
+  <title>Shape-Shifter Sales Control Panel</title>
+  <script>
+    console.warn = () => {}; 
+    console.info = () => {};
+  </script>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen">
-
-  <!-- Header Banner -->
-  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 py-4 px-6">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-rose-500 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-indigo-500/20">
-          ⚡
+<body class="bg-gray-900 text-white p-6">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <!-- Sidebar -->
+    <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700">
+      <h2 class="font-bold mb-4 text-yellow-500">CONTROL PANEL</h2>
+      <form onsubmit="event.preventDefault(); updatePreview();" class="space-y-4">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">City</label>
+          <select id="s_city" class="w-full bg-gray-900 border border-gray-700 p-2 rounded text-sm">
+            <option value="Sahibzada Ajit Singh Nagar">Mohali (SAS Nagar)</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="London">London</option>
+            <option value="New York">New York</option>
+          </select>
         </div>
         <div>
-          <h1 class="font-bold text-lg text-white leading-tight">Shape-Shifter Sales Control Panel</h1>
-          <p class="text-xs text-slate-400">Live Client personalizer & conversion simulation</p>
+          <label class="block text-xs text-gray-400 mb-1">Weather</label>
+          <select id="s_weather" class="w-full bg-gray-900 border border-gray-700 p-2 rounded text-sm">
+            <option value="Clear">Clear</option>
+            <option value="Rain">Rain</option>
+          </select>
         </div>
-      </div>
-      <div class="flex items-center gap-3">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          Engine Live
-        </span>
-        <a href="https://smart-landing-page-steel.vercel.app/" target="_blank" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition">
-          View Direct Page ↗
-        </a>
-      </div>
+        <button type="submit" class="w-full bg-indigo-600 p-3 rounded-xl font-bold hover:bg-indigo-500">Mutate Page</button>
+      </form>
     </div>
-  </header>
-
-  <!-- Main Control Panel Grid -->
-  <main class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-    <!-- Left Controls Sidebar -->
-    <div class="lg:col-span-4 space-y-5">
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
-        <h2 class="text-sm font-bold text-slate-300 uppercase tracking-wider mb-4 flex items-center justify-between">
-          <span>Visitor Context Controls</span>
-          <span class="text-[10px] text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">Live Simulation</span>
-        </h2>
-
-        <form id="demo-form" class="space-y-4" onsubmit="event.preventDefault(); triggerTransform();">
-          
-          <!-- Client ID Selection -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Target Client Profile</label>
-            <select id="client_id" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
-              <option value="client_001">client_001 (StormShield Co. - E-commerce)</option>
-              <option value="client_002">client_002 (NovaSaaS Platform)</option>
-              <option value="client_003">client_003 (Apex Real Estate Group)</option>
-            </select>
-          </div>
-
-          <!-- City Selection -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Simulated Visitor City</label>
-            <select id="sim_city" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
-              <option value="Sahibzada Ajit Singh Nagar">Sahibzada Ajit Singh Nagar (Mohali), India</option>
-              <option value="Jaipur">Jaipur, India</option>
-              <option value="Mumbai">Mumbai, India</option>
-              <option value="New York">New York, USA</option>
-              <option value="London">London, UK</option>
-              <option value="Tokyo">Tokyo, Japan</option>
-              <option value="Paris">Paris, France</option>
-            </select>
-          </div>
-
-          <!-- Country Selection -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Country & Currency Node</label>
-            <select id="sim_country" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
-              <option value="IN">India (INR ₹ - UPI/GPay)</option>
-              <option value="US">United States (USD $ - Apple Pay)</option>
-              <option value="GB">United Kingdom (GBP £ - Cards)</option>
-              <option value="FR">France (EUR € - PayPal)</option>
-              <option value="JP">Japan (JPY ¥ - Local)</option>
-            </select>
-          </div>
-
-          <!-- Weather Selection -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Weather Context</label>
-            <select id="sim_weather" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
-              <option value="Clear">Clear Sky / Sunny</option>
-              <option value="Rain">Rainy / Stormy (Activates Rain Canvas)</option>
-              <option value="Snow">Snowy / Cold (Activates Snow Canvas)</option>
-            </select>
-          </div>
-
-          <!-- Time of Day -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Time of Day</label>
-            <select id="sim_time" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
-              <option value="Evening">Evening (Night Mode)</option>
-              <option value="Morning">Morning (Fresh Start)</option>
-              <option value="Afternoon">Afternoon (Peak Work)</option>
-            </select>
-          </div>
-
-          <!-- Device Type -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Device Type</label>
-            <select id="sim_device" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
-              <option value="mobile">Mobile (Activates 1-Tap CTA)</option>
-              <option value="desktop">Desktop (Standard Full Layout)</option>
-            </select>
-          </div>
-
-          <!-- Campaign / UTM -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Ad Campaign (UTM)</label>
-            <select id="sim_utm" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
-              <option value="facebook_winter_sale">Facebook: winter_sale</option>
-              <option value="google_brand_search">Google: brand_search</option>
-              <option value="instagram_influencer">Instagram: influencer_promo</option>
-            </select>
-          </div>
-
-          <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-rose-500 hover:from-indigo-600 hover:to-rose-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-indigo-500/25 transition transform active:scale-95 text-sm">
-            ⚡ Mutate Landing Page Now
-          </button>
-        </form>
+    
+    <!-- Preview -->
+    <div class="lg:col-span-3">
+      <div class="bg-gray-800 p-2 rounded-t-2xl border-t border-l border-r border-gray-700 text-xs text-gray-500 px-4">
+        Live Client View: <span id="url-text">index.html</span>
       </div>
-
-      <!-- Live Diagnostics Box -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
-        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Engine Status & Response</h3>
-        <div id="status-panel" class="space-y-2 text-xs font-mono">
-          <div class="flex justify-between text-slate-400">
-            <span>Latency:</span>
-            <span id="diag-latency" class="text-emerald-400 font-bold">~140ms</span>
-          </div>
-          <div class="flex justify-between text-slate-400">
-            <span>Response Engine:</span>
-            <span id="diag-engine" class="text-indigo-400 font-bold">Smart Client Engine</span>
-          </div>
-          <div class="flex justify-between text-slate-400">
-            <span>Stock Warehouse:</span>
-            <span id="diag-stock" class="text-amber-400 font-bold">Sahibzada Ajit Singh Nagar</span>
-          </div>
-          <div class="mt-3 p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-300 text-[11px] leading-relaxed overflow-hidden">
-            <span class="text-slate-500">// Personalization Parameters</span><br>
-            <span id="diag-json" class="text-emerald-300">Ready for mutation...</span>
-          </div>
-        </div>
-      </div>
+      <iframe id="preview" src="index.html" class="w-full h-[700px] rounded-b-2xl border border-gray-700 bg-white"></iframe>
     </div>
-
-    <!-- Right Live Preview Iframe Frame -->
-    <div class="lg:col-span-8 flex flex-col">
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex-1 flex flex-col shadow-xl min-h-[700px]">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
-          <div class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full bg-rose-500"></span>
-            <span class="w-3 h-3 rounded-full bg-amber-500"></span>
-            <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-            <span class="text-xs text-slate-400 font-mono ml-2">Live Visitor Preview</span>
-          </div>
-          <div class="text-xs text-slate-400 font-mono bg-slate-950 px-3 py-1 rounded-full border border-slate-800" id="preview-url-display">
-            index.html?city=Sahibzada+Ajit+Singh+Nagar...
-          </div>
-        </div>
-
-        <iframe id="preview-frame" src="index.html" class="w-full flex-1 rounded-xl border border-slate-800 bg-slate-950 transition-all duration-300"></iframe>
-      </div>
-    </div>
-
-  </main>
+  </div>
 
   <script>
-    const MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/md9pqolt364tc5l29i2l0zg6qblc501d";
-
-    // Auto-sync country dropdown when city changes
-    document.getElementById('sim_city').addEventListener('change', function(e) {
-      const city = e.target.value;
-      const countrySelect = document.getElementById('sim_country');
-      if (city === 'New York') countrySelect.value = 'US';
-      else if (city === 'London') countrySelect.value = 'GB';
-      else if (city === 'Paris') countrySelect.value = 'FR';
-      else if (city === 'Tokyo') countrySelect.value = 'JP';
-      else countrySelect.value = 'IN';
-    });
-
-    async function triggerTransform() {
-      const startTime = performance.now();
+    function updatePreview() {
+      const city = document.getElementById('s_city').value;
+      const weather = document.getElementById('s_weather').value;
+      const country = (city === 'London') ? 'GB' : (city === 'New York') ? 'US' : 'IN';
       
-      const city = document.getElementById('sim_city').value;
-      const country = document.getElementById('sim_country').value;
-      const weather = document.getElementById('sim_weather').value;
-      const time = document.getElementById('sim_time').value;
-      const device = document.getElementById('sim_device').value;
-      const client_id = document.getElementById('client_id').value;
-      const utm = document.getElementById('sim_utm').value;
-
-      const queryParams = new URLSearchParams({
-        city, country, weather, time, device, client_id,
-        utm_source: 'facebook',
-        utm_campaign: utm
-      });
-
-      const targetUrl = `index.html?${queryParams.toString()}`;
-      
-      // Update Preview Display URL
-      document.getElementById('preview-url-display').innerText = targetUrl;
-
-      // Reload iframe with new parameters
-      const iframe = document.getElementById('preview-frame');
-      iframe.src = targetUrl;
-
-      // Update Diagnostics Log
-      document.getElementById('diag-stock').innerText = `${city} Hub`;
-      document.getElementById('diag-json').innerText = `{\n  city: "${city}",\n  country: "${country}",\n  weather: "${weather}",\n  device: "${device}"\n}`;
-
-      // Crash-Proof Webhook Check
-      try {
-        const res = await fetch(MAKE_WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ city, country, weather, timeOfDay: time, device, client_id })
-        });
-        
-        const endTime = performance.now();
-        document.getElementById('diag-latency').innerText = `${Math.round(endTime - startTime)}ms`;
-
-        // Safe response checking
-        const rawText = await res.text();
-        
-        try {
-          const json = JSON.parse(rawText);
-          if (json && json.headline) {
-            document.getElementById('diag-engine').innerText = "AI Dynamic Engine";
-            document.getElementById('diag-engine').className = "text-emerald-400 font-bold";
-          } else {
-            document.getElementById('diag-engine').innerText = "Smart Client Fallback";
-            document.getElementById('diag-engine').className = "text-indigo-400 font-bold";
-          }
-        } catch (jsonErr) {
-          // Response was plain text like "Accepted"
-          document.getElementById('diag-engine').innerText = "Smart Client Fallback";
-          document.getElementById('diag-engine').className = "text-indigo-400 font-bold";
-        }
-
-      } catch (err) {
-        document.getElementById('diag-latency').innerText = `~120ms`;
-        document.getElementById('diag-engine').innerText = "Smart Client Fallback";
-        document.getElementById('diag-engine').className = "text-indigo-400 font-bold";
-      }
+      const query = `index.html?city=${encodeURIComponent(city)}&country=${country}&weather=${weather}`;
+      document.getElementById('url-text').innerText = query;
+      document.getElementById('preview').src = query;
     }
-
-    // Run initial transform on page load
-    window.onload = triggerTransform;
   </script>
 </body>
 </html>
