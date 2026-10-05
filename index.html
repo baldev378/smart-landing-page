@@ -3,205 +3,194 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shape-Shifter Dynamic Landing Page</title>
+  <title>StormShield Co. — Official Personalised Store</title>
   
-  <!-- Lightning Data Icon (Prevents 404 Favicon Error) -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
-
-  <!-- Production-Grade Tailwind CSS (No CDN Warnings, No Tracking Block Errors) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" crossorigin="anonymous">
   
   <style>
     @keyframes pulse-slow { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
     @keyframes slide-up { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    .animate-pulse-slow { animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
     .animate-slide-up { animation: slide-up 0.5s ease-out forwards; }
     #weather-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; }
-    .bg-overlay { background: linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 27, 75, 0.9) 100%); }
+    .bg-overlay { background: linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 27, 75, 0.90) 100%); }
     .btn-gradient { background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%); }
     .btn-gradient:hover { background: linear-gradient(135deg, #e11d48 0%, #be123c 100%); }
-    .product-card { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(71, 85, 105, 0.5); backdrop-filter: blur(8px); }
+    .product-card { transition: all 0.3s ease; }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
   </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen relative font-sans overflow-x-hidden pb-12">
+<body class="bg-gray-900 text-white min-h-screen relative font-sans overflow-x-hidden">
 
-  <!-- 1. Weather Particle Animation Layer -->
+  <!-- Weather Particle Layer -->
   <canvas id="weather-canvas"></canvas>
 
-  <!-- Dynamic City Photo Background -->
-  <div id="bg-photo" class="fixed inset-0 bg-cover bg-center transition-all duration-1000 z-0 opacity-40"></div>
+  <!-- City Background Photo -->
+  <div id="bg-photo" class="fixed inset-0 bg-cover bg-center transition-all duration-1000 z-0 opacity-30"></div>
   <div class="fixed inset-0 bg-overlay z-0"></div>
 
-  <!-- 2. Regional Warehouse Stock Alert Bar -->
-  <div id="stock-bar" class="relative z-10 bg-amber-500 text-gray-900 text-xs sm:text-sm font-bold py-2 px-4 text-center hidden shadow-md transition-all duration-500">
+  <!-- Regional Stock Alert Bar -->
+  <div id="stock-bar" class="relative z-20 bg-amber-500 text-gray-900 text-xs sm:text-sm font-bold py-2 px-4 text-center hidden shadow-md">
     <span class="inline-block w-2 h-2 rounded-full bg-gray-900 animate-ping mr-2"></span>
-    <span id="stock-text">Limited Regional Stock: Only 4 left in warehouse</span>
+    <span id="stock-text">Limited Regional Warehouse Stock</span>
   </div>
 
-  <div class="relative z-10 max-w-4xl mx-auto px-4 py-8 flex flex-col items-center justify-center text-center">
+  <!-- Main Store Container -->
+  <div class="relative z-10 max-w-5xl mx-auto px-4 py-8 flex flex-col items-center">
 
-    <!-- 3. Native Cultural Greeting -->
+    <!-- Native Cultural Greeting -->
     <div id="cultural-greeting" class="text-xs sm:text-sm font-bold tracking-widest text-amber-400 uppercase mb-2 animate-pulse"></div>
 
-    <!-- 4. Active Server Radar Service Badge -->
-    <div id="service-radar" class="inline-flex items-center gap-2 bg-gray-800 border border-gray-700 px-3 py-1 rounded-full text-xs text-gray-300 mb-4 backdrop-blur-md">
+    <!-- Active Server Radar Badge -->
+    <div id="service-radar" class="inline-flex items-center gap-2 bg-gray-800 border border-gray-700 px-3 py-1 rounded-full text-xs text-gray-300 mb-3 backdrop-blur-md">
       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-      <span id="radar-text">Active Server Node: Detecting location...</span>
+      <span id="radar-text">Detecting node...</span>
     </div>
 
-    <!-- 5. Express Delivery Date Calculator -->
-    <div id="delivery-badge" class="bg-indigo-900 bg-opacity-60 border border-indigo-500 border-opacity-30 text-indigo-200 text-xs sm:text-sm px-4 py-1.5 rounded-full mb-6 backdrop-blur-md hidden">
-      🚚 <span id="delivery-text">Express Delivery calculated...</span>
+    <!-- Weather Alert Banner -->
+    <div id="weather-banner" class="inline-flex items-center gap-2 bg-indigo-900 bg-opacity-60 border border-indigo-500 border-opacity-30 text-indigo-200 text-xs sm:text-sm px-4 py-1.5 rounded-full mb-6 backdrop-blur-md">
+      <span id="weather-icon">🌤️</span>
+      <span id="weather-text">Checking local weather...</span>
     </div>
 
-    <!-- 6. Headline & Subheadline (AI Dynamic Copy / Smart Fallback) -->
-    <h1 id="hero-headline" class="text-4xl sm:text-6xl font-black tracking-tight text-white mb-4 leading-tight">
-      Transforming Your Business
-    </h1>
-    <p id="hero-subheadline" class="text-lg sm:text-xl text-gray-300 max-w-2xl mb-6 leading-relaxed font-light">
-      Discover personalized solutions tailored specifically for your goals and regional market.
-    </p>
+    <!-- MAIN FEATURED PRODUCT SHOWCASE CARD -->
+    <div class="w-full bg-gray-800 bg-opacity-80 border border-gray-700 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl mb-12">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        
+        <!-- Product Image Showcase -->
+        <div class="md:col-span-5 relative flex items-center justify-center bg-gray-900 rounded-2xl p-6 border border-gray-700/50">
+          <div id="product-badge-tag" class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+            Weather Adaptive
+          </div>
+          <div id="hero-product-emoji" class="text-8xl sm:text-9xl my-4 transform hover:scale-105 transition">
+            🧥
+          </div>
+        </div>
 
-    <!-- 7. Pricing & Auto Local Currency Display -->
-    <div class="mb-6 flex items-baseline justify-center gap-3">
-      <span id="price-main" class="text-4xl sm:text-5xl font-extrabold text-emerald-400">$49</span>
-      <span id="price-original" class="text-xl text-gray-500 line-through">$99</span>
+        <!-- Product Details & Pricing -->
+        <div class="md:col-span-7 text-left space-y-4">
+          <div class="flex items-center gap-2 text-xs text-amber-400 font-bold">
+            <span>⭐⭐⭐⭐⭐</span>
+            <span class="text-gray-400">(1,240 Verified Buyer Reviews)</span>
+          </div>
+
+          <h1 id="hero-product-title" class="text-2xl sm:text-4xl font-black text-white leading-tight">
+            StormShield® Weather-Pro All-Terrain Jacket
+          </h1>
+
+          <p id="hero-subheadline" class="text-sm sm:text-base text-gray-300 font-light leading-relaxed">
+            Engineered for dynamic climate protection. Automatically regulates temperature and repels heavy rain and wind.
+          </p>
+
+          <!-- Express Delivery Badge -->
+          <div id="delivery-badge" class="inline-flex items-center gap-2 bg-indigo-900/40 border border-indigo-500/30 text-indigo-300 text-xs px-3 py-1.5 rounded-lg">
+            🚚 <span id="delivery-text">Calculating delivery...</span>
+          </div>
+
+          <!-- LOCALIZED PRODUCT PRICING -->
+          <div class="flex items-baseline gap-4 pt-2">
+            <span id="price-main" class="text-3xl sm:text-4xl font-black text-emerald-400">$49</span>
+            <span id="price-original" class="text-lg text-gray-500 line-through">$99</span>
+            <span class="text-xs text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-1 rounded font-bold">SAVE 50% TODAY</span>
+          </div>
+
+          <!-- CTA Button -->
+          <button id="cta-button" onclick="trackCTAClick()" class="w-full sm:w-auto btn-gradient text-white font-bold text-base px-8 py-4 rounded-xl shadow-lg transition active:scale-95">
+            🛒 Claim Special Local Offer Now
+          </button>
+
+          <!-- Localized Payment Trust Badges -->
+          <div id="payment-badges" class="flex flex-wrap items-center gap-2 text-xs text-gray-400 pt-2">
+            <span>🔒 Secure Checkout:</span>
+            <span id="badge-list" class="text-gray-300 font-semibold">Visa • Mastercard • PayPal</span>
+          </div>
+
+          <!-- Midnight Scarcity Countdown -->
+          <div id="midnight-timer" class="text-xs text-gray-400 pt-1">
+            🔥 <span id="timer-text">Offer Ends Tonight</span>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <!-- 8. Dynamic Device-Smart CTA Button -->
-    <button id="cta-button" onclick="trackCTAClick()" class="btn-gradient text-white font-bold text-lg px-8 py-4 rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 active:scale-95 mb-6">
-      Get Started Now
-    </button>
-
-    <!-- 9. Localized Payment Trust Badges -->
-    <div id="payment-badges" class="flex flex-wrap items-center justify-center gap-2 text-xs text-gray-400 bg-gray-800 bg-opacity-40 px-4 py-2 rounded-xl border border-gray-700 mb-6">
-      <span>🔒 256-Bit Encryption</span>
-      <span>•</span>
-      <span id="badge-list">Visa • Mastercard • PayPal</span>
-    </div>
-
-    <!-- 10. Midnight Local Scarcity Countdown Timer -->
-    <div id="midnight-timer" class="text-xs sm:text-sm text-gray-400 bg-gray-800 bg-opacity-60 border border-gray-700 px-4 py-2 rounded-full mb-12">
-      🔥 <span id="timer-text">Offer Ends Tonight: 00h 00m 00s</span>
-    </div>
-
-    <!-- NEW FEATURE: 13. Dynamic Weather-Based Product Grid & Rainy-Day Offer -->
-    <div class="w-full text-left space-y-6 mt-6">
-      <div class="border-b border-gray-800 pb-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+    <!-- ======================================================= -->
+    <!-- WEATHER-BASED RECOMMENDATIONS FROM CLIENT'S CATALOG     -->
+    <!-- ======================================================= -->
+    <section class="w-full text-left mb-12">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-3 border-b border-gray-800">
         <div>
-          <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-            🛍️ Weather-Optimized Selections
-          </h2>
-          <p id="weather-recommendation-sub" class="text-xs text-gray-400">Products handpicked based on current weather conditions outside.</p>
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-widest">Store Recommendations</span>
+          <h2 id="products-title" class="text-xl sm:text-2xl font-bold text-white mt-1">Recommended for Your Area</h2>
         </div>
-        <div id="weather-promo-badge" class="bg-amber-400 bg-opacity-10 border border-amber-400 border-opacity-30 text-amber-400 font-bold px-3 py-1 rounded-lg text-xs tracking-wider animate-pulse uppercase">
-          RAINY OFFER ACTIVATED
-        </div>
+        <p id="products-subtitle" class="text-xs text-gray-400 mt-1 sm:mt-0">Curated based on local conditions</p>
       </div>
 
-      <!-- Merchandising Product Cards -->
-      <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Product Card 1 -->
-        <div class="product-card rounded-2xl p-4 flex flex-col justify-between transition hover:border-gray-500 duration-300">
-          <div class="flex items-center gap-4">
-            <div id="p1-emoji" class="w-16 h-16 rounded-xl bg-gray-800 flex items-center justify-center text-4xl shadow-inner">☔</div>
-            <div>
-              <h3 id="p1-title" class="font-bold text-base text-white">StormShield Pro Umbrella</h3>
-              <p id="p1-desc" class="text-xs text-gray-400 leading-normal mt-0.5">Windproof, double-layer frame with hydrophobic canopy tech.</p>
-            </div>
-          </div>
-          <div class="flex items-center justify-between mt-4 pt-3 border-t border-gray-800">
-            <div>
-              <span id="p1-price" class="text-lg font-bold text-emerald-400">$29</span>
-              <span id="p1-orig" class="text-xs text-gray-500 line-through ml-1.5">$59</span>
-            </div>
-            <button onclick="trackPurchase('p1')" class="bg-gray-800 hover:bg-gray-700 text-xs text-white font-bold px-4 py-2 rounded-lg border border-gray-700 transition">
-              Quick Add +
-            </button>
-          </div>
-        </div>
-
-        <!-- Product Card 2 -->
-        <div class="product-card rounded-2xl p-4 flex flex-col justify-between transition hover:border-gray-500 duration-300">
-          <div class="flex items-center gap-4">
-            <div id="p2-emoji" class="w-16 h-16 rounded-xl bg-gray-800 flex items-center justify-center text-4xl shadow-inner">🧥</div>
-            <div>
-              <h3 id="p2-title" class="font-bold text-base text-white">Storm-Tech Waterproof Parka</h3>
-              <p id="p2-desc" class="text-xs text-gray-400 leading-normal mt-0.5">Completely waterproof seam-sealed shell with micro-fleece lining.</p>
-            </div>
-          </div>
-          <div class="flex items-center justify-between mt-4 pt-3 border-t border-gray-800">
-            <div>
-              <span id="p2-price" class="text-lg font-bold text-emerald-400">$79</span>
-              <span id="p2-orig" class="text-xs text-gray-500 line-through ml-1.5">$149</span>
-            </div>
-            <button onclick="trackPurchase('p2')" class="bg-gray-800 hover:bg-gray-700 text-xs text-white font-bold px-4 py-2 rounded-lg border border-gray-700 transition">
-              Quick Add +
-            </button>
-          </div>
-        </div>
+      <!-- Dynamic Catalog Grid -->
+      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Products injected dynamically -->
       </div>
-    </div>
+    </section>
 
   </div>
 
-  <!-- 11. Social Proof Ticker Popup -->
+  <!-- Social Proof Ticker Popup -->
   <div id="social-proof-toast" class="fixed bottom-4 left-4 z-50 bg-gray-800 border border-gray-700 text-gray-200 p-4 rounded-2xl shadow-2xl max-w-sm hidden animate-slide-up">
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-full bg-emerald-500 bg-opacity-20 text-emerald-400 flex items-center justify-center font-bold text-lg">⚡</div>
+      <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">⚡</div>
       <div class="text-left text-xs">
-        <p class="font-bold text-white" id="proof-name-city">Someone from your city</p>
-        <p class="text-gray-400" id="proof-action">just claimed this personalized offer!</p>
+        <p class="font-bold text-white" id="proof-name-city"></p>
+        <p class="text-gray-400">just bought the Weather-Pro Jacket!</p>
         <p class="text-[10px] text-gray-500 mt-0.5">2 minutes ago</p>
       </div>
     </div>
   </div>
 
-  <!-- 12. Ambient Watermark Context -->
   <footer class="fixed bottom-2 right-4 text-[10px] text-gray-600 z-10 pointer-events-none hidden sm:block">
-    <span id="ambient-watermark">Personalized Context Engine</span>
+    <span id="ambient-watermark">Personalized Store Engine</span>
   </footer>
 
   <script>
-    // Console Muffler: Hides all network & browser warnings
-    console.warn = () => {}; console.info = () => {}; console.error = (msg) => { if(msg.includes("favicon") || msg.includes("Tracking")) return; console.log("System:", msg); };
+    // =======================================================
+    // CLIENT PRODUCT CATALOG (Mapped to Weather Context)
+    // =======================================================
+    const CLIENT_CATALOG = {
+      rain: [
+        { name: "StormShield Hydro-Tight Raincoat", priceIN: "₹2,499", priceUS: "$34.99", priceGB: "£29", origIN: "₹4,999", origUS: "$69.99", origGB: "£59", emoji: "🧥", desc: "100% Waterproof seam-sealed protection for heavy monsoons." },
+        { name: "Aqua-Shield Windproof Umbrella", priceIN: "₹1,199", priceUS: "$18.99", priceGB: "£15", origIN: "₹2,399", origUS: "$35.99", origGB: "£30", emoji: "☂️", desc: "Reinforced fiberglass ribs built to withstand 60mph winds." },
+        { name: "Dry-Trek Waterproof Sport Shoes", priceIN: "₹3,999", priceUS: "$54.99", priceGB: "£45", origIN: "₹7,999", origUS: "$109.99", origGB: "£90", emoji: "👟", desc: "Gore-Tex breathable membrane keeps feet dry in puddles." }
+      ],
+      snow: [
+        { name: "Thermal-Lock Insulated Parka", priceIN: "₹5,999", priceUS: "$89.99", priceGB: "£75", origIN: "₹11,999", origUS: "$179.99", origGB: "£150", emoji: "🧥", desc: "Sub-zero fleece insulation rated for extreme cold." },
+        { name: "Merino Wool Thermal Innerwear", priceIN: "₹2,199", priceUS: "$29.99", priceGB: "£25", origIN: "₹4,399", origUS: "$59.99", origGB: "£50", emoji: "🧣", desc: "Ultra-warm temperature regulating base layer." },
+        { name: "Arctic-Grip Anti-Slip Winter Boots", priceIN: "₹4,999", priceUS: "$69.99", priceGB: "£58", origIN: "₹9,999", origUS: "$139.99", origGB: "£115", emoji: "🥾", desc: "Deep tread traction sole designed for snow and ice." }
+      ],
+      clear: [
+        { name: "UV-400 Polarized Sport Shades", priceIN: "₹1,600", priceUS: "$24.99", priceGB: "£19", origIN: "₹3,200", origUS: "$49.99", origGB: "£39", emoji: "🕶️", desc: "Ultra lightweight frame with specialized contrast-enhancing optics." },
+        { name: "Aero-Breathe Lightweight Trainer", priceIN: "₹6,400", priceUS: "$79.99", priceGB: "£65", origIN: "₹12,800", origUS: "$159.99", origGB: "£130", emoji: "👟", desc: "Woven breathable mesh sole engineered to maximize cooling ventilation." },
+        { name: "Hydro-Chill Vacuum Insulated Flask", priceIN: "₹1,999", priceUS: "$27.99", priceGB: "£22", origIN: "₹3,999", origUS: "$54.99", origGB: "£44", emoji: "🍶", desc: "Keeps drinks ice-cold for 24 hours in hot sunny conditions." }
+      ]
+    };
 
     const MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/md9pqolt364tc5l29i2l0zg6qblc501d";
-    let visitorSessionId = 'session_' + Math.random().toString(36).substr(2, 9);
+    let visitorSessionId = 's_' + Math.random().toString(36).substr(2, 6);
     let currentCity = 'Your Area';
     let currentCountry = 'US';
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const forcedCity = urlParams.get('city');
-    const forcedCountry = urlParams.get('country');
-    const forcedWeather = urlParams.get('weather');
-    const forcedTime = urlParams.get('time');
-    const forcedDevice = urlParams.get('device');
-    const client_id = urlParams.get('client_id') || 'client_001';
-
     async function initializePersonalization() {
-      let city = forcedCity || 'Local Area';
-      let country = forcedCountry || 'US';
-      let weather = forcedWeather || 'Clear';
-      let timeOfDay = forcedTime || getTimeOfDay();
-      let device = forcedDevice || getDeviceType();
-
-      // Geolocation engine fallback
-      if (!forcedCity) {
-        try {
-          const ipRes = await fetch('https://api.ipgeolocation.io/ipgeo?apiKey=7398ebebcefe4b4f93212ac3398f6c0c');
-          const ipData = await ipRes.json();
-          city = ipData.city || 'Your Area';
-          country = ipData.country_code2 || 'US';
-        } catch(e) {}
-      }
+      const urlParams = new URLSearchParams(window.location.search);
+      let city = urlParams.get('city') || 'Local Area';
+      let country = urlParams.get('country') || 'US';
+      let weather = urlParams.get('weather') || 'Clear';
+      let timeOfDay = urlParams.get('time') || 'Evening';
+      let device = urlParams.get('device') || 'desktop';
 
       currentCity = city;
       currentCountry = country;
 
-      // Execute All Personalizations Instantly
+      // Apply Visual Localization
       applyCityPhoto(city);
-      applyLocalCurrency(country);
+      applyHeroPricing(country);
       applyPaymentTrust(country);
       applyCulturalGreeting(country, city);
       applyDeliveryDate(city, country);
@@ -209,8 +198,9 @@
       applySocialProof(city);
       applyWeatherCanvas(weather);
       startScarcityTimer(city);
-      applyFallbackContent(city);
-      applyWeatherProducts(weather, country);
+
+      // Render Recommendations matched to client catalog and local currency
+      renderClientProducts(weather, country);
 
       document.getElementById('radar-text').innerText = `Active Server Node: ${city}, ${country}`;
       document.getElementById('ambient-watermark').innerText = `Personalized for ${city}, ${country} | Node: ${device}`;
@@ -219,266 +209,173 @@
         document.getElementById('cta-button').innerText = '⚡ Instant One-Tap Checkout';
       }
 
-      // Safe Webhook Execution
+      // Safe Webhook AI
       try {
-        const payload = {
-          city, country, weather, timeOfDay, device, client_id,
-          session_id: visitorSessionId,
-          utm_source: urlParams.get('utm_source') || 'direct',
-          utm_campaign: urlParams.get('utm_campaign') || 'general'
-        };
-
         const response = await fetch(MAKE_WEBHOOK_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({ city, country, weather, timeOfDay, device })
         });
-
         const rawText = await response.text();
         try {
           const data = JSON.parse(rawText);
           if (data && data.headline) {
-            document.getElementById('hero-headline').innerText = data.headline;
+            document.getElementById('hero-product-title').innerText = data.headline;
             document.getElementById('hero-subheadline').innerText = data.subheadline;
-            if (data.cta) document.getElementById('cta-button').innerText = data.cta;
           }
-        } catch (jsonParseErr) {}
-      } catch (err) {}
+        } catch(e) {}
+      } catch(e) {}
     }
 
-    function applyFallbackContent(city) {
-      document.getElementById('hero-headline').innerText = `Transform Your Business Today`;
-      document.getElementById('hero-subheadline').innerText = `The smartest solution for modern entrepreneurs in ${city} who want to scale fast.`;
-    }
+    function renderClientProducts(weather, countryCode) {
+      const grid = document.getElementById('product-grid');
+      const title = document.getElementById('products-title');
+      const subtitle = document.getElementById('products-subtitle');
+      const bannerText = document.getElementById('weather-text');
+      const bannerIcon = document.getElementById('weather-icon');
 
-    // Dynamic Weather-Based Product & Offer Swap
-    function applyWeatherProducts(weather, countryCode) {
-      const type = weather.toLowerCase();
-      const promoBadge = document.getElementById('weather-promo-badge');
-      const subText = document.getElementById('weather-recommendation-sub');
-
-      // Elements to Swap
-      const p1Emoji = document.getElementById('p1-emoji');
-      const p1Title = document.getElementById('p1-title');
-      const p1Desc = document.getElementById('p1-desc');
-      const p1Price = document.getElementById('p1-price');
-      const p1Orig = document.getElementById('p1-orig');
-
-      const p2Emoji = document.getElementById('p2-emoji');
-      const p2Title = document.getElementById('p2-title');
-      const p2Desc = document.getElementById('p2-desc');
-      const p2Price = document.getElementById('p2-price');
-      const p2Orig = document.getElementById('p2-orig');
-
-      // Define Currency Swapper specifically for recommended products
-      let sign = '$';
-      let cMult = 1.0; // Multiplier of base prices
-
-      if (countryCode === 'IN') { sign = '₹'; cMult = 80; }
-      else if (countryCode === 'GB') { sign = '£'; cMult = 0.8; }
-      else if (['DE','FR','IT','ES','NL'].includes(countryCode)) { sign = '€'; cMult = 0.9; }
-
-      const formatP = (baseVal) => `${sign}${Math.round(baseVal * cMult).toLocaleString()}`;
-
-      if (type.includes('rain')) {
-        subText.innerText = "Storm coming? Stay perfectly dry with these weatherproof essentials.";
-        promoBadge.innerText = "🌧️ Rainy Offer Activated: Use Code RAIN15";
-        promoBadge.className = "bg-blue-400 bg-opacity-10 border border-blue-400 border-opacity-30 text-blue-400 font-bold px-3 py-1 rounded-lg text-xs tracking-wider animate-pulse uppercase";
-
-        // Rain Products
-        p1Emoji.innerText = "☔";
-        p1Title.innerText = "StormShield Pro Umbrella";
-        p1Desc.innerText = "Windproof, double-canopy construction designed to resist 50mph storm gusts.";
-        p1Price.innerText = formatP(25);
-        p1Orig.innerText = formatP(50);
-
-        p2Emoji.innerText = "🧥";
-        p2Title.innerText = "Storm-Tech Waterproof Parka";
-        p2Desc.innerText = "Completely seam-sealed hydrophobic outer shell with deep thermal lining.";
-        p2Price.innerText = formatP(75);
-        p2Orig.innerText = formatP(150);
-
-      } else if (type.includes('snow')) {
-        subText.innerText = "Subzero temperatures detected outside. Stay warm and bundled.";
-        promoBadge.innerText = "❄️ Blizzard Rescue activated: Use Code FREEWARM";
-        promoBadge.className = "bg-indigo-400 bg-opacity-10 border border-indigo-400 border-opacity-30 text-indigo-400 font-bold px-3 py-1 rounded-lg text-xs tracking-wider animate-pulse uppercase";
-
-        // Snow Products
-        p1Emoji.innerText = "🧤";
-        p1Title.innerText = "Heated Micro-Fiber Gloves";
-        p1Desc.innerText = "Li-ion battery powered smart gloves warming your hands instantly.";
-        p1Price.innerText = formatP(35);
-        p1Orig.innerText = formatP(70);
-
-        p2Emoji.innerText = "🔥";
-        p2Title.innerText = "Smart Ceramic Room Heater";
-        p2Desc.innerText = "2000W output quiet PTC heater with customizable digital thermostat control.";
-        p2Price.innerText = formatP(95);
-        p2Orig.innerText = formatP(190);
-
+      const w = weather.toLowerCase();
+      let key = 'clear';
+      if (w.includes('rain')) {
+        key = 'rain';
+        bannerIcon.innerText = '🌧️';
+        bannerText.innerText = `Monsoon / Rain detected in ${currentCity} — Waterproof gear unlocked`;
+        title.innerText = `Rainy Day Essentials for ${currentCity}`;
+        subtitle.innerText = `Top-rated waterproof products for wet weather`;
+        document.getElementById('hero-product-emoji').innerText = '🧥';
+      } else if (w.includes('snow')) {
+        key = 'snow';
+        bannerIcon.innerText = '❄️';
+        bannerText.innerText = `Cold weather in ${currentCity} — Thermal insulation collection active`;
+        title.innerText = `Winter Warmers for ${currentCity}`;
+        subtitle.innerText = `Cold weather thermal gear curated for your area`;
+        document.getElementById('hero-product-emoji').innerText = '🧥';
       } else {
-        // Clear / Sunny
-        subText.innerText = "It is beautiful and clear outside. Get ready for premium outdoor performance.";
-        promoBadge.innerText = "☀️ Sunny Offer Activated: Use Code SUN20";
-        promoBadge.className = "bg-amber-400 bg-opacity-10 border border-amber-400 border-opacity-30 text-amber-400 font-bold px-3 py-1 rounded-lg text-xs tracking-wider animate-pulse uppercase";
-
-        // Clear Products
-        p1Emoji.innerText = "🕶️";
-        p1Title.innerText = "UV-400 Polarized Sport Shades";
-        p1Desc.innerText = "Ultra lightweight frame with specialized contrast-enhancing optics.";
-        p1Price.innerText = formatP(20);
-        p1Orig.innerText = formatP(40);
-
-        p2Emoji.innerText = "👟";
-        p2Title.innerText = "Aero-Breathe Lightweight Trainer";
-        p2Desc.innerText = "Woven breathable mesh mesh-sole engineered to maximize cooling ventilation.";
-        p2Price.innerText = formatP(80);
-        p2Orig.innerText = formatP(160);
+        key = 'clear';
+        bannerIcon.innerText = '☀️';
+        bannerText.innerText = `Clear Sky in ${currentCity} — Outdoor performance gear live`;
+        title.innerText = `Trending in ${currentCity}`;
+        subtitle.innerText = `Popular summer & outdoor performance items`;
+        document.getElementById('hero-product-emoji').innerText = '🕶️';
       }
+
+      const products = CLIENT_CATALOG[key];
+      grid.innerHTML = '';
+
+      products.forEach(p => {
+        let price = p.priceUS;
+        let orig = p.origUS;
+        if (countryCode === 'IN') { price = p.priceIN; orig = p.origIN; }
+        else if (countryCode === 'GB') { price = p.priceGB; orig = p.origGB; }
+
+        const card = document.createElement('div');
+        card.className = 'product-card bg-gray-800/80 border border-gray-700/80 rounded-2xl p-5 flex flex-col justify-between';
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-4xl">${p.emoji}</span>
+              <span class="text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full">IN STOCK</span>
+            </div>
+            <h3 class="text-base font-bold text-white mb-1.5 leading-snug">${p.name}</h3>
+            <p class="text-xs text-gray-400 mb-4 leading-relaxed">${p.desc}</p>
+          </div>
+          <div>
+            <div class="flex items-baseline justify-between mb-3">
+              <div>
+                <span class="text-xl font-extrabold text-emerald-400">${price}</span>
+                <span class="text-xs text-gray-500 line-through ml-1.5">${orig}</span>
+              </div>
+              <span class="text-[10px] text-emerald-400 font-bold">Local Shipping</span>
+            </div>
+            <button onclick="trackCTAClick()" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 rounded-xl text-xs transition active:scale-95">
+              Quick Add +
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
     }
 
-    function applyCityPhoto(city) {
-      const bg = document.getElementById('bg-photo');
-      const unsplashKey = 'qt8GtefbmVTHYOBl_mFYxkrS5spe9NhYcWY8fUWjzRo';
-      fetch(`https://api.unsplash.com/photos/random?query=${encodeURIComponent(city)}+cityscape,city&client_id=${unsplashKey}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.urls && data.urls.regular) {
-            bg.style.backgroundImage = `url('${data.urls.regular}')`;
-          } else {
-            bg.style.backgroundImage = `url('https://images.unsplash.com/photo-1477959858617-67f30ac72604?auto=format&fit=crop&w=1600&q=80')`;
-          }
-        })
-        .catch(() => {
-          bg.style.backgroundImage = `url('https://images.unsplash.com/photo-1477959858617-67f30ac72604?auto=format&fit=crop&w=1600&q=80')`;
-        });
-    }
-
-    function applyLocalCurrency(countryCode) {
+    function applyHeroPricing(c) {
       const main = document.getElementById('price-main');
       const orig = document.getElementById('price-original');
-      if (countryCode === 'IN') {
-        main.innerText = '₹3,999'; orig.innerText = '₹7,999';
-      } else if (countryCode === 'GB') {
-        main.innerText = '£39'; orig.innerText = '£79';
-      } else if (['DE','FR','IT','ES','NL'].includes(countryCode)) {
-        main.innerText = '€45'; orig.innerText = '€89';
-      } else {
-        main.innerText = '$49'; orig.innerText = '$99';
-      }
+      if (c === 'IN') { main.innerText = '₹3,999'; orig.innerText = '₹7,999'; }
+      else if (c === 'GB') { main.innerText = '£39'; orig.innerText = '£79'; }
+      else { main.innerText = '$49'; orig.innerText = '$99'; }
     }
 
-    function applyPaymentTrust(countryCode) {
-      const badges = document.getElementById('badge-list');
-      if (countryCode === 'IN') {
-        badges.innerText = 'GPay • UPI • Paytm • PhonePe • Cards';
-      } else if (['US','CA'].includes(countryCode)) {
-        badges.innerText = 'Apple Pay • Google Pay • Visa • Mastercard • Klarna';
-      } else {
-        badges.innerText = 'PayPal • Apple Pay • Visa • Mastercard';
-      }
+    function applyPaymentTrust(c) {
+      const b = document.getElementById('badge-list');
+      if (c === 'IN') b.innerText = 'GPay • UPI • Paytm • PhonePe • Cards';
+      else if (['US','CA'].includes(c)) b.innerText = 'Apple Pay • Google Pay • Visa • Mastercard • Klarna';
+      else b.innerText = 'PayPal • Apple Pay • Visa • Mastercard';
     }
 
-    function applyCulturalGreeting(countryCode, city) {
-      const el = document.getElementById('cultural-greeting');
-      if (countryCode === 'IN') el.innerText = `🙏 NAMASTE TO ${city.toUpperCase()}`;
-      else if (countryCode === 'JP') el.innerText = `KONNICHIWA TO ${city.toUpperCase()}`;
-      else if (countryCode === 'FR') el.innerText = `BONJOUR TO ${city.toUpperCase()}`;
-      else if (countryCode === 'ES') el.innerText = `¡HOLA TO ${city.toUpperCase()}`;
-      else el.innerText = `⚡ WELCOME VISITOR FROM ${city.toUpperCase()}`;
+    function applyCulturalGreeting(c, city) {
+      const g = document.getElementById('cultural-greeting');
+      if (c === 'IN') g.innerText = `🙏 NAMASTE TO ${city.toUpperCase()}`;
+      else g.innerText = `⚡ WELCOME VISITOR FROM ${city.toUpperCase()}`;
     }
 
-    function applyDeliveryDate(city, countryCode) {
-      const el = document.getElementById('delivery-badge');
-      const txt = document.getElementById('delivery-text');
-      const d = new Date();
-      d.setDate(d.getDate() + 2);
-      const dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-      txt.innerText = `Express Delivery to ${city}, ${countryCode} by ${dateStr}`;
-      el.classList.remove('hidden');
+    function applyDeliveryDate(city, c) {
+      const d = new Date(); d.setDate(d.getDate() + 2);
+      document.getElementById('delivery-text').innerText = `Express Delivery to ${city}, ${c} by ${d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}`;
     }
 
     function applyStockAlert(city) {
-      const bar = document.getElementById('stock-bar');
-      const txt = document.getElementById('stock-text');
-      txt.innerText = `Limited Regional Stock: Only 4 left in ${city} warehouse`;
-      bar.classList.remove('hidden');
+      document.getElementById('stock-text').innerText = `Limited Regional Stock: Only 4 left in ${city} warehouse`;
+      document.getElementById('stock-bar').classList.remove('hidden');
     }
 
     function applySocialProof(city) {
       setTimeout(() => {
-        const toast = document.getElementById('social-proof-toast');
         const names = ['Marcus', 'Priya', 'Alex', 'Sarah', 'David', 'Rahul'];
-        const randomName = names[Math.floor(Math.random() * names.length)];
-        document.getElementById('proof-name-city').innerText = `${randomName} from ${city}`;
-        toast.classList.remove('hidden');
+        document.getElementById('proof-name-city').innerText = `${names[Math.floor(Math.random()*names.length)]} from ${city}`;
+        document.getElementById('social-proof-toast').classList.remove('hidden');
       }, 2500);
     }
 
     function startScarcityTimer(city) {
-      const timerText = document.getElementById('timer-text');
-      function update() {
-        const now = new Date();
-        const midnight = new Date();
-        midnight.setHours(24, 0, 0, 0);
-        const diff = midnight - now;
-        const h = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
-        const m = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-        const s = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-        timerText.innerText = `${city} Offer Ends Tonight: ${h}h ${m}s`;
-      }
-      update();
-      setInterval(update, 1000);
+      const t = document.getElementById('timer-text');
+      setInterval(() => {
+        const now = new Date(); const mid = new Date(); mid.setHours(24,0,0,0);
+        const diff = mid - now;
+        const h = String(Math.floor(diff/(1000*60*60))).padStart(2,'0');
+        const m = String(Math.floor((diff%(1000*60*60))/(1000*60))).padStart(2,'0');
+        const s = String(Math.floor((diff%(1000*60))/1000)).padStart(2,'0');
+        t.innerText = `${city} Special Offer Ends Tonight: ${h}h ${m}m ${s}s`;
+      }, 1000);
+    }
+
+    function applyCityPhoto(city) {
+      const bg = document.getElementById('bg-photo');
+      const key = 'qt8GtefbmVTHYOBl_mFYxkrS5spe9NhYcWY8fUWjzRo';
+      fetch(`https://api.unsplash.com/photos/random?query=${encodeURIComponent(city)}+cityscape,city&client_id=${key}`)
+        .then(r => r.json()).then(d => {
+          if (d && d.urls && d.urls.regular) bg.style.backgroundImage = `url('${d.urls.regular}')`;
+        }).catch(() => {});
     }
 
     function applyWeatherCanvas(weather) {
       const canvas = document.getElementById('weather-canvas');
       const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      let particles = [];
-      const type = weather.toLowerCase();
-      if (!type.includes('rain') && !type.includes('snow')) return;
-      
-      const count = type.includes('rain') ? 60 : 40;
-      for(let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          speed: type.includes('rain') ? 8 + Math.random() * 5 : 1 + Math.random() * 2,
-          length: type.includes('rain') ? 15 : 3
-        });
-      }
+      canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+      const w = weather.toLowerCase();
+      if (!w.includes('rain') && !w.includes('snow')) return;
+      const p = Array(50).fill().map(() => ({
+        x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+        s: w.includes('rain') ? 8 : 2
+      }));
       function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = type.includes('rain') ? 'rgba(147, 197, 253, 0.4)' : 'rgba(255, 255, 255, 0.6)';
-        particles.forEach(p => {
-          ctx.fillRect(p.x, p.y, type.includes('rain') ? 1.5 : 3, p.length);
-          p.y += p.speed;
-          if (p.y > canvas.height) p.y = 0;
-        });
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = w.includes('rain') ? 'rgba(147,197,253,0.4)' : 'rgba(255,255,255,0.6)';
+        p.forEach(r => { ctx.fillRect(r.x, r.y, w.includes('rain')?1.5:3, 10); r.y += r.s; if(r.y > canvas.height) r.y = 0; });
         requestAnimationFrame(draw);
       }
       draw();
     }
 
-    function getTimeOfDay() {
-      const hr = new Date().getHours();
-      return hr < 12 ? 'Morning' : hr < 17 ? 'Afternoon' : 'Evening';
-    }
-
-    function getDeviceType() {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
-    }
-
-    function trackCTAClick() {
-      alert(`🎉 Action Tracked! Lead captured inside context database.`);
-    }
-
-    function trackPurchase(prodId) {
-      alert(`🛒 Checkout Initialized! Added weather-merchandised product (${prodId}) directly to cart.`);
-    }
-
+    function trackCTAClick() { alert(`🎉 Item added to cart! Personalization active for ${currentCity}.`); }
     window.onload = initializePersonalization;
   </script>
 </body>
