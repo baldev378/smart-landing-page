@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shape-Shifter Dynamic Landing Page</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
   <style>
     @keyframes pulse-slow { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
     @keyframes slide-up { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -14,7 +14,7 @@
     .bg-overlay { background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 27, 75, 0.88) 100%); }
   </style>
 </head>
-<body class="bg-slate-900 text-white min-h-screen relative font-sans overflow-x-hidden transition-colors duration-1000">
+<body class="bg-gray-900 text-white min-h-screen relative font-sans overflow-x-hidden transition-colors duration-1000">
 
   <!-- Weather Animation Canvas -->
   <canvas id="weather-canvas"></canvas>
@@ -24,74 +24,74 @@
   <div class="fixed inset-0 bg-overlay z-0"></div>
 
   <!-- Regional Warehouse Stock Alert Bar -->
-  <div id="stock-bar" class="relative z-10 bg-amber-500/90 text-slate-950 text-xs sm:text-sm font-bold py-2 px-4 text-center backdrop-blur-md hidden transition-all duration-500">
-    <span class="inline-block w-2 h-2 rounded-full bg-slate-950 animate-ping mr-2"></span>
+  <div id="stock-bar" class="relative z-10 bg-yellow-500 text-gray-900 text-xs sm:text-sm font-bold py-2 px-4 text-center hidden transition-all duration-500">
+    <span class="inline-block w-2 h-2 rounded-full bg-gray-900 animate-ping mr-2"></span>
     <span id="stock-text">Limited Regional Stock: Only 4 left in warehouse</span>
   </div>
 
   <div class="relative z-10 max-w-4xl mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-screen text-center">
 
     <!-- Native Cultural Greeting -->
-    <div id="cultural-greeting" class="text-xs sm:text-sm font-bold tracking-widest text-amber-400 uppercase mb-2 animate-pulse"></div>
+    <div id="cultural-greeting" class="text-xs sm:text-sm font-bold tracking-widest text-yellow-400 uppercase mb-2 animate-pulse"></div>
 
     <!-- Active Radar Service Badge -->
-    <div id="service-radar" class="inline-flex items-center gap-2 bg-slate-800/80 border border-slate-700 px-3 py-1 rounded-full text-xs text-slate-300 mb-4 backdrop-blur-md">
-      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+    <div id="service-radar" class="inline-flex items-center gap-2 bg-gray-800 border border-gray-700 px-3 py-1 rounded-full text-xs text-gray-300 mb-4">
+      <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
       <span id="radar-text">Active Server Node: Detecting location...</span>
     </div>
 
     <!-- Express Delivery Date Calculator -->
-    <div id="delivery-badge" class="bg-indigo-900/60 border border-indigo-500/30 text-indigo-200 text-xs sm:text-sm px-4 py-1.5 rounded-full mb-6 backdrop-blur-md hidden">
+    <div id="delivery-badge" class="bg-indigo-900 bg-opacity-60 border border-indigo-500 border-opacity-30 text-indigo-200 text-xs sm:text-sm px-4 py-1.5 rounded-full mb-6 hidden">
       🚚 <span id="delivery-text">Express Delivery calculated...</span>
     </div>
 
     <!-- Headline & Subheadline -->
-    <h1 id="hero-headline" class="text-4xl sm:text-6xl font-black tracking-tight text-white mb-4 leading-tight drop-shadow-lg">
+    <h1 id="hero-headline" class="text-4xl sm:text-6xl font-black tracking-tight text-white mb-4 leading-tight">
       Transforming Your Business
     </h1>
-    <p id="hero-subheadline" class="text-lg sm:text-xl text-slate-300 max-w-2xl mb-8 leading-relaxed font-light">
+    <p id="hero-subheadline" class="text-lg sm:text-xl text-gray-300 max-w-2xl mb-8 leading-relaxed font-light">
       Discover personalized solutions tailored specifically for your goals and regional market.
     </p>
 
     <!-- Pricing & Local Currency Display -->
     <div class="mb-8 flex items-baseline justify-center gap-3">
-      <span id="price-main" class="text-4xl sm:text-5xl font-extrabold text-emerald-400 drop-shadow">$49</span>
-      <span id="price-original" class="text-xl text-slate-500 line-through">$99</span>
+      <span id="price-main" class="text-4xl sm:text-5xl font-extrabold text-green-400">$49</span>
+      <span id="price-original" class="text-xl text-gray-500 line-through">$99</span>
     </div>
 
     <!-- Dynamic CTA Button -->
-    <button id="cta-button" onclick="trackCTAClick()" class="bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white font-bold text-lg px-8 py-4 rounded-full shadow-lg shadow-rose-500/30 transform hover:-translate-y-1 transition-all duration-300 active:scale-95 mb-6">
+    <button id="cta-button" onclick="trackCTAClick()" class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold text-lg px-8 py-4 rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 active:scale-95 mb-6">
       Get Started Now
     </button>
 
     <!-- Localized Payment Trust Badges -->
-    <div id="payment-badges" class="flex flex-wrap items-center justify-center gap-2 text-xs text-slate-400 bg-slate-800/40 px-4 py-2 rounded-xl border border-slate-700/50 mb-6 backdrop-blur-md">
+    <div id="payment-badges" class="flex flex-wrap items-center justify-center gap-2 text-xs text-gray-400 bg-gray-800 bg-opacity-40 px-4 py-2 rounded-xl border border-gray-700 mb-6">
       <span>🔒 256-Bit Encryption</span>
       <span>•</span>
       <span id="badge-list">Visa • Mastercard • PayPal</span>
     </div>
 
     <!-- Midnight Local Scarcity Timer -->
-    <div id="midnight-timer" class="text-xs sm:text-sm text-slate-400 bg-slate-800/60 border border-slate-700/50 px-4 py-2 rounded-full backdrop-blur-md">
+    <div id="midnight-timer" class="text-xs sm:text-sm text-gray-400 bg-gray-800 bg-opacity-60 border border-gray-700 px-4 py-2 rounded-full">
       🔥 <span id="timer-text">Offer Ends Tonight: 00h 00m 00s</span>
     </div>
 
   </div>
 
   <!-- Social Proof Ticker Popup -->
-  <div id="social-proof-toast" class="fixed bottom-4 left-4 z-50 bg-slate-800/90 border border-slate-700 text-slate-200 p-4 rounded-2xl shadow-2xl backdrop-blur-md max-w-sm hidden animate-slide-up">
+  <div id="social-proof-toast" class="fixed bottom-4 left-4 z-50 bg-gray-800 border border-gray-700 text-gray-200 p-4 rounded-2xl shadow-2xl max-w-sm hidden animate-slide-up">
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">⚡</div>
+      <div class="w-10 h-10 rounded-full bg-green-500 bg-opacity-20 text-green-400 flex items-center justify-center font-bold text-lg">⚡</div>
       <div class="text-left text-xs">
         <p class="font-bold text-white" id="proof-name-city">Someone from your city</p>
-        <p class="text-slate-400" id="proof-action">just claimed this personalized offer!</p>
-        <p class="text-[10px] text-slate-500 mt-0.5">2 minutes ago</p>
+        <p class="text-gray-400" id="proof-action">just claimed this personalized offer!</p>
+        <p class="text-[10px] text-gray-500 mt-0.5">2 minutes ago</p>
       </div>
     </div>
   </div>
 
   <!-- Ambient Footer Watermark -->
-  <footer class="fixed bottom-2 right-4 text-[10px] text-slate-600 z-10 pointer-events-none hidden sm:block">
+  <footer class="fixed bottom-2 right-4 text-[10px] text-gray-600 z-10 pointer-events-none hidden sm:block">
     <span id="ambient-watermark">Personalized Context Engine</span>
   </footer>
 
@@ -110,90 +110,66 @@
     const client_id = urlParams.get('client_id') || 'client_001';
 
     async function initializePersonalization() {
-      try {
-        let city = forcedCity || 'Local Area';
-        let country = forcedCountry || 'US';
-        let weather = forcedWeather || 'Clear';
-        let timeOfDay = forcedTime || getTimeOfDay();
-        let device = forcedDevice || getDeviceType();
+      let city = forcedCity || 'Local Area';
+      let country = forcedCountry || 'US';
+      let weather = forcedWeather || 'Clear';
+      let timeOfDay = forcedTime || getTimeOfDay();
+      let device = forcedDevice || getDeviceType();
 
-        // 1. Local IP Lookup if not forced
-        if (!forcedCity) {
-          try {
-            const ipRes = await fetch('https://api.ipgeolocation.io/ipgeo?apiKey=7398ebebcefe4b4f93212ac3398f6c0c');
-            const ipData = await ipRes.json();
-            city = ipData.city || 'Your Area';
-            country = ipData.country_code2 || 'US';
-          } catch(e) {
-            console.log('IP Fetch fallback activated');
-          }
-        }
-
-        currentCity = city;
-        currentCountry = country;
-
-        // Apply visual elements immediately (Instant UX)
-        applyCityPhoto(city);
-        applyLocalCurrency(country);
-        applyPaymentTrust(country);
-        applyCulturalGreeting(country, city);
-        applyDeliveryDate(city, country);
-        applyStockAlert(city);
-        applySocialProof(city);
-        applyWeatherCanvas(weather);
-        startScarcityTimer(city);
-
-        document.getElementById('radar-text').innerText = `Active Server Node: ${city}, ${country}`;
-        document.getElementById('ambient-watermark').innerText = `Personalized for ${city}, ${country} | Node: ${device}`;
-
-        // Device Smart CTA adjust
-        if (device === 'mobile') {
-          document.getElementById('cta-button').innerText = '⚡ Instant One-Tap Checkout';
-        }
-
-        // 2. Try Webhook AI Load (with timeout safety)
-        const payload = {
-          city, country, weather, timeOfDay, device,
-          client_id, session_id: visitorSessionId,
-          utm_source: urlParams.get('utm_source') || 'direct'
-        };
-
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3500); // 3.5s safety timeout
-
+      if (!forcedCity) {
         try {
-          const response = await fetch(MAKE_WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-            signal: controller.signal
-          });
-          clearTimeout(timeoutId);
-
-          if (response.ok) {
-            const data = await response.json();
-            if (data && data.headline) {
-              document.getElementById('hero-headline').innerText = data.headline;
-              document.getElementById('hero-subheadline').innerText = data.subheadline;
-              if (data.cta) document.getElementById('cta-button').innerText = data.cta;
-            }
-          } else {
-            throw new Error('Webhook status ' + response.status);
-          }
-        } catch (err) {
-          console.warn('Webhook dynamic fetch skipped/failed. Local Personalization Engaged:', err.message);
-          // Smart Fail-Safe Content Engine
-          applyFallbackContent(city, weather, timeOfDay);
-        }
-
-      } catch (globalErr) {
-        console.error('Initialization error:', globalErr);
+          const ipRes = await fetch('https://api.ipgeolocation.io/ipgeo?apiKey=7398ebebcefe4b4f93212ac3398f6c0c');
+          const ipData = await ipRes.json();
+          city = ipData.city || 'Your Area';
+          country = ipData.country_code2 || 'US';
+        } catch(e) {}
       }
+
+      currentCity = city;
+      currentCountry = country;
+
+      // Apply Personalization Instantly
+      applyCityPhoto(city);
+      applyLocalCurrency(country);
+      applyPaymentTrust(country);
+      applyCulturalGreeting(country, city);
+      applyDeliveryDate(city, country);
+      applyStockAlert(city);
+      applySocialProof(city);
+      applyWeatherCanvas(weather);
+      startScarcityTimer(city);
+      applyFallbackContent(city);
+
+      document.getElementById('radar-text').innerText = `Active Server Node: ${city}, ${country}`;
+      document.getElementById('ambient-watermark').innerText = `Personalized for ${city}, ${country} | Node: ${device}`;
+
+      if (device === 'mobile') {
+        document.getElementById('cta-button').innerText = '⚡ Instant One-Tap Checkout';
+      }
+
+      // Try AI Webhook Safely
+      try {
+        const response = await fetch(MAKE_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ city, country, weather, timeOfDay, device, client_id, session_id: visitorSessionId })
+        });
+
+        const rawText = await response.text();
+        try {
+          const data = JSON.parse(rawText);
+          if (data && data.headline) {
+            document.getElementById('hero-headline').innerText = data.headline;
+            document.getElementById('hero-subheadline').innerText = data.subheadline;
+            if (data.cta) document.getElementById('cta-button').innerText = data.cta;
+          }
+        } catch (jErr) {}
+      } catch (err) {}
     }
 
-    function applyFallbackContent(city, weather, timeOfDay) {
-      document.getElementById('hero-headline').innerText = `Designed for Business Success in ${city}`;
-      document.getElementById('hero-subheadline').innerText = `Join leading entrepreneurs across ${city} leveraging fast, high-converting growth solutions today.`;
+    function applyFallbackContent(city) {
+      document.getElementById('hero-headline').innerText = `Transform Your Business Today`;
+      document.getElementById('hero-subheadline').innerText = `The smartest solution for modern entrepreneurs in ${city} who want to scale fast.`;
     }
 
     function applyCityPhoto(city) {
@@ -284,7 +260,7 @@
         const h = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
         const m = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
         const s = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-        timerText.innerText = `${city} Offer Ends Tonight: ${h}h ${m}m ${s}s`;
+        timerText.innerText = `${city} Offer Ends Tonight: ${h}h ${m}s`;
       }
       update();
       setInterval(update, 1000);
