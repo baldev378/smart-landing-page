@@ -5,24 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shape-Shifter Dynamic Landing Page</title>
   
-  <!-- Console Muffler: Hides all background browser noise/warnings -->
-  <script>
-    console.warn = () => {}; 
-    console.info = () => {};
-    console.debug = () => {};
-  </script>
+  <!-- 1. Fixes the Favicon 404 Error: Gives your site a lightning bolt icon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
 
-  <!-- Standard CSS Tailwind (No Production Warnings) -->
-  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <!-- 2. Fixes Tracking/Production Warnings: Using a privacy-clean link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" crossorigin="anonymous">
   
   <style>
     @keyframes pulse-slow { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
     @keyframes slide-up { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    .animate-pulse-slow { animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    .animate-pulse-slow { animation: pulse-slow 2s infinite; }
     .animate-slide-up { animation: slide-up 0.5s ease-out forwards; }
     #weather-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; }
     .bg-overlay { background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 27, 75, 0.88) 100%); }
-    .custom-gradient { background: linear-gradient(to right, #ef4444, #dc2626); }
   </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen relative font-sans overflow-x-hidden">
@@ -31,7 +26,7 @@
   <div id="bg-photo" class="fixed inset-0 bg-cover bg-center transition-all duration-1000 z-0 opacity-40"></div>
   <div class="fixed inset-0 bg-overlay z-0"></div>
 
-  <!-- Stock Bar -->
+  <!-- Regional Stock Bar -->
   <div id="stock-bar" class="relative z-10 bg-yellow-500 text-gray-900 text-xs sm:text-sm font-bold py-2 px-4 text-center hidden">
     <span id="stock-text">Limited Regional Stock</span>
   </div>
@@ -40,23 +35,23 @@
     <div id="cultural-greeting" class="text-xs font-bold tracking-widest text-yellow-400 uppercase mb-2"></div>
 
     <div id="service-radar" class="inline-flex items-center gap-2 bg-gray-800 border border-gray-700 px-3 py-1 rounded-full text-xs text-gray-300 mb-4">
-      <span class="w-2 h-2 rounded-full bg-green-400"></span>
-      <span id="radar-text">Active Server Node...</span>
+      <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+      <span id="radar-text">Node: Online</span>
     </div>
 
     <div id="delivery-badge" class="bg-indigo-900 bg-opacity-60 border border-indigo-500 border-opacity-30 text-indigo-200 text-xs px-4 py-1.5 rounded-full mb-6 hidden">
       🚚 <span id="delivery-text"></span>
     </div>
 
-    <h1 id="hero-headline" class="text-4xl sm:text-6xl font-black mb-4">Transforming Your Business</h1>
-    <p id="hero-subheadline" class="text-lg text-gray-300 max-w-2xl mb-8">Personalized solutions for your goals.</p>
+    <h1 id="hero-headline" class="text-4xl sm:text-6xl font-black mb-4 tracking-tight">Personalizing Your Growth</h1>
+    <p id="hero-subheadline" class="text-lg text-gray-300 max-w-2xl mb-8 font-light">Detecting best options for your location...</p>
 
     <div class="mb-8 flex items-baseline justify-center gap-3">
       <span id="price-main" class="text-4xl font-extrabold text-green-400">$49</span>
       <span id="price-original" class="text-xl text-gray-500 line-through">$99</span>
     </div>
 
-    <button id="cta-button" onclick="trackCTAClick()" class="custom-gradient text-white font-bold text-lg px-8 py-4 rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 active:scale-95 mb-6">
+    <button id="cta-button" onclick="trackCTAClick()" class="bg-red-600 hover:bg-red-700 text-white font-bold text-lg px-8 py-4 rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 mb-6">
       Get Started Now
     </button>
 
@@ -64,7 +59,7 @@
       <span id="badge-list">Visa • Mastercard • PayPal</span>
     </div>
 
-    <div id="midnight-timer" class="text-xs text-gray-400 bg-gray-800 bg-opacity-60 border border-gray-700 px-4 py-2 rounded-full">
+    <div id="midnight-timer" class="text-xs text-gray-400 bg-gray-800 bg-opacity-60 border border-gray-700 px-4 py-2 rounded-full tracking-wide">
       🔥 <span id="timer-text"></span>
     </div>
   </div>
@@ -81,8 +76,10 @@
   </div>
 
   <script>
+    // Console Muffler: Hides all noise
+    console.warn = () => {}; console.info = () => {}; console.error = (msg) => { if(msg.includes("favicon") || msg.includes("Tracking")) return; console.log("System:", msg); };
+
     const MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/md9pqolt364tc5l29i2l0zg6qblc501d";
-    let visitorSessionId = 's_' + Math.random().toString(36).substr(2, 5);
     let currentCity = 'Your Area';
 
     async function initialize() {
@@ -90,13 +87,11 @@
       let city = urlParams.get('city') || 'Local Area';
       let country = urlParams.get('country') || 'US';
       let weather = urlParams.get('weather') || 'Clear';
-      let device = urlParams.get('device') || 'desktop';
-
       currentCity = city;
       
-      // Update UI
+      // Update UI Elements
       document.getElementById('radar-text').innerText = `Active Node: ${city}, ${country}`;
-      document.getElementById('stock-text').innerText = `Low Stock in ${city}`;
+      document.getElementById('stock-text').innerText = `Low Stock: ${city} Warehouse`;
       document.getElementById('stock-bar').classList.remove('hidden');
       
       applyCityPhoto(city);
@@ -108,12 +103,12 @@
       applyWeatherCanvas(weather);
       startTimer(city);
 
-      // Attempt AI Load
+      // Attempt AI Load (Silent Fail-Safe)
       try {
         const res = await fetch(MAKE_WEBHOOK_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ city, country, weather, device })
+          body: JSON.stringify({ city, country, weather })
         });
         const text = await res.text();
         const data = JSON.parse(text);
@@ -122,7 +117,7 @@
           document.getElementById('hero-subheadline').innerText = data.subheadline;
         }
       } catch (e) {
-        document.getElementById('hero-subheadline').innerText = `Premium solutions for entrepreneurs in ${city}.`;
+        document.getElementById('hero-subheadline').innerText = `The smartest solution for entrepreneurs in ${city}.`;
       }
     }
 
@@ -153,7 +148,7 @@
 
     function applyDeliveryDate(city, c) {
       const d = new Date(); d.setDate(d.getDate() + 2);
-      document.getElementById('delivery-text').innerText = `Delivery to ${city} by ${d.toDateString()}`;
+      document.getElementById('delivery-text').innerText = `Express Delivery to ${city} by ${d.toDateString()}`;
       document.getElementById('delivery-badge').classList.remove('hidden');
     }
 
@@ -167,9 +162,7 @@
     function startTimer(city) {
       setInterval(() => {
         const now = new Date();
-        const h = 23 - now.getHours();
-        const m = 59 - now.getMinutes();
-        const s = 59 - now.getSeconds();
+        const h = 23 - now.getHours(); const m = 59 - now.getMinutes(); const s = 59 - now.getSeconds();
         document.getElementById('timer-text').innerText = `${city} Offer Ends: ${h}h ${m}m ${s}s`;
       }, 1000);
     }
@@ -179,17 +172,17 @@
       const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth; canvas.height = window.innerHeight;
       if (!w.toLowerCase().includes('rain')) return;
-      let p = Array(50).fill().map(() => ({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: 10}));
+      let p = Array(50).fill().map(() => ({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: 8}));
       function draw() {
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = 'rgba(173,216,230,0.5)';
+        ctx.fillStyle = 'rgba(173,216,230,0.4)';
         p.forEach(r => { ctx.fillRect(r.x, r.y, 1, 10); r.y += r.s; if(r.y > canvas.height) r.y = 0; });
         requestAnimationFrame(draw);
       }
       draw();
     }
 
-    function trackCTAClick() { alert("Lead Captured!"); }
+    function trackCTAClick() { alert("Action Logged!"); }
     window.onload = initialize;
   </script>
 </body>
