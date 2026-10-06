@@ -7,17 +7,19 @@
 (async function () {
   'use strict';
 
+  // NEW LIVE MAKE.COM WEBHOOK URL
+  const MAKE_WEBHOOK_URL = "https://hook.us2.make.com/d8fw3nqb5xhw5bm46aiqcyfxl9d6obve";
+
   // 1. Script Context & Client Identification
   const scriptTag = document.currentScript || document.querySelector('script[src*="shapeshifter.js"]');
   const scriptUrl = new URL(scriptTag ? scriptTag.src : window.location.href);
   const clientId = scriptUrl.searchParams.get('client') || 'client_001';
   const urlParams = new URLSearchParams(window.location.search);
 
-  // 2. AUTO-DETECT CLIENT BRAND STYLES (Font & Theme Color)
+  // 2. AUTO-DETECT CLIENT BRAND STYLES (Font & Accent Color)
   const clientBrandFont = window.getComputedStyle(document.body).fontFamily || 'inherit';
   
-  // Find primary button or brand color
-  let clientPrimaryColor = '#e11d48'; // fallback accent
+  let clientPrimaryColor = '#e11d48';
   const existingBtn = document.querySelector('button, .btn, .button, input[type="submit"]');
   if (existingBtn) {
     const computedBtnBg = window.getComputedStyle(existingBtn).backgroundColor;
@@ -46,10 +48,10 @@
   // 4. Inject Brand-Matched Global Styles
   injectBrandStyles(clientBrandFont, clientPrimaryColor);
 
-  // 5. Apply Personalization to Client Elements
+  // 5. Apply DOM Personalization
   applyDOMPersonalization(city, country, weather);
 
-  // 6. Fetch & Render Weather-Matched Products
+  // 6. Fetch & Render Weather Products
   fetchAndRenderClientProducts(clientId, weather, country, clientBrandFont);
 
   // -------------------------------------------------------------
@@ -73,20 +75,12 @@
   }
 
   function applyDOMPersonalization(city, country, weather) {
-    // Cultural Greeting
     const greetingEl = document.querySelector('[data-ss="greeting"]');
     if (greetingEl) {
       greetingEl.classList.add('ss-brand-font');
       greetingEl.innerText = (country === 'IN') ? `🙏 NAMASTE TO ${city.toUpperCase()}` : `⚡ WELCOME VISITOR FROM ${city.toUpperCase()}`;
     }
 
-    // Headline In-Place Override
-    const headlineEl = document.querySelector('[data-ss="headline"]');
-    if (headlineEl) {
-      headlineEl.classList.add('ss-brand-font');
-    }
-
-    // Express Delivery Date
     const deliveryEl = document.querySelector('[data-ss="delivery"]');
     if (deliveryEl) {
       deliveryEl.classList.add('ss-brand-font');
@@ -95,14 +89,12 @@
       deliveryEl.innerText = `Express Delivery to ${city}, ${country} by ${dateStr}`;
     }
 
-    // Regional Warehouse Stock Alert
     const stockEl = document.querySelector('[data-ss="stock"]');
     if (stockEl) {
       stockEl.classList.add('ss-brand-font');
       stockEl.innerText = `Limited Stock: Only 4 units left in ${city} warehouse`;
     }
 
-    // Localized Payment Trust Badges
     const paymentEl = document.querySelector('[data-ss="payments"]');
     if (paymentEl) {
       paymentEl.classList.add('ss-brand-font');
@@ -117,13 +109,11 @@
     let clientProducts = [];
     const w = weather.toLowerCase();
 
-    // Auto-detect Shopify inventory feed
     try {
       const shopifyRes = await fetch('/products.json?limit=30');
       if (shopifyRes.ok) {
         const shopifyData = await shopifyRes.json();
         if (shopifyData && shopifyData.products) {
-          
           clientProducts = shopifyData.products.filter(p => {
             const fullText = `${p.title} ${p.body_html || ''} ${(p.tags || []).join(' ')}`.toLowerCase();
 
@@ -146,7 +136,6 @@
       }
     } catch (err) {}
 
-    // Render with Client's Exact Font Family
     if (clientProducts.length > 0) {
       gridContainer.innerHTML = '';
       clientProducts.forEach(prod => {
