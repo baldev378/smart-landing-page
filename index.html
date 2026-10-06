@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>StormShield Co. — Official Personalised Store</title>
   
+  <!-- Lightning Icon (Prevents 404 Favicon Error) -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+
+  <!-- Production Tailwind CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" crossorigin="anonymous">
   
   <style>
@@ -13,20 +16,20 @@
     @keyframes slide-up { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     .animate-slide-up { animation: slide-up 0.5s ease-out forwards; }
     #weather-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; }
-    .bg-overlay { background: linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 27, 75, 0.90) 100%); }
+    .bg-overlay { background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 27, 75, 0.88) 100%); }
     .btn-gradient { background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%); }
     .btn-gradient:hover { background: linear-gradient(135deg, #e11d48 0%, #be123c 100%); }
     .product-card { transition: all 0.3s ease; }
-    .product-card:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 20px 35px rgba(0,0,0,0.5); }
   </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen relative font-sans overflow-x-hidden">
 
-  <!-- Weather Particle Canvas -->
+  <!-- Weather Particle Layer -->
   <canvas id="weather-canvas"></canvas>
 
   <!-- City Background Photo Layer -->
-  <div id="bg-photo" class="fixed inset-0 bg-cover bg-center transition-all duration-1000 z-0 opacity-30"></div>
+  <div id="bg-photo" class="fixed inset-0 bg-cover bg-center transition-all duration-1000 z-0 opacity-40"></div>
   <div class="fixed inset-0 bg-overlay z-0"></div>
 
   <!-- Regional Warehouse Stock Alert Bar -->
@@ -54,17 +57,15 @@
     </div>
 
     <!-- HERO FEATURED PRODUCT SHOWCASE CARD -->
-    <div class="w-full bg-gray-800 bg-opacity-80 border border-gray-700 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl mb-12">
+    <div class="w-full bg-gray-800 bg-opacity-90 border border-gray-700 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl mb-12">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
         
-        <!-- Product Image Showcase -->
-        <div class="md:col-span-5 relative flex items-center justify-center bg-gray-900 rounded-2xl p-6 border border-gray-700/50">
-          <div id="product-badge-tag" class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+        <!-- Real Product Photo Showcase -->
+        <div class="md:col-span-5 relative flex items-center justify-center bg-gray-900 rounded-2xl overflow-hidden border border-gray-700/60 shadow-inner h-64 sm:h-72">
+          <div id="product-badge-tag" class="absolute top-3 left-3 z-10 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow">
             WEATHER ADAPTIVE
           </div>
-          <div id="hero-product-emoji" class="text-8xl sm:text-9xl my-4 transform hover:scale-105 transition">
-            🧥
-          </div>
+          <img id="hero-product-img" src="https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=800&q=80" alt="Featured Product" class="w-full h-full object-cover transform hover:scale-105 transition duration-500" />
         </div>
 
         <!-- Product Details & Pricing -->
@@ -114,7 +115,7 @@
       </div>
     </div>
 
-    <!-- WEATHER-MATCHED RECOMMENDATIONS GRID -->
+    <!-- WEATHER-MATCHED CLIENT RECOMMENDATIONS GRID -->
     <section class="w-full text-left mb-12">
       <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-3 border-b border-gray-800">
         <div>
@@ -150,6 +151,17 @@
   <script>
     const MAKE_WEBHOOK_URL = "https://hook.us2.make.com/d8fw3nqb5xhw5bm46aiqcyfxl9d6obve";
 
+    // GUARANTEED INSTANT CITY PHOTOS
+    const CITY_PHOTOS = {
+      'London': 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1600&q=80',
+      'New York': 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=1600&q=80',
+      'Tokyo': 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1600&q=80',
+      'Mumbai': 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1600&q=80',
+      'Paris': 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1600&q=80',
+      'Jaipur': 'https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=1600&q=80',
+      'Sahibzada Ajit Singh Nagar': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1600&q=80'
+    };
+
     const CITY_TIMEZONES = {
       'New York': 'America/New_York',
       'London': 'Europe/London',
@@ -160,21 +172,22 @@
       'Jaipur': 'Asia/Kolkata'
     };
 
+    // REAL HIGH-RES E-COMMERCE PRODUCT CATALOG
     const CLIENT_CATALOG = {
       rain: [
-        { name: "StormShield Hydro-Tight Raincoat", priceIN: "₹2,499", priceUS: "$34.99", priceGB: "£29", priceJP: "¥5,200", priceEU: "€32", origIN: "₹4,999", origUS: "$69.99", origGB: "£59", origJP: "¥9,800", origEU: "€64", emoji: "🧥", desc: "100% Waterproof seam-sealed protection for heavy rain." },
-        { name: "Aqua-Shield Windproof Umbrella", priceIN: "₹1,199", priceUS: "$18.99", priceGB: "£15", priceJP: "¥2,800", priceEU: "€17", origIN: "₹2,399", origUS: "$35.99", origGB: "£30", origJP: "¥5,200", origEU: "€34", emoji: "☂️", desc: "Reinforced fiberglass ribs built to withstand 60mph winds." },
-        { name: "Dry-Trek Waterproof Sport Shoes", priceIN: "₹3,999", priceUS: "$54.99", priceGB: "£45", priceJP: "¥8,200", priceEU: "€49", origIN: "₹7,999", origUS: "$109.99", origGB: "£90", origJP: "¥16,400", origEU: "€98", emoji: "👟", desc: "Gore-Tex breathable membrane keeps feet dry in puddles." }
+        { name: "StormShield Hydro-Tight Raincoat", priceIN: "₹2,499", priceUS: "$34.99", priceGB: "£29", priceJP: "¥5,200", priceEU: "€32", origIN: "₹4,999", origUS: "$69.99", origGB: "£59", origJP: "¥9,800", origEU: "€64", image: "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=600&q=80", desc: "100% Waterproof seam-sealed protection for heavy rain." },
+        { name: "Aqua-Shield Windproof Umbrella", priceIN: "₹1,199", priceUS: "$18.99", priceGB: "£15", priceJP: "¥2,800", priceEU: "€17", origIN: "₹2,399", origUS: "$35.99", origGB: "£30", origJP: "¥5,200", origEU: "€34", image: "https://images.unsplash.com/photo-1517479149777-5f3b6577d54c?auto=format&fit=crop&w=600&q=80", desc: "Reinforced fiberglass ribs built to withstand 60mph winds." },
+        { name: "Dry-Trek Waterproof Sport Shoes", priceIN: "₹3,999", priceUS: "$54.99", priceGB: "£45", priceJP: "¥8,200", priceEU: "€49", origIN: "₹7,999", origUS: "$109.99", origGB: "£90", origJP: "¥16,400", origEU: "€98", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80", desc: "Gore-Tex breathable membrane keeps feet dry in puddles." }
       ],
       snow: [
-        { name: "Thermal-Lock Insulated Parka", priceIN: "₹5,999", priceUS: "$89.99", priceGB: "£75", priceJP: "¥13,500", priceEU: "€82", origIN: "₹11,999", origUS: "$179.99", origGB: "£150", origJP: "¥27,000", origEU: "€164", emoji: "🧥", desc: "Sub-zero fleece insulation rated for extreme cold." },
-        { name: "Merino Wool Thermal Innerwear", priceIN: "₹2,199", priceUS: "$29.99", priceGB: "£25", priceJP: "¥4,500", priceEU: "€27", origIN: "₹4,399", origUS: "$59.99", origGB: "£50", origJP: "¥9,000", origEU: "€54", emoji: "🧣", desc: "Ultra-warm temperature regulating base layer." },
-        { name: "Arctic-Grip Anti-Slip Winter Boots", priceIN: "₹4,999", priceUS: "$69.99", priceGB: "£58", priceJP: "¥10,500", priceEU: "€64", origIN: "₹9,999", origUS: "$139.99", origGB: "£115", origJP: "¥21,000", origEU: "€128", emoji: "🥾", desc: "Deep tread traction sole designed for snow and ice." }
+        { name: "Thermal-Lock Insulated Parka", priceIN: "₹5,999", priceUS: "$89.99", priceGB: "£75", priceJP: "¥13,500", priceEU: "€82", origIN: "₹11,999", origUS: "$179.99", origGB: "£150", origJP: "¥27,000", origEU: "€164", image: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&w=600&q=80", desc: "Sub-zero fleece insulation rated for extreme cold." },
+        { name: "Merino Wool Thermal Innerwear", priceIN: "₹2,199", priceUS: "$29.99", priceGB: "£25", priceJP: "¥4,500", priceEU: "€27", origIN: "₹4,399", origUS: "$59.99", origGB: "£50", origJP: "¥9,000", origEU: "€54", image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?auto=format&fit=crop&w=600&q=80", desc: "Ultra-warm temperature regulating base layer." },
+        { name: "Arctic-Grip Anti-Slip Winter Boots", priceIN: "₹4,999", priceUS: "$69.99", priceGB: "£58", priceJP: "¥10,500", priceEU: "€64", origIN: "₹9,999", origUS: "$139.99", origGB: "£115", origJP: "¥21,000", origEU: "€128", image: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=600&q=80", desc: "Deep tread traction sole designed for snow and ice." }
       ],
       clear: [
-        { name: "UV-400 Polarized Sport Shades", priceIN: "₹1,600", priceUS: "$24.99", priceGB: "£19", priceJP: "¥3,800", priceEU: "€22", origIN: "₹3,200", origUS: "$49.99", origGB: "£39", origJP: "¥7,600", origEU: "€44", emoji: "🕶️", desc: "Ultra lightweight frame with contrast-enhancing optics." },
-        { name: "Aero-Breathe Lightweight Trainer", priceIN: "₹6,400", priceUS: "$79.99", priceGB: "£65", priceJP: "¥12,000", priceEU: "€74", origIN: "₹12,800", origUS: "$159.99", origGB: "£130", origJP: "¥24,000", origEU: "€148", emoji: "👟", desc: "Woven breathable mesh sole engineered to maximize cooling." },
-        { name: "Hydro-Chill Vacuum Insulated Flask", priceIN: "₹1,999", priceUS: "$27.99", priceGB: "£22", priceJP: "¥4,200", priceEU: "€25", origIN: "₹3,999", origUS: "$54.99", origGB: "£44", origJP: "¥8,400", origEU: "€50", emoji: "🍶", desc: "Keeps drinks ice-cold for 24 hours in hot sunny conditions." }
+        { name: "UV-400 Polarized Sport Shades", priceIN: "₹1,600", priceUS: "$24.99", priceGB: "£19", priceJP: "¥3,800", priceEU: "€22", origIN: "₹3,200", origUS: "$49.99", origGB: "£39", origJP: "¥7,600", origEU: "€44", image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=600&q=80", desc: "Ultra lightweight frame with contrast-enhancing optics." },
+        { name: "Aero-Breathe Lightweight Trainer", priceIN: "₹6,400", priceUS: "$79.99", priceGB: "£65", priceJP: "¥12,000", priceEU: "€74", origIN: "₹12,800", origUS: "$159.99", origGB: "£130", origJP: "¥24,000", origEU: "€148", image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=600&q=80", desc: "Woven breathable mesh sole engineered to maximize cooling." },
+        { name: "Hydro-Chill Vacuum Insulated Flask", priceIN: "₹1,999", priceUS: "$27.99", priceGB: "£22", priceJP: "¥4,200", priceEU: "€25", origIN: "₹3,999", origUS: "$54.99", origGB: "£44", origJP: "¥8,400", origEU: "€50", image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=600&q=80", desc: "Keeps drinks ice-cold for 24 hours in hot sunny conditions." }
       ]
     };
 
@@ -211,7 +224,7 @@
         document.getElementById('cta-button').innerText = '⚡ Instant One-Tap Checkout';
       }
 
-      // Safe Webhook Call
+      // Safe Webhook Execution to Make.com
       try {
         const payload = { city, country, weather, timeOfDay, device };
         const response = await fetch(MAKE_WEBHOOK_URL, {
@@ -239,6 +252,7 @@
       const subtitle = document.getElementById('products-subtitle');
       const bannerText = document.getElementById('weather-text');
       const bannerIcon = document.getElementById('weather-icon');
+      const heroImg = document.getElementById('hero-product-img');
 
       const w = weather.toLowerCase();
       let key = 'clear';
@@ -248,21 +262,21 @@
         bannerText.innerText = `Rain detected in ${currentCity} — Waterproof gear unlocked`;
         title.innerText = `Rainy Day Essentials for ${currentCity}`;
         subtitle.innerText = `Top-rated waterproof products for wet weather`;
-        document.getElementById('hero-product-emoji').innerText = '🧥';
+        heroImg.src = "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=800&q=80";
       } else if (w.includes('snow')) {
         key = 'snow';
         bannerIcon.innerText = '❄️';
         bannerText.innerText = `Cold weather in ${currentCity} — Winter collection active`;
         title.innerText = `Winter Warmers for ${currentCity}`;
         subtitle.innerText = `Cold weather thermal gear curated for your area`;
-        document.getElementById('hero-product-emoji').innerText = '🧥';
+        heroImg.src = "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&w=800&q=80";
       } else {
         key = 'clear';
         bannerIcon.innerText = '☀️';
         bannerText.innerText = `Clear Sky in ${currentCity} — Outdoor gear live`;
         title.innerText = `Trending in ${currentCity}`;
         subtitle.innerText = `Popular summer & outdoor performance items`;
-        document.getElementById('hero-product-emoji').innerText = '🕶️';
+        heroImg.src = "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80";
       }
 
       const products = CLIENT_CATALOG[key];
@@ -277,25 +291,27 @@
         else if (['FR','DE','ES','IT','NL'].includes(countryCode)) { price = p.priceEU; orig = p.origEU; }
 
         const card = document.createElement('div');
-        card.className = 'product-card bg-gray-800/80 border border-gray-700/80 rounded-2xl p-5 flex flex-col justify-between';
+        card.className = 'product-card bg-gray-800/90 border border-gray-700/80 rounded-2xl overflow-hidden flex flex-col justify-between shadow-lg';
         card.innerHTML = `
           <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-4xl">${p.emoji}</span>
-              <span class="text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full">IN STOCK</span>
+            <div class="relative h-48 w-full overflow-hidden bg-gray-900">
+              <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover transform hover:scale-105 transition duration-500" />
+              <span class="absolute top-2 right-2 text-[10px] font-bold bg-indigo-600 text-white border border-indigo-400/40 px-2 py-0.5 rounded-full shadow">IN STOCK</span>
             </div>
-            <h3 class="text-base font-bold text-white mb-1.5 leading-snug">${p.name}</h3>
-            <p class="text-xs text-gray-400 mb-4 leading-relaxed">${p.desc}</p>
+            <div class="p-4">
+              <h3 class="text-base font-bold text-white mb-1 leading-snug">${p.name}</h3>
+              <p class="text-xs text-gray-400 mb-3 leading-relaxed">${p.desc}</p>
+            </div>
           </div>
-          <div>
-            <div class="flex items-baseline justify-between mb-3">
+          <div class="p-4 pt-0">
+            <div class="flex items-baseline justify-between mb-3 border-t border-gray-700/50 pt-3">
               <div>
                 <span class="text-xl font-extrabold text-emerald-400">${price}</span>
                 <span class="text-xs text-gray-500 line-through ml-1.5">${orig}</span>
               </div>
               <span class="text-[10px] text-emerald-400 font-bold">Local Shipping</span>
             </div>
-            <button onclick="trackCTAClick()" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 rounded-xl text-xs transition active:scale-95">
+            <button onclick="trackCTAClick()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 rounded-xl text-xs transition active:scale-95 shadow">
               Quick Add +
             </button>
           </div>
@@ -379,11 +395,17 @@
 
     function applyCityPhoto(city) {
       const bg = document.getElementById('bg-photo');
-      const key = 'qt8GtefbmVTHYOBl_mFYxkrS5spe9NhYcWY8fUWjzRo';
-      fetch(`https://api.unsplash.com/photos/random?query=${encodeURIComponent(city)}+cityscape,city&client_id=${key}`)
-        .then(r => r.json()).then(d => {
-          if (d && d.urls && d.urls.regular) bg.style.backgroundImage = `url('${d.urls.regular}')`;
-        }).catch(() => {});
+      if (CITY_PHOTOS[city]) {
+        bg.style.backgroundImage = `url('${CITY_PHOTOS[city]}')`;
+      } else {
+        const key = 'qt8GtefbmVTHYOBl_mFYxkrS5spe9NhYcWY8fUWjzRo';
+        fetch(`https://api.unsplash.com/photos/random?query=${encodeURIComponent(city)}+cityscape,city&client_id=${key}`)
+          .then(r => r.json()).then(d => {
+            if (d && d.urls && d.urls.regular) bg.style.backgroundImage = `url('${d.urls.regular}')`;
+          }).catch(() => {
+            bg.style.backgroundImage = `url('https://images.unsplash.com/photo-1477959858617-67f30ac72604?auto=format&fit=crop&w=1600&q=80')`;
+          });
+      }
     }
 
     function applyWeatherCanvas(weather) {
