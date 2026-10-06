@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>StormShield Co. — Official Personalised Store</title>
   
+  <!-- Lightning Data Icon (Prevents 404 Favicon Error) -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+
+  <!-- Production Tailwind CSS (No CDN Warnings, No Storage Tracking Errors) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" crossorigin="anonymous">
   
   <style>
@@ -25,11 +28,11 @@
   <!-- Weather Particle Canvas -->
   <canvas id="weather-canvas"></canvas>
 
-  <!-- City Background Photo -->
+  <!-- City Background Photo Layer -->
   <div id="bg-photo" class="fixed inset-0 bg-cover bg-center transition-all duration-1000 z-0 opacity-30"></div>
   <div class="fixed inset-0 bg-overlay z-0"></div>
 
-  <!-- Regional Stock Alert Bar -->
+  <!-- Regional Warehouse Stock Alert Bar -->
   <div id="stock-bar" class="relative z-20 bg-amber-500 text-gray-900 text-xs sm:text-sm font-bold py-2 px-4 text-center hidden shadow-md">
     <span class="inline-block w-2 h-2 rounded-full bg-gray-900 animate-ping mr-2"></span>
     <span id="stock-text">Limited Regional Warehouse Stock</span>
@@ -44,16 +47,16 @@
     <!-- Active Server Radar Badge -->
     <div id="service-radar" class="inline-flex items-center gap-2 bg-gray-800 border border-gray-700 px-3 py-1 rounded-full text-xs text-gray-300 mb-3 backdrop-blur-md">
       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-      <span id="radar-text">Detecting node...</span>
+      <span id="radar-text">Detecting active node...</span>
     </div>
 
     <!-- Weather Alert Banner -->
     <div id="weather-banner" class="inline-flex items-center gap-2 bg-indigo-900 bg-opacity-60 border border-indigo-500 border-opacity-30 text-indigo-200 text-xs sm:text-sm px-4 py-1.5 rounded-full mb-6 backdrop-blur-md">
       <span id="weather-icon">🌤️</span>
-      <span id="weather-text">Checking local weather...</span>
+      <span id="weather-text">Checking local weather conditions...</span>
     </div>
 
-    <!-- MAIN FEATURED PRODUCT SHOWCASE CARD -->
+    <!-- HERO FEATURED PRODUCT SHOWCASE CARD -->
     <div class="w-full bg-gray-800 bg-opacity-80 border border-gray-700 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl mb-12">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
         
@@ -84,7 +87,7 @@
 
           <!-- Express Delivery Badge -->
           <div id="delivery-badge" class="inline-flex items-center gap-2 bg-indigo-900/40 border border-indigo-500/30 text-indigo-300 text-xs px-3 py-1.5 rounded-lg">
-            🚚 <span id="delivery-text">Calculating delivery...</span>
+            🚚 <span id="delivery-text">Calculating delivery date...</span>
           </div>
 
           <!-- LOCALIZED PRICING -->
@@ -107,31 +110,31 @@
 
           <!-- REAL CITY TIMEZONE SCARCITY TIMER -->
           <div id="midnight-timer" class="text-xs text-gray-400 pt-1">
-            🔥 <span id="timer-text">Calculating city countdown...</span>
+            🔥 <span id="timer-text">Calculating city offer countdown...</span>
           </div>
         </div>
 
       </div>
     </div>
 
-    <!-- CLIENT RECOMMENDATIONS GRID -->
+    <!-- WEATHER-MATCHED CLIENT RECOMMENDATIONS GRID -->
     <section class="w-full text-left mb-12">
       <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-3 border-b border-gray-800">
         <div>
           <span class="text-xs font-bold text-amber-400 uppercase tracking-widest">Store Recommendations</span>
           <h2 id="products-title" class="text-xl sm:text-2xl font-bold text-white mt-1">Recommended for Your Area</h2>
         </div>
-        <p id="products-subtitle" class="text-xs text-gray-400 mt-1 sm:mt-0">Curated based on local conditions</p>
+        <p id="products-subtitle" class="text-xs text-gray-400 mt-1 sm:mt-0">Curated based on local weather conditions</p>
       </div>
 
       <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Injected dynamically -->
+        <!-- Products injected dynamically -->
       </div>
     </section>
 
   </div>
 
-  <!-- Social Proof Toast -->
+  <!-- Social Proof Ticker Popup -->
   <div id="social-proof-toast" class="fixed bottom-4 left-4 z-50 bg-gray-800 border border-gray-700 text-gray-200 p-4 rounded-2xl shadow-2xl max-w-sm hidden animate-slide-up">
     <div class="flex items-center gap-3">
       <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">⚡</div>
@@ -143,11 +146,15 @@
     </div>
   </div>
 
+  <!-- Ambient Footer Watermark -->
   <footer class="fixed bottom-2 right-4 text-[10px] text-gray-600 z-10 pointer-events-none hidden sm:block">
     <span id="ambient-watermark">Personalized Store Engine</span>
   </footer>
 
   <script>
+    // NEW LIVE MAKE.COM WEBHOOK URL
+    const MAKE_WEBHOOK_URL = "https://hook.us2.make.com/d8fw3nqb5xhw5bm46aiqcyfxl9d6obve";
+
     // City to Timezone Map
     const CITY_TIMEZONES = {
       'New York': 'America/New_York',
@@ -177,7 +184,6 @@
       ]
     };
 
-    const MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/md9pqolt364tc5l29i2l0zg6qblc501d";
     let currentCity = 'Your Area';
     let currentCountry = 'US';
 
@@ -201,9 +207,7 @@
       applySocialProof(city);
       applyWeatherCanvas(weather);
       
-      // Fixed Real-Timezone Countdown
       startCityScarcityTimer(city, country);
-
       renderClientProducts(weather, country);
 
       document.getElementById('radar-text').innerText = `Active Server Node: ${city}, ${country}`;
@@ -213,21 +217,25 @@
         document.getElementById('cta-button').innerText = '⚡ Instant One-Tap Checkout';
       }
 
-      // Safe Webhook Call
+      // Safe Webhook Execution to Make.com
       try {
+        const payload = { city, country, weather, timeOfDay, device };
         const response = await fetch(MAKE_WEBHOOK_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ city, country, weather, timeOfDay, device })
+          body: JSON.stringify(payload)
         });
-        const rawText = await response.text();
-        try {
-          const data = JSON.parse(rawText);
-          if (data && data.headline) {
-            document.getElementById('hero-product-title').innerText = data.headline;
-            document.getElementById('hero-subheadline').innerText = data.subheadline;
-          }
-        } catch(e) {}
+        
+        if (response.ok) {
+          const rawText = await response.text();
+          try {
+            const data = JSON.parse(rawText);
+            if (data && data.headline) {
+              document.getElementById('hero-product-title').innerText = data.headline;
+              document.getElementById('hero-subheadline').innerText = data.subheadline;
+            }
+          } catch(jsonErr) {}
+        }
       } catch(e) {}
     }
 
@@ -300,7 +308,6 @@
       });
     }
 
-    // ACCURATE TIMEZONE COUNTDOWN ENGINE
     function startCityScarcityTimer(city, countryCode) {
       const t = document.getElementById('timer-text');
       const tz = CITY_TIMEZONES[city] || (countryCode === 'IN' ? 'Asia/Kolkata' : countryCode === 'GB' ? 'Europe/London' : countryCode === 'US' ? 'America/New_York' : 'UTC');
