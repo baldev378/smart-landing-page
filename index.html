@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>StormShield Co. — Official Personalised Store</title>
   
-  <!-- Lightning Data Icon (Prevents 404 Favicon Error) -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
-
-  <!-- Production Tailwind CSS (No CDN Warnings, No Storage Tracking Errors) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" crossorigin="anonymous">
   
   <style>
@@ -117,7 +114,7 @@
       </div>
     </div>
 
-    <!-- WEATHER-MATCHED CLIENT RECOMMENDATIONS GRID -->
+    <!-- WEATHER-MATCHED RECOMMENDATIONS GRID -->
     <section class="w-full text-left mb-12">
       <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-3 border-b border-gray-800">
         <div>
@@ -146,16 +143,13 @@
     </div>
   </div>
 
-  <!-- Ambient Footer Watermark -->
   <footer class="fixed bottom-2 right-4 text-[10px] text-gray-600 z-10 pointer-events-none hidden sm:block">
     <span id="ambient-watermark">Personalized Store Engine</span>
   </footer>
 
   <script>
-    // NEW LIVE MAKE.COM WEBHOOK URL
     const MAKE_WEBHOOK_URL = "https://hook.us2.make.com/d8fw3nqb5xhw5bm46aiqcyfxl9d6obve";
 
-    // City to Timezone Map
     const CITY_TIMEZONES = {
       'New York': 'America/New_York',
       'London': 'Europe/London',
@@ -168,19 +162,19 @@
 
     const CLIENT_CATALOG = {
       rain: [
-        { name: "StormShield Hydro-Tight Raincoat", priceIN: "₹2,499", priceUS: "$34.99", priceGB: "£29", origIN: "₹4,999", origUS: "$69.99", origGB: "£59", emoji: "🧥", desc: "100% Waterproof seam-sealed protection for heavy rain." },
-        { name: "Aqua-Shield Windproof Umbrella", priceIN: "₹1,199", priceUS: "$18.99", priceGB: "£15", origIN: "₹2,399", origUS: "$35.99", origGB: "£30", emoji: "☂️", desc: "Reinforced fiberglass ribs built to withstand 60mph winds." },
-        { name: "Dry-Trek Waterproof Sport Shoes", priceIN: "₹3,999", priceUS: "$54.99", priceGB: "£45", origIN: "₹7,999", origUS: "$109.99", origGB: "£90", emoji: "👟", desc: "Gore-Tex breathable membrane keeps feet dry in puddles." }
+        { name: "StormShield Hydro-Tight Raincoat", priceIN: "₹2,499", priceUS: "$34.99", priceGB: "£29", priceJP: "¥5,200", priceEU: "€32", origIN: "₹4,999", origUS: "$69.99", origGB: "£59", origJP: "¥9,800", origEU: "€64", emoji: "🧥", desc: "100% Waterproof seam-sealed protection for heavy rain." },
+        { name: "Aqua-Shield Windproof Umbrella", priceIN: "₹1,199", priceUS: "$18.99", priceGB: "£15", priceJP: "¥2,800", priceEU: "€17", origIN: "₹2,399", origUS: "$35.99", origGB: "£30", origJP: "¥5,200", origEU: "€34", emoji: "☂️", desc: "Reinforced fiberglass ribs built to withstand 60mph winds." },
+        { name: "Dry-Trek Waterproof Sport Shoes", priceIN: "₹3,999", priceUS: "$54.99", priceGB: "£45", priceJP: "¥8,200", priceEU: "€49", origIN: "₹7,999", origUS: "$109.99", origGB: "£90", origJP: "¥16,400", origEU: "€98", emoji: "👟", desc: "Gore-Tex breathable membrane keeps feet dry in puddles." }
       ],
       snow: [
-        { name: "Thermal-Lock Insulated Parka", priceIN: "₹5,999", priceUS: "$89.99", priceGB: "£75", origIN: "₹11,999", origUS: "$179.99", origGB: "£150", emoji: "🧥", desc: "Sub-zero fleece insulation rated for extreme cold." },
-        { name: "Merino Wool Thermal Innerwear", priceIN: "₹2,199", priceUS: "$29.99", priceGB: "£25", origIN: "₹4,399", origUS: "$59.99", origGB: "£50", emoji: "🧣", desc: "Ultra-warm temperature regulating base layer." },
-        { name: "Arctic-Grip Anti-Slip Winter Boots", priceIN: "₹4,999", priceUS: "$69.99", priceGB: "£58", origIN: "₹9,999", origUS: "$139.99", origGB: "£115", emoji: "🥾", desc: "Deep tread traction sole designed for snow and ice." }
+        { name: "Thermal-Lock Insulated Parka", priceIN: "₹5,999", priceUS: "$89.99", priceGB: "£75", priceJP: "¥13,500", priceEU: "€82", origIN: "₹11,999", origUS: "$179.99", origGB: "£150", origJP: "¥27,000", origEU: "€164", emoji: "🧥", desc: "Sub-zero fleece insulation rated for extreme cold." },
+        { name: "Merino Wool Thermal Innerwear", priceIN: "₹2,199", priceUS: "$29.99", priceGB: "£25", priceJP: "¥4,500", priceEU: "€27", origIN: "₹4,399", origUS: "$59.99", origGB: "£50", origJP: "¥9,000", origEU: "€54", emoji: "🧣", desc: "Ultra-warm temperature regulating base layer." },
+        { name: "Arctic-Grip Anti-Slip Winter Boots", priceIN: "₹4,999", priceUS: "$69.99", priceGB: "£58", priceJP: "¥10,500", priceEU: "€64", origIN: "₹9,999", origUS: "$139.99", origGB: "£115", origJP: "¥21,000", origEU: "€128", emoji: "🥾", desc: "Deep tread traction sole designed for snow and ice." }
       ],
       clear: [
-        { name: "UV-400 Polarized Sport Shades", priceIN: "₹1,600", priceUS: "$24.99", priceGB: "£19", origIN: "₹3,200", origUS: "$49.99", origGB: "£39", emoji: "🕶️", desc: "Ultra lightweight frame with contrast-enhancing optics." },
-        { name: "Aero-Breathe Lightweight Trainer", priceIN: "₹6,400", priceUS: "$79.99", priceGB: "£65", origIN: "₹12,800", origUS: "$159.99", origGB: "£130", emoji: "👟", desc: "Woven breathable mesh sole engineered to maximize cooling." },
-        { name: "Hydro-Chill Vacuum Insulated Flask", priceIN: "₹1,999", priceUS: "$27.99", priceGB: "£22", origIN: "₹3,999", origUS: "$54.99", origGB: "£44", emoji: "🍶", desc: "Keeps drinks ice-cold for 24 hours in hot sunny conditions." }
+        { name: "UV-400 Polarized Sport Shades", priceIN: "₹1,600", priceUS: "$24.99", priceGB: "£19", priceJP: "¥3,800", priceEU: "€22", origIN: "₹3,200", origUS: "$49.99", origGB: "£39", origJP: "¥7,600", origEU: "€44", emoji: "🕶️", desc: "Ultra lightweight frame with contrast-enhancing optics." },
+        { name: "Aero-Breathe Lightweight Trainer", priceIN: "₹6,400", priceUS: "$79.99", priceGB: "£65", priceJP: "¥12,000", priceEU: "€74", origIN: "₹12,800", origUS: "$159.99", origGB: "£130", origJP: "¥24,000", origEU: "€148", emoji: "👟", desc: "Woven breathable mesh sole engineered to maximize cooling." },
+        { name: "Hydro-Chill Vacuum Insulated Flask", priceIN: "₹1,999", priceUS: "$27.99", priceGB: "£22", priceJP: "¥4,200", priceEU: "€25", origIN: "₹3,999", origUS: "$54.99", origGB: "£44", origJP: "¥8,400", origEU: "€50", emoji: "🍶", desc: "Keeps drinks ice-cold for 24 hours in hot sunny conditions." }
       ]
     };
 
@@ -217,7 +211,7 @@
         document.getElementById('cta-button').innerText = '⚡ Instant One-Tap Checkout';
       }
 
-      // Safe Webhook Execution to Make.com
+      // Safe Webhook Call
       try {
         const payload = { city, country, weather, timeOfDay, device };
         const response = await fetch(MAKE_WEBHOOK_URL, {
@@ -279,6 +273,8 @@
         let orig = p.origUS;
         if (countryCode === 'IN') { price = p.priceIN; orig = p.origIN; }
         else if (countryCode === 'GB') { price = p.priceGB; orig = p.origGB; }
+        else if (countryCode === 'JP') { price = p.priceJP; orig = p.origJP; }
+        else if (['FR','DE','ES','IT','NL'].includes(countryCode)) { price = p.priceEU; orig = p.origEU; }
 
         const card = document.createElement('div');
         card.className = 'product-card bg-gray-800/80 border border-gray-700/80 rounded-2xl p-5 flex flex-col justify-between';
@@ -308,9 +304,54 @@
       });
     }
 
+    function applyHeroPricing(c) {
+      const main = document.getElementById('price-main');
+      const orig = document.getElementById('price-original');
+      if (c === 'IN') { main.innerText = '₹3,999'; orig.innerText = '₹7,999'; }
+      else if (c === 'GB') { main.innerText = '£39'; orig.innerText = '£79'; }
+      else if (c === 'JP') { main.innerText = '¥7,400'; orig.innerText = '¥14,800'; }
+      else if (['FR','DE','ES','IT','NL'].includes(c)) { main.innerText = '€45'; orig.innerText = '€89'; }
+      else { main.innerText = '$49'; orig.innerText = '$99'; }
+    }
+
+    function applyPaymentTrust(c) {
+      const b = document.getElementById('badge-list');
+      if (c === 'IN') b.innerText = 'GPay • UPI • Paytm • PhonePe • Cards';
+      else if (c === 'JP') b.innerText = 'PayPay • LINE Pay • Apple Pay • Visa • JCB';
+      else if (['US','CA'].includes(c)) b.innerText = 'Apple Pay • Google Pay • Visa • Mastercard • Klarna';
+      else b.innerText = 'PayPal • Apple Pay • Visa • Mastercard • Klarna';
+    }
+
+    function applyCulturalGreeting(c, city) {
+      const g = document.getElementById('cultural-greeting');
+      if (c === 'IN') g.innerText = `🙏 NAMASTE TO ${city.toUpperCase()}`;
+      else if (c === 'JP') g.innerText = `🇯🇵 KONNICHIWA TO ${city.toUpperCase()}`;
+      else if (c === 'FR') g.innerText = `🇫🇷 BONJOUR TO ${city.toUpperCase()}`;
+      else if (c === 'ES') g.innerText = `🇪🇸 ¡HOLA TO ${city.toUpperCase()}`;
+      else g.innerText = `⚡ WELCOME VISITOR FROM ${city.toUpperCase()}`;
+    }
+
+    function applyDeliveryDate(city, c) {
+      const d = new Date(); d.setDate(d.getDate() + 2);
+      document.getElementById('delivery-text').innerText = `Express Delivery to ${city}, ${c} by ${d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}`;
+    }
+
+    function applyStockAlert(city) {
+      document.getElementById('stock-text').innerText = `Limited Regional Stock: Only 4 left in ${city} warehouse`;
+      document.getElementById('stock-bar').classList.remove('hidden');
+    }
+
+    function applySocialProof(city) {
+      setTimeout(() => {
+        const names = ['Marcus', 'Priya', 'Kenji', 'Sarah', 'David', 'Rahul', 'Chloe'];
+        document.getElementById('proof-name-city').innerText = `${names[Math.floor(Math.random()*names.length)]} from ${city}`;
+        document.getElementById('social-proof-toast').classList.remove('hidden');
+      }, 2500);
+    }
+
     function startCityScarcityTimer(city, countryCode) {
       const t = document.getElementById('timer-text');
-      const tz = CITY_TIMEZONES[city] || (countryCode === 'IN' ? 'Asia/Kolkata' : countryCode === 'GB' ? 'Europe/London' : countryCode === 'US' ? 'America/New_York' : 'UTC');
+      const tz = CITY_TIMEZONES[city] || (countryCode === 'IN' ? 'Asia/Kolkata' : countryCode === 'GB' ? 'Europe/London' : countryCode === 'JP' ? 'Asia/Tokyo' : countryCode === 'US' ? 'America/New_York' : 'UTC');
 
       function update() {
         try {
@@ -334,45 +375,6 @@
       }
       update();
       setInterval(update, 1000);
-    }
-
-    function applyHeroPricing(c) {
-      const main = document.getElementById('price-main');
-      const orig = document.getElementById('price-original');
-      if (c === 'IN') { main.innerText = '₹3,999'; orig.innerText = '₹7,999'; }
-      else if (c === 'GB') { main.innerText = '£39'; orig.innerText = '£79'; }
-      else { main.innerText = '$49'; orig.innerText = '$99'; }
-    }
-
-    function applyPaymentTrust(c) {
-      const b = document.getElementById('badge-list');
-      if (c === 'IN') b.innerText = 'GPay • UPI • Paytm • PhonePe • Cards';
-      else if (['US','CA'].includes(c)) b.innerText = 'Apple Pay • Google Pay • Visa • Mastercard • Klarna';
-      else b.innerText = 'PayPal • Apple Pay • Visa • Mastercard';
-    }
-
-    function applyCulturalGreeting(c, city) {
-      const g = document.getElementById('cultural-greeting');
-      if (c === 'IN') g.innerText = `🙏 NAMASTE TO ${city.toUpperCase()}`;
-      else g.innerText = `⚡ WELCOME VISITOR FROM ${city.toUpperCase()}`;
-    }
-
-    function applyDeliveryDate(city, c) {
-      const d = new Date(); d.setDate(d.getDate() + 2);
-      document.getElementById('delivery-text').innerText = `Express Delivery to ${city}, ${c} by ${d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}`;
-    }
-
-    function applyStockAlert(city) {
-      document.getElementById('stock-text').innerText = `Limited Regional Stock: Only 4 left in ${city} warehouse`;
-      document.getElementById('stock-bar').classList.remove('hidden');
-    }
-
-    function applySocialProof(city) {
-      setTimeout(() => {
-        const names = ['Marcus', 'Priya', 'Alex', 'Sarah', 'David', 'Rahul'];
-        document.getElementById('proof-name-city').innerText = `${names[Math.floor(Math.random()*names.length)]} from ${city}`;
-        document.getElementById('social-proof-toast').classList.remove('hidden');
-      }, 2500);
     }
 
     function applyCityPhoto(city) {
