@@ -13,18 +13,18 @@
   <div class="max-w-7xl mx-auto space-y-4">
     
     <!-- Top Header -->
-    <header class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gray-900 border border-gray-800 p-4 rounded-2xl shadow-lg gap-4">
+    <header class="flex items-center justify-between bg-gray-900 border border-gray-800 p-4 rounded-2xl shadow-lg">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-xl text-white">⚡</div>
         <div>
-          <h1 class="font-bold text-base text-white">Shape-Shifter Sales Control Panel</h1>
+          <h1 class="font-bold text-base text-white">Shape-Shifter Sales Sandbox</h1>
           <p class="text-xs text-gray-400">Live Client personalizer & conversion preview</p>
         </div>
       </div>
       <div class="flex items-center gap-3">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500 bg-opacity-10 text-emerald-400 border border-emerald-500 border-opacity-20">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          Engine Active
+          Make.com Engine Live
         </span>
         <a href="index.html" target="_blank" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 px-3 py-2 rounded-lg border border-gray-700 transition">
           Open Full Page ↗
@@ -43,7 +43,7 @@
         </div>
 
         <form onsubmit="event.preventDefault(); updatePreview();" class="space-y-4">
-          <!-- Client Profile -->
+          <!-- Client Account -->
           <div>
             <label class="block text-xs text-gray-400 font-semibold mb-1">Client Account</label>
             <select id="s_client" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-indigo-500">
@@ -53,27 +53,27 @@
             </select>
           </div>
 
-          <!-- City -->
+          <!-- Target City -->
           <div>
             <label class="block text-xs text-gray-400 font-semibold mb-1">Target City</label>
             <select id="s_city" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-indigo-500">
-              <option value="Sahibzada Ajit Singh Nagar">Sahibzada Ajit Singh Nagar (Mohali), India</option>
-              <option value="Jaipur">Jaipur, India</option>
-              <option value="Mumbai">Mumbai, India</option>
-              <option value="New York">New York, USA</option>
               <option value="London">London, UK</option>
-              <option value="Tokyo">Tokyo, Japan</option>
+              <option value="New York">New York, USA</option>
+              <option value="Sahibzada Ajit Singh Nagar">Sahibzada Ajit Singh Nagar (Mohali), India</option>
+              <option value="Mumbai">Mumbai, India</option>
+              <option value="Jaipur">Jaipur, India</option>
               <option value="Paris">Paris, France</option>
+              <option value="Tokyo">Tokyo, Japan</option>
             </select>
           </div>
 
-          <!-- Weather -->
+          <!-- Weather Context -->
           <div>
             <label class="block text-xs text-gray-400 font-semibold mb-1">Weather Context</label>
             <select id="s_weather" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-indigo-500">
-              <option value="Clear">Clear Sky / Sunny (Sunny Items Swap)</option>
-              <option value="Rain">Rainy (Rainy Merchandising Active)</option>
-              <option value="Snow">Snowy (PTC Heater & Warm Items Active)</option>
+              <option value="Rain">Rainy (Activates Weather Rain Canvas)</option>
+              <option value="Clear">Clear Sky / Sunny</option>
+              <option value="Snow">Snowy (Activates Cold Canvas)</option>
             </select>
           </div>
 
@@ -102,14 +102,14 @@
         </form>
 
         <div class="pt-3 border-t border-gray-800 text-[11px] text-gray-400 space-y-1">
-          <p class="flex items-center gap-1.5"><span class="text-emerald-400">✔</span> Weather-Based Merchandising Active</p>
-          <p class="flex items-center gap-1.5"><span class="text-emerald-400">✔</span> Local Currency Price Adaptation</p>
-          <p class="flex items-center gap-1.5"><span class="text-emerald-400">✔</span> Warehouse Stock Bar Active</p>
-          <p class="flex items-center gap-1.5"><span class="text-emerald-400">✔</span> Midnight Scarcity Timer Active</p>
+          <p class="flex items-center gap-1.5"><span class="text-emerald-400">✔</span> Weather Merchandising Engine Active</p>
+          <p class="flex items-center gap-1.5"><span class="text-emerald-400">✔</span> Real City Timezone Countdown Active</p>
+          <p class="flex items-center gap-1.5"><span class="text-emerald-400">✔</span> Local Trust Payment Badges Active</p>
+          <p class="flex items-center gap-1.5"><span class="text-emerald-400">✔</span> Auto Local Currency Price Adaptation</p>
         </div>
       </div>
       
-      <!-- Right Live Preview Frame -->
+      <!-- Right Live Preview Frame (FULL TALL HEIGHT) -->
       <div class="lg:col-span-8 bg-gray-900 rounded-2xl border border-gray-800 shadow-xl overflow-hidden flex flex-col">
         <div class="bg-gray-950 border-b border-gray-800 px-4 py-2.5 flex items-center justify-between text-xs text-gray-400">
           <div class="flex items-center gap-2">
@@ -121,8 +121,7 @@
           <span id="url-text" class="font-mono text-indigo-400 text-[11px] truncate max-w-xs">index.html</span>
         </div>
         
-        <!-- Large Frame so Weather Grid fits comfortably -->
-        <iframe id="preview" src="index.html" style="width: 100%; height: 1100px; border: none; display: block;" class="bg-gray-900"></iframe>
+        <iframe id="preview" src="index.html" style="width: 100%; height: 850px; border: none; display: block;" class="bg-gray-900"></iframe>
       </div>
 
     </div>
