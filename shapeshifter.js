@@ -1,17 +1,15 @@
 /**
- * Shape-Shifter Enterprise Engine v3.4 - 14 Enterprise Upgrades Edition
+ * Shape-Shifter Engine v3.5 - Standard Number Locale Fix
  */
 (function() {
-    console.log("⚡ Shape-Shifter v3.4 Engine Initialized (14 Enterprise Features Active)");
+    console.log("⚡ Shape-Shifter v3.5 Engine Initialized");
 
-    // 1. Currency Rates, Local Badges & Tax Disclosures
     const currencyRates = {
         'Dubai': { 
             code: 'AED', 
             symbol: 'د.إ', 
             rate: 4.67, 
-            taxLabel: 'Includes 5% UAE VAT & Local Duties Paid',
-            concierge: '● Concierge Online for Dubai | Chat in Arabic',
+            taxLabel: 'Includes 5% UAE VAT & Duties Paid',
             badges: ['Apple Pay', 'Tabby (UAE BNPL)', 'Wire Transfer', 'Credit Card'] 
         },
         'London': { 
@@ -19,15 +17,13 @@
             symbol: '£', 
             rate: 1.0, 
             taxLabel: 'Includes 20% UK VAT',
-            concierge: '● Concierge Online for London | Direct WhatsApp',
             badges: ['Apple Pay', 'Klarna', 'Clearpay', 'Visa / Mastercard'] 
         },
         'New York': { 
             code: 'USD', 
             symbol: '$', 
             rate: 1.27, 
-            taxLabel: 'Excl. US State Sales Tax (Calculated at Checkout)',
-            concierge: '● Concierge Online for NYC | Private Client Advisor',
+            taxLabel: 'Excl. US State Sales Tax',
             badges: ['Apple Pay', 'Afterpay', 'Affirm', 'Amex'] 
         },
         'Paris': { 
@@ -35,7 +31,6 @@
             symbol: '€', 
             rate: 1.17, 
             taxLabel: 'TVA Incluse (Taxes Européennes)',
-            concierge: '● Concierge en Ligne à Paris | Service Client',
             badges: ['Apple Pay', 'Alma (EUR 4x)', 'SEPA Transfer', 'Carte Bancaire'] 
         },
         'Tokyo': { 
@@ -43,12 +38,10 @@
             symbol: '¥', 
             rate: 191.5, 
             taxLabel: '消費税込み (10% 日本国内税込)',
-            concierge: '● 東京コンシェルジュオンライン | チャット対応',
             badges: ['Apple Pay', 'Paidy (Japan BNPL)', 'Line Pay', 'Credit Card'] 
         }
     };
 
-    // 2. City Skyline Background Images
     const cityImages = {
         'Dubai': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=2000',
         'London': 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=2000',
@@ -57,7 +50,6 @@
         'Tokyo': 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&q=80&w=2000'
     };
 
-    // 3. Native Cultural Greetings
     const cityGreetings = {
         'Dubai': 'أهلاً وسهلاً بكم في دبي | Welcome to Dubai Private Vault',
         'London': 'Welcome | London Private Collection',
@@ -66,7 +58,6 @@
         'Tokyo': 'ようこそ東京へ | Tokyo Luxury Collector Portal'
     };
 
-    // 4. Canvas Particle Animation Engine (Rain Drops / Snow Flakes)
     let canvasAnimationId = null;
     function startWeatherCanvas(weatherType) {
         const canvas = document.getElementById('weather-canvas');
@@ -125,13 +116,11 @@
         }
     }
 
-    // 5. Main Personalization Engine Function
     function applyPersonalization(city, weather) {
         console.log(`⚡ Personalizing for ${city} (${weather})`);
 
         const curr = currencyRates[city] || currencyRates['London'];
 
-        // Update Text Elements
         document.querySelectorAll('#city-name, #sub-city-name, #nav-city-badge, #ticker-city, #ticker-city-2').forEach(el => {
             if (el) el.textContent = city;
         });
@@ -139,32 +128,21 @@
         const greetingEl = document.getElementById('visitor-greeting');
         if (greetingEl && cityGreetings[city]) greetingEl.textContent = cityGreetings[city];
 
-        // Update Hero Image
         const heroEl = document.getElementById('hero');
         if (heroEl && cityImages[city]) heroEl.style.backgroundImage = `url('${cityImages[city]}')`;
 
-        // Update Currency Badges
         document.querySelectorAll('#nav-currency-badge, #local-currency-display').forEach(el => {
             if (el) el.textContent = `${curr.code} ${curr.symbol}`;
         });
 
-        // Upgrade 13: Update Concierge Badge
-        const conciergeEl = document.getElementById('concierge-badge');
-        if (conciergeEl && curr.concierge) {
-            conciergeEl.textContent = curr.concierge;
-        }
-
-        // Weather Badge
         const weatherBadge = document.getElementById('weather-badge');
         if (weatherBadge) weatherBadge.textContent = `● Real-Time Geo Merchandising: ${weather} in ${city}`;
 
-        // Payment Badges
         const badgeContainer = document.getElementById('badge-container');
         if (badgeContainer && curr.badges) {
             badgeContainer.innerHTML = curr.badges.map(b => `<span>● ${b}</span>`).join('');
         }
 
-        // Render Filtered Products with Upgrade 14 Tax Disclosure
         if (typeof luxuryInventory !== 'undefined') {
             const items = luxuryInventory.filter(item => item.weather === weather);
             const grid = document.getElementById('product-grid');
@@ -174,20 +152,25 @@
 
             if (grid) {
                 grid.innerHTML = items.map(item => {
-                    const price = Math.round(item.baseGbp * curr.rate).toLocaleString();
+                    // Enforce en-US Locale to prevent Indian numbering (2,10,150 -> 210,150)
+                    const convertedVal = Math.round(item.baseGbp * curr.rate);
+                    const formattedPrice = convertedVal.toLocaleString('en-US');
+
                     return `
                         <div class="product-card">
-                            <div class="img-wrapper">
-                                <img src="${item.img}" alt="${item.name}" class="product-img">
-                                <span class="item-tag">${item.tag}</span>
+                            <div>
+                                <div class="img-wrapper">
+                                    <img src="${item.img}" alt="${item.name}" class="product-img" onerror="this.src='https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800'">
+                                    <span class="item-tag">${item.tag}</span>
+                                </div>
+                                <p class="brand-label">${item.brand}</p>
+                                <h3 class="item-title font-serif">${item.name}</h3>
+                                <p class="item-desc">${item.desc}</p>
                             </div>
-                            <p class="brand-label">${item.brand}</p>
-                            <h3 class="item-title font-serif">${item.name}</h3>
-                            <p class="item-desc">${item.desc}</p>
                             <div class="card-footer">
-                                <div>
-                                    <span class="item-price font-serif">${curr.symbol} ${price}</span>
-                                    <p style="font-size: 8px; color: #888; text-transform: uppercase; margin-top: 2px;">${curr.taxLabel}</p>
+                                <div class="price-box">
+                                    <span class="item-price font-serif">${curr.symbol} ${formattedPrice}</span>
+                                    <span class="tax-label">${curr.taxLabel}</span>
                                 </div>
                                 <button class="btn-inquire">Inquire</button>
                             </div>
@@ -209,7 +192,6 @@
         startWeatherCanvas(weather);
     }
 
-    // Scarcity Countdown
     function startCountdown() {
         const countdownEl = document.getElementById('countdown');
         if (!countdownEl) return;
@@ -223,11 +205,9 @@
         }, 1000);
     }
 
-    // Initial Load
     applyPersonalization('Dubai', 'Clear');
     startCountdown();
 
-    // Sandbox Listener
     window.addEventListener('message', function(event) {
         if (event.data && event.data.type === 'SHAPESHIFTER_SIMULATE') {
             applyPersonalization(event.data.city, event.data.weather);
