@@ -1,14 +1,16 @@
 /**
- * Shape-Shifter Engine v3.5 - Standard Number Locale Fix
+ * Shape-Shifter Engine v3.6 - Dynamic Timezone Scarcity Timer
  */
 (function() {
-    console.log("⚡ Shape-Shifter v3.5 Engine Initialized");
+    console.log("⚡ Shape-Shifter v3.6 Engine Initialized");
 
+    // 1. Currency Rates, Local Payment Badges, Tax Disclosures & True Timezones
     const currencyRates = {
         'Dubai': { 
             code: 'AED', 
             symbol: 'د.إ', 
             rate: 4.67, 
+            timezone: 'Asia/Dubai',
             taxLabel: 'Includes 5% UAE VAT & Duties Paid',
             badges: ['Apple Pay', 'Tabby (UAE BNPL)', 'Wire Transfer', 'Credit Card'] 
         },
@@ -16,6 +18,7 @@
             code: 'GBP', 
             symbol: '£', 
             rate: 1.0, 
+            timezone: 'Europe/London',
             taxLabel: 'Includes 20% UK VAT',
             badges: ['Apple Pay', 'Klarna', 'Clearpay', 'Visa / Mastercard'] 
         },
@@ -23,6 +26,7 @@
             code: 'USD', 
             symbol: '$', 
             rate: 1.27, 
+            timezone: 'America/New_York',
             taxLabel: 'Excl. US State Sales Tax',
             badges: ['Apple Pay', 'Afterpay', 'Affirm', 'Amex'] 
         },
@@ -30,6 +34,7 @@
             code: 'EUR', 
             symbol: '€', 
             rate: 1.17, 
+            timezone: 'Europe/Paris',
             taxLabel: 'TVA Incluse (Taxes Européennes)',
             badges: ['Apple Pay', 'Alma (EUR 4x)', 'SEPA Transfer', 'Carte Bancaire'] 
         },
@@ -37,11 +42,13 @@
             code: 'JPY', 
             symbol: '¥', 
             rate: 191.5, 
+            timezone: 'Asia/Tokyo',
             taxLabel: '消費税込み (10% 日本国内税込)',
             badges: ['Apple Pay', 'Paidy (Japan BNPL)', 'Line Pay', 'Credit Card'] 
         }
     };
 
+    // 2. City Skyline Background Images
     const cityImages = {
         'Dubai': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=2000',
         'London': 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=2000',
@@ -50,6 +57,7 @@
         'Tokyo': 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&q=80&w=2000'
     };
 
+    // 3. Native Cultural Greetings
     const cityGreetings = {
         'Dubai': 'أهلاً وسهلاً بكم في دبي | Welcome to Dubai Private Vault',
         'London': 'Welcome | London Private Collection',
@@ -58,6 +66,10 @@
         'Tokyo': 'ようこそ東京へ | Tokyo Luxury Collector Portal'
     };
 
+    let activeCity = 'Dubai'; // Track currently selected city for timezone timer
+    let countdownIntervalId = null;
+
+    // 4. Canvas Particle Animation Engine (Rain Drops / Snow Flakes)
     let canvasAnimationId = null;
     function startWeatherCanvas(weatherType) {
         const canvas = document.getElementById('weather-canvas');
@@ -116,11 +128,64 @@
         }
     }
 
+    // 5. Dynamic Timezone Scarcity Timer Calculation (No external library dependencies)
+    function updateMidnightCountdown() {
+        const countdownEl = document.getElementById('countdown');
+        if (!countdownEl) return;
+
+        const curr = currencyRates[activeCity] || currencyRates['London'];
+        const targetTimezone = curr.timezone;
+
+        try {
+            // Get current local time in target timezone
+            const now = new Date();
+            const formatter = new Intl.DateTimeFormat('en-US', {
+                timeZone: targetTimezone,
+                year: 'numeric', month: 'numeric', day: 'numeric',
+                hour: 'numeric', minute: 'numeric', second: 'numeric',
+                hour12: false
+            });
+            
+            const parts = formatter.formatToParts(now);
+            const t = {};
+            parts.forEach(p => t[p.type] = p.value);
+
+            // Construct real timezone-specific Date Object
+            const localHour = parseInt(t.hour, 10);
+            const localMinute = parseInt(t.minute, 10);
+            const localSecond = parseInt(t.second, 10);
+
+            // Time remaining until 24:00:00 midnight
+            let hoursRemaining = 23 - localHour;
+            let minutesRemaining = 59 - localMinute;
+            let secondsRemaining = 59 - localSecond;
+
+            if (hoursRemaining < 0) hoursRemaining = 0;
+            if (minutesRemaining < 0) minutesRemaining = 0;
+            if (secondsRemaining < 0) secondsRemaining = 0;
+
+            countdownEl.textContent = `${String(hoursRemaining).padStart(2, '0')}:${String(minutesRemaining).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
+        } catch (err) {
+            console.error("Timezone computation fallback triggered:", err);
+            countdownEl.textContent = "03:45:12"; // Beautiful premium fall-back state
+        }
+    }
+
+    // Start countdown timer loop
+    function startCountdown() {
+        if (countdownIntervalId) clearInterval(countdownIntervalId);
+        updateMidnightCountdown();
+        countdownIntervalId = setInterval(updateMidnightCountdown, 1000);
+    }
+
+    // 6. Main Personalization Engine Function
     function applyPersonalization(city, weather) {
         console.log(`⚡ Personalizing for ${city} (${weather})`);
+        activeCity = city; // Update tracked active city globally
 
         const curr = currencyRates[city] || currencyRates['London'];
 
+        // Update Text Elements
         document.querySelectorAll('#city-name, #sub-city-name, #nav-city-badge, #ticker-city, #ticker-city-2').forEach(el => {
             if (el) el.textContent = city;
         });
@@ -128,21 +193,26 @@
         const greetingEl = document.getElementById('visitor-greeting');
         if (greetingEl && cityGreetings[city]) greetingEl.textContent = cityGreetings[city];
 
+        // Update Hero Image
         const heroEl = document.getElementById('hero');
         if (heroEl && cityImages[city]) heroEl.style.backgroundImage = `url('${cityImages[city]}')`;
 
+        // Update Currency Badges
         document.querySelectorAll('#nav-currency-badge, #local-currency-display').forEach(el => {
             if (el) el.textContent = `${curr.code} ${curr.symbol}`;
         });
 
+        // Weather Badge
         const weatherBadge = document.getElementById('weather-badge');
         if (weatherBadge) weatherBadge.textContent = `● Real-Time Geo Merchandising: ${weather} in ${city}`;
 
+        // Payment Badges
         const badgeContainer = document.getElementById('badge-container');
         if (badgeContainer && curr.badges) {
             badgeContainer.innerHTML = curr.badges.map(b => `<span>● ${b}</span>`).join('');
         }
 
+        // Render Filtered Products from products.js
         if (typeof luxuryInventory !== 'undefined') {
             const items = luxuryInventory.filter(item => item.weather === weather);
             const grid = document.getElementById('product-grid');
@@ -152,10 +222,7 @@
 
             if (grid) {
                 grid.innerHTML = items.map(item => {
-                    // Enforce en-US Locale to prevent Indian numbering (2,10,150 -> 210,150)
-                    const convertedVal = Math.round(item.baseGbp * curr.rate);
-                    const formattedPrice = convertedVal.toLocaleString('en-US');
-
+                    const price = Math.round(item.baseGbp * curr.rate).toLocaleString('en-US');
                     return `
                         <div class="product-card">
                             <div>
@@ -169,7 +236,7 @@
                             </div>
                             <div class="card-footer">
                                 <div class="price-box">
-                                    <span class="item-price font-serif">${curr.symbol} ${formattedPrice}</span>
+                                    <span class="item-price font-serif">${curr.symbol} ${price}</span>
                                     <span class="tax-label">${curr.taxLabel}</span>
                                 </div>
                                 <button class="btn-inquire">Inquire</button>
@@ -189,25 +256,15 @@
             }
         }
 
+        // Re-align and trigger countdown adjustments
+        startCountdown();
         startWeatherCanvas(weather);
     }
 
-    function startCountdown() {
-        const countdownEl = document.getElementById('countdown');
-        if (!countdownEl) return;
-        let hours = 4, minutes = 12, seconds = 55;
-        setInterval(() => {
-            seconds--;
-            if (seconds < 0) { seconds = 59; minutes--; }
-            if (minutes < 0) { minutes = 59; hours--; }
-            if (hours < 0) hours = 23;
-            countdownEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        }, 1000);
-    }
-
+    // Initial Load execution
     applyPersonalization('Dubai', 'Clear');
-    startCountdown();
 
+    // Listen for Demo Sandbox simulation updates
     window.addEventListener('message', function(event) {
         if (event.data && event.data.type === 'SHAPESHIFTER_SIMULATE') {
             applyPersonalization(event.data.city, event.data.weather);
