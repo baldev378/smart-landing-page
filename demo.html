@@ -3,35 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shape-Shifter Interactive Sandbox Control Panel</title>
+    <title>Shape-Shifter Sandbox Control Panel</title>
     
-    <!-- Clean Compiled Tailwind CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;600;700&display=swap" rel="stylesheet">
     
+    <!-- Standalone Native Pure CSS (Zero Third-Party CDNs) -->
     <style>
-        body { font-family: 'Jost', sans-serif; background-color: #0b0f19; color: #f8fafc; }
-        .glass-panel { background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Jost', sans-serif; background-color: #0b0f19; color: #f8fafc; padding: 24px; }
+        
+        .container { max-width: 1300px; margin: 0 auto; }
+        
+        .control-panel { background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 24px; border-radius: 16px; margin-bottom: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; }
+        
+        .badge { display: inline-block; padding: 4px 12px; background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 20px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; }
+        .panel-title { font-size: 22px; font-weight: 700; color: #ffffff; }
+        .panel-desc { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+
+        .control-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; width: 100%; max-width: 650px; }
+        
+        .field-group { display: flex; flex-direction: column; }
+        .field-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: #94a3b8; margin-bottom: 6px; }
+        
+        .select-input { width: 100%; background: #0f172a; border: 1px solid #334155; color: #ffffff; padding: 8px 12px; border-radius: 8px; font-size: 12px; outline: none; font-family: 'Jost', sans-serif; }
+        .select-input:focus { border-color: #f59e0b; }
+
+        .btn-trigger { width: 100%; background: #f59e0b; color: #090d16; font-weight: 700; padding: 9px 12px; border: none; border-radius: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; cursor: pointer; transition: background 0.2s; margin-top: 18px; }
+        .btn-trigger:hover { background: #d97706; }
+
+        .iframe-container { background: rgba(15, 23, 42, 0.92); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 16px; display: flex; justify-content: center; align-items: center; }
+        .preview-iframe { width: 100%; height: 820px; border-radius: 12px; border: 1px solid #1e293b; transition: width 0.5s ease; }
     </style>
 </head>
-<body class="p-4 md:p-8 min-h-screen">
+<body>
 
-    <div class="max-w-7xl mx-auto">
-        <!-- Control Panel Bar -->
-        <div class="glass-panel p-6 rounded-2xl mb-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+    <div class="container">
+        <!-- Control Panel Header -->
+        <div class="control-panel">
             <div>
-                <div class="flex items-center gap-3 mb-1">
-                    <span class="px-3 py-1 bg-amber-500 bg-opacity-20 text-amber-400 border border-amber-500 border-opacity-40 rounded-full text-xs font-semibold uppercase tracking-widest">Enterprise Sandbox</span>
-                    <h1 class="text-2xl font-bold tracking-wide">Shape-Shifter Control Panel</h1>
+                <div>
+                    <span class="badge">Enterprise Sandbox</span>
+                    <h1 class="panel-title">Shape-Shifter Control Panel</h1>
                 </div>
-                <p class="text-gray-400 text-xs">Simulate visitor locations, native script greetings, rain/snow particle visual effects, and weather product grids.</p>
+                <p class="panel-desc">Simulate visitor cities, native script greetings, rain/snow particle visual effects, and weather product grids.</p>
             </div>
 
             <!-- Controls Selector Grid -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full lg:w-auto">
-                <div>
-                    <label class="block text-xs uppercase tracking-widest text-gray-400 mb-1">Target City</label>
-                    <select id="sim-city" onchange="updateSimulation()" class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg px-3 py-2 text-xs outline-none focus:border-amber-500">
+            <div class="control-grid">
+                <div class="field-group">
+                    <label class="field-label">Target City</label>
+                    <select id="sim-city" onchange="updateSimulation()" class="select-input">
                         <option value="Dubai" selected>Dubai (AED د.إ)</option>
                         <option value="London">London (GBP £)</option>
                         <option value="New York">New York (USD $)</option>
@@ -40,34 +61,32 @@
                     </select>
                 </div>
 
-                <div>
-                    <label class="block text-xs uppercase tracking-widest text-gray-400 mb-1">Live Weather</label>
-                    <select id="sim-weather" onchange="updateSimulation()" class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg px-3 py-2 text-xs outline-none focus:border-amber-500">
+                <div class="field-group">
+                    <label class="field-label">Live Weather</label>
+                    <select id="sim-weather" onchange="updateSimulation()" class="select-input">
                         <option value="Clear">Sunny / Clear</option>
                         <option value="Rainy">Rainy (Rain Visual)</option>
                         <option value="Snow">Snow (Snow Visual)</option>
                     </select>
                 </div>
 
-                <div>
-                    <label class="block text-xs uppercase tracking-widest text-gray-400 mb-1">Device View</label>
-                    <select id="sim-device" onchange="updateSimulation()" class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg px-3 py-2 text-xs outline-none focus:border-amber-500">
+                <div class="field-group">
+                    <label class="field-label">Device View</label>
+                    <select id="sim-device" onchange="updateSimulation()" class="select-input">
                         <option value="desktop">Desktop View</option>
                         <option value="mobile">Mobile View</option>
                     </select>
                 </div>
 
-                <div class="flex items-end">
-                    <button onclick="updateSimulation()" class="w-full bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold py-2 rounded-lg text-xs uppercase tracking-wider transition">
-                        Trigger Shift
-                    </button>
+                <div class="field-group">
+                    <button onclick="updateSimulation()" class="btn-trigger">Trigger Shift</button>
                 </div>
             </div>
         </div>
 
         <!-- Live Preview Frame Container -->
-        <div class="glass-panel rounded-2xl p-4 flex justify-center items-center">
-            <iframe id="preview-frame" src="index.html" class="w-full h-screen rounded-xl border border-gray-800 transition-all duration-500"></iframe>
+        <div class="iframe-container">
+            <iframe id="preview-frame" src="index.html" class="preview-iframe"></iframe>
         </div>
     </div>
 
