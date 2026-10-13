@@ -1,33 +1,35 @@
-// products.js - Luxury Inventory Database
+/**
+ * Shape-Shifter Enterprise Inventory Database (25+ Luxury Items)
+ */
 const luxuryInventory = [
-    // SUNNY / CLEAR WEATHER COLLECTION
-    { name: "Hermès Birkin 25 Gold", price: 24500, img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800", weather: "Clear", tag: "Pristine", brand: "Hermès" },
-    { name: "Cartier Panthère Sunglasses", price: 1150, img: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=800", weather: "Clear", tag: "Summer Edit", brand: "Cartier" },
-    { name: "Rolex Day-Date 40 Gold", price: 32000, img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=800", weather: "Clear", tag: "Investment", brand: "Rolex" },
-    { name: "Chanel Coco Handle White", price: 5200, img: "https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=800", weather: "Clear", tag: "Resort", brand: "Chanel" },
-    { name: "Dior Book Tote Raffia", price: 2900, img: "https://images.unsplash.com/photo-1584916201218-f4242ceb4809?q=80&w=800", weather: "Clear", tag: "Trending", brand: "Dior" },
-    { name: "Audemars Piguet Royal Oak", price: 45000, img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=800", weather: "Clear", tag: "Rare", brand: "AP" },
-    { name: "Hermès Oran Sandals", price: 750, img: "https://images.unsplash.com/photo-1603808033192-082d6919d3e1?q=80&w=800", weather: "Clear", tag: "Classic", brand: "Hermès" },
-    { name: "Van Cleef Alhambra Bracelet", price: 4200, img: "https://images.unsplash.com/photo-1515562141207-7a8ea7494b16?q=80&w=800", weather: "Clear", tag: "Fine Jewelry", brand: "VCA" },
+    // --- SUNNY / CLEAR WEATHER COLLECTION ---
+    { id: 1, name: "Hermès Birkin 25 Gold Epsom", baseGbp: 24500, img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800", weather: "Clear", tag: "Sunny Essential", brand: "Hermès", desc: "Gold Epsom Leather & Gold Hardware" },
+    { id: 2, name: "Cartier Panthère Sunglasses", baseGbp: 1150, img: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80&w=800", weather: "Clear", tag: "Summer Edit", brand: "Cartier", desc: "24k Gold Plated Smooth Frame" },
+    { id: 3, name: "Rolex Day-Date 40 Gold", baseGbp: 32000, img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&q=80&w=800", weather: "Clear", tag: "Investment", brand: "Rolex", desc: "18k Yellow Gold Champagne Dial" },
+    { id: 4, name: "Chanel Coco Handle White", baseGbp: 5200, img: "https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&q=80&w=800", weather: "Clear", tag: "Resort Edit", brand: "Chanel", desc: "White Caviar Leather Flap Bag" },
+    { id: 5, name: "Dior Book Tote Raffia", baseGbp: 2900, img: "https://images.unsplash.com/photo-1584916201218-f4242ceb4809?auto=format&fit=crop&q=80&w=800", weather: "Clear", tag: "Trending", brand: "Dior", desc: "Woven Raffia Cannage Embroidery" },
+    { id: 6, name: "Audemars Piguet Royal Oak", baseGbp: 45000, img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=800", weather: "Clear", tag: "Rare Vault", brand: "Audemars Piguet", desc: "Stainless Steel Blue Grande Tapisserie" },
+    { id: 7, name: "Hermès Oran Leather Sandals", baseGbp: 750, img: "https://images.unsplash.com/photo-1603808033192-082d6919d3e1?auto=format&fit=crop&q=80&w=800", weather: "Clear", tag: "Classic", brand: "Hermès", desc: "Gold Calfskin Iconic H Cutout" },
+    { id: 8, name: "Van Cleef Alhambra Bracelet", baseGbp: 4200, img: "https://images.unsplash.com/photo-1515562141207-7a8ea7494b16?auto=format&fit=crop&q=80&w=800", weather: "Clear", tag: "Fine Jewelry", brand: "Van Cleef", desc: "5 Motifs Vintage Yellow Gold Mother of Pearl" },
 
-    // RAINY / COLD WEATHER COLLECTION
-    { name: "Burberry Heritage Trench", price: 1890, img: "https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=800", weather: "Rainy", tag: "Rainproof", brand: "Burberry" },
-    { name: "Louis Vuitton Keepall Bandoulière", price: 2100, img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800", weather: "Rainy", tag: "Travel", brand: "Louis Vuitton" },
-    { name: "Prada Combat Boots", price: 1250, img: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=800", weather: "Rainy", tag: "Durable", brand: "Prada" },
-    { name: "Hermès Kelly 28 Black", price: 18500, img: "https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=800", weather: "Rainy", tag: "Epsom Leather", brand: "Hermès" },
-    { name: "Bottega Veneta Rain Jacket", price: 2400, img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=800", weather: "Rainy", tag: "Outerwear", brand: "Bottega" },
-    { name: "Chanel Umbrella & Case", price: 1500, img: "https://images.unsplash.com/photo-1515688594390-b649af70d282?q=80&w=800", weather: "Rainy", tag: "Rare Accessory", brand: "Chanel" },
-    { name: "Rolex Submariner Date", price: 12500, img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=800", weather: "Rainy", tag: "Waterproof", brand: "Rolex" },
-    { name: "Goyard Cassette Trunk", price: 4200, img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800", weather: "Rainy", tag: "Coated Canvas", brand: "Goyard" },
+    // --- RAINY / COLD WEATHER COLLECTION ---
+    { id: 9, name: "Burberry Heritage Trench Coat", baseGbp: 1890, img: "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=800", weather: "Rainy", tag: "Rainproof Luxury", brand: "Burberry", desc: "Water-resistant Cotton Gabardine" },
+    { id: 10, name: "Louis Vuitton Keepall Duffle", baseGbp: 2100, img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=800", weather: "Rainy", tag: "Weather Sealed", brand: "Louis Vuitton", desc: "Monogram Waterproof Coated Canvas" },
+    { id: 11, name: "Prada Monolith Combat Boots", baseGbp: 1250, img: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?auto=format&fit=crop&q=80&w=800", weather: "Rainy", tag: "Durable", brand: "Prada", desc: "Brushed Leather & Nylon Pouch Boots" },
+    { id: 12, name: "Hermès Kelly 28 Black Epsom", baseGbp: 18500, img: "https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&q=80&w=800", weather: "Rainy", tag: "Epsom Shield", brand: "Hermès", desc: "Black Rigid Epsom Leather with Palladium" },
+    { id: 13, name: "Bottega Veneta Waterproof Jacket", baseGbp: 2400, img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800", weather: "Rainy", tag: "Rain Shield", brand: "Bottega Veneta", desc: "Technical Nylon Shell Hooded Parka" },
+    { id: 14, name: "Pasotti Handcrafted Umbrella", baseGbp: 650, img: "https://images.unsplash.com/photo-1515688594390-b649af70d282?auto=format&fit=crop&q=80&w=800", weather: "Rainy", tag: "Rain Accessory", brand: "Pasotti", desc: "Enameled Brass Lion Head Handle" },
+    { id: 15, name: "Rolex Submariner Date Steel", baseGbp: 12500, img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&q=80&w=800", weather: "Rainy", tag: "300m Waterproof", brand: "Rolex", desc: "Oystersteel Black Cerachrom Bezel" },
+    { id: 16, name: "Goyard Cassette Trunk Bag", baseGbp: 4200, img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800", weather: "Rainy", tag: "Coated Canvas", brand: "Goyard", desc: "Waterproof Goyardine Canvas Leather" },
 
-    // SNOW / WINTER COLLECTION
-    { name: "Moncler Maya Down Jacket", price: 1650, img: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?q=80&w=800", weather: "Snow", tag: "Alpine", brand: "Moncler" },
-    { name: "Loro Piana Cashmere Scarf", price: 850, img: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?q=80&w=800", weather: "Snow", tag: "Warmth", brand: "Loro Piana" },
-    { name: "Chanel Shearling Flap Bag", price: 6500, img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=800", weather: "Snow", tag: "Winter Edit", brand: "Chanel" },
-    { name: "Max Mara Ski Trousers", price: 1100, img: "https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=800", weather: "Snow", tag: "Resort", brand: "Max Mara" },
-    { name: "Hermès Constance 24", price: 14500, img: "https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=800", weather: "Snow", tag: "Box Calf", brand: "Hermès" },
-    { name: "Cartier Santos Diamond", price: 28000, img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=800", weather: "Snow", tag: "Ice", brand: "Cartier" },
-    { name: "Dior Snow Boots", price: 1450, img: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=800", weather: "Snow", tag: "Footwear", brand: "Dior" },
-    { name: "Brunello Cucinelli Cape", price: 5400, img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=800", weather: "Snow", tag: "Cashmere", brand: "Brunello C." },
-    { name: "Fendi Puffer Jacket", price: 2900, img: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?q=80&w=800", weather: "Snow", tag: "Ski", brand: "Fendi" }
+    // --- SNOW / WINTER COLLECTION ---
+    { id: 17, name: "Moncler Maya Down Coat", baseGbp: 1650, img: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&q=80&w=800", weather: "Snow", tag: "Alpine Grade", brand: "Moncler", desc: "Glossy Goose Down Quilted Jacket" },
+    { id: 18, name: "Loro Piana Cashmere Scarf", baseGbp: 850, img: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&q=80&w=800", weather: "Snow", tag: "100% Cashmere", brand: "Loro Piana", desc: "Frasted Undyed Baby Cashmere Stole" },
+    { id: 19, name: "Chanel Shearling Classic Flap", baseGbp: 6500, img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=800", weather: "Snow", tag: "Winter Vault", brand: "Chanel", desc: "Ecru Shearling & Gold Tone Hardware" },
+    { id: 20, name: "Max Mara Cashmere Coat", baseGbp: 3400, img: "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=800", weather: "Snow", tag: "Winter Luxury", brand: "Max Mara", desc: "Iconic Double-Breasted Camel Hair Coat" },
+    { id: 21, name: "Hermès Constance 24 Mirror", baseGbp: 14500, img: "https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&q=80&w=800", weather: "Snow", tag: "Pristine Vault", brand: "Hermès", desc: "Box Calfskin Leather Silver H Buckle" },
+    { id: 22, name: "Cartier Santos Iced Diamond", baseGbp: 28000, img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&q=80&w=800", weather: "Snow", tag: "Iced Edition", brand: "Cartier", desc: "Large Model Custom Diamond Bezel" },
+    { id: 23, name: "Dior Snow Leather Boots", baseGbp: 1450, img: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?auto=format&fit=crop&q=80&w=800", weather: "Snow", tag: "Alpine Boot", brand: "Dior", desc: "Oblique Technical Fabric & Leather" },
+    { id: 24, name: "Brunello Cucinelli Cape", baseGbp: 5400, img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800", weather: "Snow", tag: "Winter Warmth", brand: "Brunello Cucinelli", desc: "Monili Trimmed Cashmere Cape" },
+    { id: 25, name: "Fendi Ski Puffer Jacket", baseGbp: 2900, img: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&q=80&w=800", weather: "Snow", tag: "Resort Ski", brand: "Fendi", desc: "FF Motif Reversible Down Jacket" }
 ];
