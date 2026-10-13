@@ -1,19 +1,54 @@
 /**
- * Shape-Shifter Engine v3.3 - Pure Native Standalone
+ * Shape-Shifter Enterprise Engine v3.4 - 14 Enterprise Upgrades Edition
  */
 (function() {
-    console.log("⚡ Shape-Shifter v3.3 Engine Initialized");
+    console.log("⚡ Shape-Shifter v3.4 Engine Initialized (14 Enterprise Features Active)");
 
-    // Currency Conversion Table
+    // 1. Currency Rates, Local Badges & Tax Disclosures
     const currencyRates = {
-        'Dubai': { code: 'AED', symbol: 'د.إ', rate: 4.67, badges: ['Apple Pay', 'Tabby (UAE BNPL)', 'Wire Transfer', 'Credit Card'] },
-        'London': { code: 'GBP', symbol: '£', rate: 1.0, badges: ['Apple Pay', 'Klarna', 'Clearpay', 'Visa / Mastercard'] },
-        'New York': { code: 'USD', symbol: '$', rate: 1.27, badges: ['Apple Pay', 'Afterpay', 'Affirm', 'Amex'] },
-        'Paris': { code: 'EUR', symbol: '€', rate: 1.17, badges: ['Apple Pay', 'Alma (EUR 4x)', 'SEPA Transfer', 'Carte Bancaire'] },
-        'Tokyo': { code: 'JPY', symbol: '¥', rate: 191.5, badges: ['Apple Pay', 'Paidy (Japan BNPL)', 'Line Pay', 'Credit Card'] }
+        'Dubai': { 
+            code: 'AED', 
+            symbol: 'د.إ', 
+            rate: 4.67, 
+            taxLabel: 'Includes 5% UAE VAT & Local Duties Paid',
+            concierge: '● Concierge Online for Dubai | Chat in Arabic',
+            badges: ['Apple Pay', 'Tabby (UAE BNPL)', 'Wire Transfer', 'Credit Card'] 
+        },
+        'London': { 
+            code: 'GBP', 
+            symbol: '£', 
+            rate: 1.0, 
+            taxLabel: 'Includes 20% UK VAT',
+            concierge: '● Concierge Online for London | Direct WhatsApp',
+            badges: ['Apple Pay', 'Klarna', 'Clearpay', 'Visa / Mastercard'] 
+        },
+        'New York': { 
+            code: 'USD', 
+            symbol: '$', 
+            rate: 1.27, 
+            taxLabel: 'Excl. US State Sales Tax (Calculated at Checkout)',
+            concierge: '● Concierge Online for NYC | Private Client Advisor',
+            badges: ['Apple Pay', 'Afterpay', 'Affirm', 'Amex'] 
+        },
+        'Paris': { 
+            code: 'EUR', 
+            symbol: '€', 
+            rate: 1.17, 
+            taxLabel: 'TVA Incluse (Taxes Européennes)',
+            concierge: '● Concierge en Ligne à Paris | Service Client',
+            badges: ['Apple Pay', 'Alma (EUR 4x)', 'SEPA Transfer', 'Carte Bancaire'] 
+        },
+        'Tokyo': { 
+            code: 'JPY', 
+            symbol: '¥', 
+            rate: 191.5, 
+            taxLabel: '消費税込み (10% 日本国内税込)',
+            concierge: '● 東京コンシェルジュオンライン | チャット対応',
+            badges: ['Apple Pay', 'Paidy (Japan BNPL)', 'Line Pay', 'Credit Card'] 
+        }
     };
 
-    // City Skyline Background Images
+    // 2. City Skyline Background Images
     const cityImages = {
         'Dubai': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=2000',
         'London': 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=2000',
@@ -22,7 +57,7 @@
         'Tokyo': 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&q=80&w=2000'
     };
 
-    // Native Cultural Greetings
+    // 3. Native Cultural Greetings
     const cityGreetings = {
         'Dubai': 'أهلاً وسهلاً بكم في دبي | Welcome to Dubai Private Vault',
         'London': 'Welcome | London Private Collection',
@@ -31,7 +66,7 @@
         'Tokyo': 'ようこそ東京へ | Tokyo Luxury Collector Portal'
     };
 
-    // Canvas Particle Animation Engine
+    // 4. Canvas Particle Animation Engine (Rain Drops / Snow Flakes)
     let canvasAnimationId = null;
     function startWeatherCanvas(weatherType) {
         const canvas = document.getElementById('weather-canvas');
@@ -90,13 +125,13 @@
         }
     }
 
-    // Apply Personalization Loop
+    // 5. Main Personalization Engine Function
     function applyPersonalization(city, weather) {
         console.log(`⚡ Personalizing for ${city} (${weather})`);
 
         const curr = currencyRates[city] || currencyRates['London'];
 
-        // Update Text
+        // Update Text Elements
         document.querySelectorAll('#city-name, #sub-city-name, #nav-city-badge, #ticker-city, #ticker-city-2').forEach(el => {
             if (el) el.textContent = city;
         });
@@ -113,6 +148,12 @@
             if (el) el.textContent = `${curr.code} ${curr.symbol}`;
         });
 
+        // Upgrade 13: Update Concierge Badge
+        const conciergeEl = document.getElementById('concierge-badge');
+        if (conciergeEl && curr.concierge) {
+            conciergeEl.textContent = curr.concierge;
+        }
+
         // Weather Badge
         const weatherBadge = document.getElementById('weather-badge');
         if (weatherBadge) weatherBadge.textContent = `● Real-Time Geo Merchandising: ${weather} in ${city}`;
@@ -123,7 +164,7 @@
             badgeContainer.innerHTML = curr.badges.map(b => `<span>● ${b}</span>`).join('');
         }
 
-        // Render Filtered Products from products.js
+        // Render Filtered Products with Upgrade 14 Tax Disclosure
         if (typeof luxuryInventory !== 'undefined') {
             const items = luxuryInventory.filter(item => item.weather === weather);
             const grid = document.getElementById('product-grid');
@@ -144,7 +185,10 @@
                             <h3 class="item-title font-serif">${item.name}</h3>
                             <p class="item-desc">${item.desc}</p>
                             <div class="card-footer">
-                                <span class="item-price font-serif">${curr.symbol} ${price}</span>
+                                <div>
+                                    <span class="item-price font-serif">${curr.symbol} ${price}</span>
+                                    <p style="font-size: 8px; color: #888; text-transform: uppercase; margin-top: 2px;">${curr.taxLabel}</p>
+                                </div>
                                 <button class="btn-inquire">Inquire</button>
                             </div>
                         </div>
