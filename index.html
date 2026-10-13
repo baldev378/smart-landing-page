@@ -3,107 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shape-Shifter Enterprise | Real-Time Personalization</title>
-    <!-- Enterprise Luxury Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Luxury Promise | Authenticated Pre-Owned Designer Vault</title>
+    
+    <!-- Clean Compiled Tailwind CSS (No JIT CDN console warning) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    
+    <!-- High-Fashion Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --accent: #C5A059; } /* Gold Accent Color */
-        .luxury-serif { font-family: 'Playfair Display', serif; }
-        .premium-sans { font-family: 'Montserrat', sans-serif; }
-        .glass-dark { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(197, 160, 89, 0.25); }
+        :root { --lp-cream: #FAF9F6; --lp-black: #111111; --lp-gold: #B89758; }
+        body { font-family: 'Jost', sans-serif; background-color: var(--lp-cream); color: var(--lp-black); overflow-x: hidden; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* Smooth Editorial Marquee */
+        .ticker-wrap { width: 100%; overflow: hidden; background: var(--lp-black); color: white; padding: 6px 0; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; white-space: nowrap; }
+        .ticker-move { display: inline-block; animation: ticker 25s linear infinite; }
+        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
+
+        /* Weather Particle Canvas */
+        #weather-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+
+        /* Glass Header */
+        .glass-header { background: rgba(250, 249, 246, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.06); }
         .hero-bg { transition: background-image 0.8s ease-in-out; background-size: cover; background-position: center; }
-        .text-gold { color: #C5A059; }
-        .border-gold { border-color: #C5A059; }
-        .bg-gold { background-color: #C5A059; }
     </style>
 </head>
-<body class="bg-[#0b0b0b] text-white premium-sans overflow-x-hidden antialiased">
+<body class="antialiased relative">
 
-    <!-- UPGRADE 1: Fixed Navigation Bar with Real-Time City & Currency Badges -->
-    <header class="fixed top-0 left-0 right-0 z-50 glass-dark border-b border-white/10 px-6 py-4 flex justify-between items-center">
-        <div class="luxury-serif text-2xl font-bold tracking-wider text-white flex items-center gap-2">
-            <span class="text-gold">SHAPE</span>SHIFTER
+    <!-- Weather Visual Canvas Overlay -->
+    <canvas id="weather-canvas"></canvas>
+
+    <!-- Marquee Ticker -->
+    <div class="ticker-wrap relative z-50">
+        <div class="ticker-move">
+            AUTHENTICATED PRE-OWNED LUXURY &nbsp; • &nbsp; GLOBAL CONCIERGE SHIPPING TO <span id="ticker-city" class="text-amber-500">DUBAI</span> &nbsp; • &nbsp; SHOP, SELL & SWAP &nbsp; • &nbsp; AUTHENTICATED PRE-OWNED LUXURY &nbsp; • &nbsp; GLOBAL CONCIERGE SHIPPING TO <span id="ticker-city-2" class="text-amber-500">DUBAI</span>
         </div>
-        <div class="hidden md:flex items-center space-x-8 text-xs uppercase tracking-widest text-white/80">
-            <a href="#collection" class="hover:text-gold transition">Curated Vault</a>
-            <a href="#collection" class="hover:text-gold transition">New Arrivals</a>
-            <a href="#collection" class="hover:text-gold transition">Weather Edit</a>
-            <a href="#payment-badges" class="hover:text-gold transition">Trust & Checkout</a>
+    </div>
+
+    <!-- Minimalist Navigation Header -->
+    <header class="fixed top-6 left-0 right-0 z-40 glass-header px-8 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-8">
+            <span class="text-2xl font-bold tracking-widest font-serif uppercase">LUXURY PROMISE.</span>
+            <nav class="hidden lg:flex gap-6 text-xs tracking-widest uppercase font-medium">
+                <a href="#shop" class="hover:text-amber-600 transition">Shop Vault</a>
+                <a href="#shop" class="hover:text-amber-600 transition">New Arrivals</a>
+                <a href="#payment-badges" class="hover:text-amber-600 transition">Authenticity</a>
+            </nav>
         </div>
-        <div class="flex items-center space-x-4">
-            <span id="nav-currency-badge" class="px-3 py-1 bg-white/10 text-gold border border-gold/30 rounded text-xs font-semibold tracking-wider">GBP £</span>
-            <span id="nav-city-badge" class="hidden sm:inline text-xs text-white/60 uppercase tracking-widest">London, UK</span>
+        <div class="flex items-center gap-6 text-xs tracking-widest font-medium uppercase">
+            <span id="nav-currency-badge" class="border border-black/20 px-3 py-1 bg-white font-semibold">AED د.إ</span>
+            <span id="nav-city-badge" class="text-black/60 hidden sm:block">Dubai</span>
         </div>
     </header>
 
-    <!-- UPGRADE 2: Geo-Adaptive Hero with High-Res Background & Native Greetings -->
-    <section id="hero" class="relative h-screen w-full flex items-center justify-center hero-bg pt-20" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=2000');">
-        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0b0b] via-black/60 to-black/40"></div>
+    <!-- Editorial Hero Card -->
+    <section id="hero" class="relative h-screen w-full flex items-center justify-center hero-bg mt-6" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=2000');">
+        <div class="absolute inset-0 bg-black bg-opacity-30"></div>
         
-        <div class="relative z-10 text-center px-6 max-w-5xl">
-            <!-- UPGRADE 3: Native Script Greeting (Arabic, Japanese, French, English) -->
-            <div id="greeting-box" class="mb-6 inline-block px-6 py-2 glass-dark rounded-full border border-gold/40 shadow-2xl">
-                <span id="visitor-greeting" class="text-xs uppercase tracking-[0.25em] text-gold font-semibold">أهلاً وسهلاً بكم في دبي | Welcome to Dubai Private Vault</span>
-            </div>
+        <div class="relative z-10 text-center px-6 max-w-4xl bg-white bg-opacity-90 p-10 lg:p-16 shadow-2xl border border-white">
+            <p id="visitor-greeting" class="text-xs tracking-widest uppercase text-amber-600 font-semibold mb-3">أهلاً وسهلاً بكم في دبي | Welcome to Dubai Private Vault</p>
             
-            <!-- UPGRADE 4: Dynamic Headline with City Name -->
-            <h1 id="dynamic-headline" class="luxury-serif text-4xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight">
-                Exquisite Pieces for <br><span class="text-gold italic font-normal" id="city-name">Dubai Collectors</span>
+            <h1 id="dynamic-headline" class="font-serif text-4xl md:text-6xl mb-4 text-black leading-tight">
+                Curated Luxury for <br><i id="city-name" class="font-normal text-amber-700">Dubai</i>
             </h1>
 
-            <p id="dynamic-subheadline" class="text-white/80 text-sm md:text-base max-w-2xl mx-auto mb-10 font-light tracking-wide leading-relaxed">
-                Direct insured shipping to <span id="sub-city-name" class="text-gold font-semibold">Dubai</span>. Authenticated luxury items with guaranteed local white-glove concierge delivery.
+            <p id="dynamic-subheadline" class="text-black/70 text-sm md:text-base max-w-lg mx-auto mb-8 font-light leading-relaxed">
+                Discover authenticated pre-owned Hermès, Rolex, and Chanel. Direct concierge delivery to <span id="sub-city-name" class="font-semibold text-black">Dubai</span>.
             </p>
 
-            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <a href="#collection" class="px-10 py-4 bg-gold text-black font-semibold hover:bg-white transition duration-300 tracking-[0.2em] uppercase text-xs shadow-2xl">
+            <div class="flex flex-col items-center gap-3">
+                <a href="#shop" class="px-10 py-4 bg-black text-white text-xs font-medium tracking-widest uppercase hover:bg-amber-600 transition duration-300">
                     Explore Inventory
                 </a>
-                
-                <!-- UPGRADE 5: City-Specific Midnight Scarcity Countdown -->
-                <div id="shipping-timer" class="text-left border-l-2 border-gold pl-5 py-1">
-                    <p class="text-white/60 uppercase tracking-widest text-[10px]">Reserved Vault Window (<span id="target-city" class="text-white font-semibold">Dubai</span>)</p>
-                    <p id="countdown" class="text-xl luxury-serif text-gold font-bold">04:12:55</p>
-                </div>
+                <p class="text-xs tracking-widest uppercase text-black/50 mt-1">
+                    Order window closes in <span id="countdown" class="text-black font-semibold">04:12:55</span>
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- UPGRADE 6: Weather-Adaptive Geo Merchandising Collection Grid -->
-    <section id="collection" class="py-24 px-6 md:px-12 bg-[#0b0b0b]">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 border-b border-white/10 pb-8">
-                <div>
-                    <!-- UPGRADE 7: Real-Time Weather Status Badge -->
-                    <span id="weather-badge" class="text-gold tracking-[0.25em] uppercase text-[11px] font-semibold block mb-2">● Real-Time Geo Merchandising: Clear in Dubai</span>
-                    <h2 class="luxury-serif text-3xl md:text-5xl font-bold">Curated Vault Collection</h2>
-                </div>
-                <div class="mt-4 md:mt-0 text-left md:text-right">
-                    <p class="text-white/50 text-xs uppercase tracking-widest">Active Currency</p>
-                    <span id="local-currency-display" class="text-2xl luxury-serif text-gold font-semibold">AED د.إ</span>
-                </div>
-            </div>
+    <!-- Social Proof Geo-Toast Alert -->
+    <div id="collector-toast" class="fixed bottom-8 left-8 z-50 bg-white p-4 shadow-2xl border border-gray-100 flex items-center gap-4 max-w-sm transition-all duration-700">
+        <div class="w-12 h-16 bg-gray-100 overflow-hidden shrink-0">
+            <img id="toast-img" src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover">
+        </div>
+        <div>
+            <p id="toast-title" class="text-xs tracking-widest uppercase font-semibold text-black mb-1">Collector in Dubai</p>
+            <p id="toast-desc" class="text-xs text-black/60 font-light">Inquired on Hermès Birkin 25 Gold (2 mins ago)</p>
+        </div>
+    </div>
 
-            <!-- UPGRADE 8 & 9: Auto-Converted Prices & Weather Product Injection -->
-            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <!-- Products dynamically updated by shapeshifter.js -->
-            </div>
+    <!-- Product Grid Section -->
+    <section id="shop" class="py-20 px-6 md:px-12 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <span id="weather-badge" class="text-amber-600 tracking-widest uppercase text-xs font-semibold block mb-2">● Real-Time Geo Merchandising: Sunny/Clear in Dubai</span>
+            <h2 class="font-serif text-3xl md:text-4xl text-black mb-2">Curated Weather Collection</h2>
+            <div class="w-12 h-px bg-black/20 mx-auto mt-4"></div>
+        </div>
+
+        <div class="flex justify-between items-center mb-8 text-xs tracking-widest uppercase font-medium text-black/50 border-b border-gray-200 pb-4">
+            <p>Vault Items: <span id="product-count" class="text-black font-semibold">8</span></p>
+            <p>Currency: <span id="local-currency-display" class="text-black font-semibold">AED د.إ</span></p>
+        </div>
+
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Rendered by shapeshifter.js -->
         </div>
     </section>
 
-    <!-- UPGRADE 10: Localized Trust & Payment Badges -->
-    <footer id="payment-badges" class="py-12 border-t border-white/10 bg-black text-center text-xs text-white/50">
-        <p class="uppercase tracking-widest mb-4">Insured Local Checkout & Concierge Options</p>
-        <div id="badge-container" class="flex justify-center items-center flex-wrap gap-6 text-sm text-gold font-semibold">
+    <!-- Payment Trust Badges -->
+    <footer id="payment-badges" class="bg-black text-white py-16 px-8 text-center">
+        <h3 class="font-serif text-2xl mb-4">Guaranteed Authenticity & Insured Shipping</h3>
+        <p class="text-xs tracking-widest uppercase text-white/50 mb-8 max-w-2xl mx-auto">
+            Every item is thoroughly authenticated by experts. White-glove concierge checkout options available.
+        </p>
+        <div id="badge-container" class="flex justify-center items-center flex-wrap gap-8 text-xs tracking-widest text-amber-500 font-medium uppercase">
             <span>● Apple Pay</span>
-            <span>● Tabby (UAE Buy Now Pay Later)</span>
+            <span>● Tabby (UAE BNPL)</span>
             <span>● Wire Transfer</span>
             <span>● Visa / Mastercard</span>
         </div>
     </footer>
 
-    <!-- UPGRADE 11 & 12: Shape-Shifter Script Integration (Sub-50ms Execution & Demo Sim) -->
+    <!-- Scripts -->
+    <script src="products.js"></script>
     <script src="shapeshifter.js"></script>
 </body>
 </html>
