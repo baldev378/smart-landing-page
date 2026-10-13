@@ -1,163 +1,150 @@
 /**
- * Shape-Shifter Universal Personalization & Auto-Brand Engine
- * Version: 2.2.0 Enterprise (Auto Font & Theme Matcher)
- * Embed: <script src="https://smart-landing-page-steel.vercel.app/shapeshifter.js?client=client_001" async></script>
+ * Shape-Shifter Personalization Engine v2.5 (Enterprise 12-Upgrade Edition)
  */
+(function() {
+    console.log("⚡ Shape-Shifter v2.5 Engine Initializing...");
 
-(async function () {
-  'use strict';
+    // 1. Currency Exchange Rates (Base: GBP £)
+    const currencyRates = {
+        'Dubai': { code: 'AED', symbol: 'د.إ', rate: 4.67, badges: ['Apple Pay', 'Tabby (UAE BNPL)', 'Wire Transfer', 'Credit Card'] },
+        'London': { code: 'GBP', symbol: '£', rate: 1.0, badges: ['Apple Pay', 'Klarna', 'Clearpay', 'Visa / Mastercard'] },
+        'New York': { code: 'USD', symbol: '$', rate: 1.27, badges: ['Apple Pay', 'Afterpay', 'Affirm', 'Amex'] },
+        'Paris': { code: 'EUR', symbol: '€', rate: 1.17, badges: ['Apple Pay', 'Alma (EUR 4x)', 'SEPA Transfer', 'Carte Bancaire'] },
+        'Tokyo': { code: 'JPY', symbol: '¥', rate: 191.5, badges: ['Apple Pay', 'Paidy (Japan BNPL)', 'Line Pay', 'Credit Card'] }
+    };
 
-  // NEW LIVE MAKE.COM WEBHOOK URL
-  const MAKE_WEBHOOK_URL = "https://hook.us2.make.com/d8fw3nqb5xhw5bm46aiqcyfxl9d6obve";
+    // 2. High-Res City Skyline Backgrounds
+    const cityImages = {
+        'Dubai': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=2000',
+        'London': 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=2000',
+        'New York': 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=2000',
+        'Paris': 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=2000',
+        'Tokyo': 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&q=80&w=2000'
+    };
 
-  // 1. Script Context & Client Identification
-  const scriptTag = document.currentScript || document.querySelector('script[src*="shapeshifter.js"]');
-  const scriptUrl = new URL(scriptTag ? scriptTag.src : window.location.href);
-  const clientId = scriptUrl.searchParams.get('client') || 'client_001';
-  const urlParams = new URLSearchParams(window.location.search);
+    // 3. Native Cultural Greetings
+    const cityGreetings = {
+        'Dubai': 'أهلاً وسهلاً بكم في دبي | Welcome to Dubai Private Vault',
+        'London': 'Welcome | London Private Collection',
+        'New York': 'Welcome | Manhattan Luxury Vault',
+        'Paris': 'Bienvenue à Paris | Collection Privée Paris',
+        'Tokyo': 'ようこそ東京へ | Tokyo Luxury Collector Portal'
+    };
 
-  // 2. AUTO-DETECT CLIENT BRAND STYLES (Font & Accent Color)
-  const clientBrandFont = window.getComputedStyle(document.body).fontFamily || 'inherit';
-  
-  let clientPrimaryColor = '#e11d48';
-  const existingBtn = document.querySelector('button, .btn, .button, input[type="submit"]');
-  if (existingBtn) {
-    const computedBtnBg = window.getComputedStyle(existingBtn).backgroundColor;
-    if (computedBtnBg && computedBtnBg !== 'rgba(0, 0, 0, 0)' && computedBtnBg !== 'transparent') {
-      clientPrimaryColor = computedBtnBg;
-    }
-  }
+    // 4. Weather-Adaptive Product Datasets
+    const productCatalog = {
+        'Clear': [
+            { name: "Hermès Birkin 25 Gold", baseGbp: 24500, img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800", tag: "Authenticated" },
+            { name: "Rolex Day-Date 40 Gold", baseGbp: 32000, img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&q=80&w=800", tag: "Rare Vault" },
+            { name: "Chanel Medium Classic Flap", baseGbp: 8900, img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=800", tag: "Iconic" }
+        ],
+        'Rainy': [
+            { name: "Burberry Heritage Trench Coat", baseGbp: 1890, img: "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=800", tag: "Rain Essential" },
+            { name: "Hermès Birkin 25 Gold", baseGbp: 24500, img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800", tag: "Authenticated" },
+            { name: "Louis Vuitton Leather Duffle", baseGbp: 3100, img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=800", tag: "Travel Ready" }
+        ],
+        'Snow': [
+            { name: "Loro Piana Cashmere Knit", baseGbp: 2200, img: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&q=80&w=800", tag: "Winter Warmth" },
+            { name: "Rolex Day-Date 40 Gold", baseGbp: 32000, img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&q=80&w=800", tag: "Rare Vault" },
+            { name: "Chanel Medium Classic Flap", baseGbp: 8900, img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=800", tag: "Iconic" }
+        ]
+    };
 
-  let visitorSessionId = localStorage.getItem('ss_session') || 'ss_' + Math.random().toString(36).substr(2, 7);
-  localStorage.setItem('ss_session', visitorSessionId);
+    // 5. Main Personalization Function
+    function applyPersonalization(city, weather) {
+        console.log(`⚡ Personalizing for City: ${city} | Weather: ${weather}`);
 
-  // 3. Detect Visitor Geolocation & Weather
-  let city = urlParams.get('city') || 'Local Area';
-  let country = urlParams.get('country') || 'US';
-  let weather = urlParams.get('weather') || 'Clear';
+        const curr = currencyRates[city] || currencyRates['London'];
 
-  if (!urlParams.get('city')) {
-    try {
-      const geoRes = await fetch('https://api.ipgeolocation.io/ipgeo?apiKey=7398ebebcefe4b4f93212ac3398f6c0c');
-      const geoData = await geoRes.json();
-      city = geoData.city || 'Your Area';
-      country = geoData.country_code2 || 'US';
-    } catch (e) {}
-  }
+        // A. City Name Labels
+        document.querySelectorAll('#city-name, #target-city, #sub-city-name, #nav-city-badge').forEach(el => el.textContent = city);
 
-  // 4. Inject Brand-Matched Global Styles
-  injectBrandStyles(clientBrandFont, clientPrimaryColor);
-
-  // 5. Apply DOM Personalization
-  applyDOMPersonalization(city, country, weather);
-
-  // 6. Fetch & Render Weather Products
-  fetchAndRenderClientProducts(clientId, weather, country, clientBrandFont);
-
-  // -------------------------------------------------------------
-  // HELPER FUNCTIONS
-  // -------------------------------------------------------------
-
-  function injectBrandStyles(fontFamily, primaryColor) {
-    const styleId = 'ss-brand-style-override';
-    if (document.getElementById(styleId)) return;
-
-    const style = document.createElement('style');
-    style.id = styleId;
-    style.innerHTML = `
-      .ss-brand-font { font-family: ${fontFamily} !important; }
-      .ss-primary-bg { background-color: ${primaryColor} !important; }
-      .ss-primary-border { border-color: ${primaryColor} !important; }
-      .ss-primary-text { color: ${primaryColor} !important; }
-      .ss-badge-pill { font-family: ${fontFamily} !important; border-radius: 9999px; padding: 4px 12px; font-size: 12px; font-weight: 600; }
-    `;
-    document.head.appendChild(style);
-  }
-
-  function applyDOMPersonalization(city, country, weather) {
-    const greetingEl = document.querySelector('[data-ss="greeting"]');
-    if (greetingEl) {
-      greetingEl.classList.add('ss-brand-font');
-      greetingEl.innerText = (country === 'IN') ? `🙏 NAMASTE TO ${city.toUpperCase()}` : `⚡ WELCOME VISITOR FROM ${city.toUpperCase()}`;
-    }
-
-    const deliveryEl = document.querySelector('[data-ss="delivery"]');
-    if (deliveryEl) {
-      deliveryEl.classList.add('ss-brand-font');
-      const d = new Date(); d.setDate(d.getDate() + 2);
-      const dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-      deliveryEl.innerText = `Express Delivery to ${city}, ${country} by ${dateStr}`;
-    }
-
-    const stockEl = document.querySelector('[data-ss="stock"]');
-    if (stockEl) {
-      stockEl.classList.add('ss-brand-font');
-      stockEl.innerText = `Limited Stock: Only 4 units left in ${city} warehouse`;
-    }
-
-    const paymentEl = document.querySelector('[data-ss="payments"]');
-    if (paymentEl) {
-      paymentEl.classList.add('ss-brand-font');
-      paymentEl.innerText = (country === 'IN') ? 'UPI • GPay • Paytm • PhonePe • Cards' : 'Apple Pay • PayPal • Visa • Mastercard • Klarna';
-    }
-  }
-
-  async function fetchAndRenderClientProducts(clientId, weather, countryCode, fontFamily) {
-    const gridContainer = document.querySelector('[data-ss="product-grid"]');
-    if (!gridContainer) return;
-
-    let clientProducts = [];
-    const w = weather.toLowerCase();
-
-    try {
-      const shopifyRes = await fetch('/products.json?limit=30');
-      if (shopifyRes.ok) {
-        const shopifyData = await shopifyRes.json();
-        if (shopifyData && shopifyData.products) {
-          clientProducts = shopifyData.products.filter(p => {
-            const fullText = `${p.title} ${p.body_html || ''} ${(p.tags || []).join(' ')}`.toLowerCase();
-
-            if (w.includes('rain')) {
-              return fullText.includes('rain') || fullText.includes('waterproof') || fullText.includes('jacket') || fullText.includes('hoodie');
-            } else if (w.includes('snow')) {
-              return fullText.includes('warm') || fullText.includes('winter') || fullText.includes('wool') || fullText.includes('coat');
-            } else {
-              return fullText.includes('sun') || fullText.includes('light') || fullText.includes('summer') || fullText.includes('cotton');
-            }
-          });
-
-          clientProducts = clientProducts.slice(0, 3).map(p => ({
-            name: p.title,
-            price: (countryCode === 'IN' ? '₹' : '$') + (p.variants[0] ? p.variants[0].price : '49'),
-            image: p.images[0] ? p.images[0].src : 'https://via.placeholder.com/300',
-            link: `/products/${p.handle}`
-          }));
+        // B. Native Greeting Text
+        const greetingEl = document.getElementById('visitor-greeting');
+        if (greetingEl && cityGreetings[city]) {
+            greetingEl.textContent = cityGreetings[city];
         }
-      }
-    } catch (err) {}
 
-    if (clientProducts.length > 0) {
-      gridContainer.innerHTML = '';
-      clientProducts.forEach(prod => {
-        const card = document.createElement('div');
-        card.style.fontFamily = fontFamily;
-        card.style.border = '1px solid rgba(226, 232, 240, 0.8)';
-        card.style.borderRadius = '16px';
-        card.style.padding = '16px';
-        card.style.boxShadow = '0 10px 25px -5px rgba(0,0,0,0.05)';
-        card.style.background = '#ffffff';
+        // C. Hero Background
+        const heroEl = document.getElementById('hero');
+        if (heroEl && cityImages[city]) {
+            heroEl.style.backgroundImage = `url('${cityImages[city]}')`;
+        }
 
-        card.innerHTML = `
-          <img src="${prod.image}" alt="${prod.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 12px;" />
-          <h4 style="font-weight: 700; font-size: 15px; color: #0f172a; margin-bottom: 6px; font-family: ${fontFamily};">${prod.name}</h4>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
-            <span style="font-weight: 800; color: #059669; font-size: 18px; font-family: ${fontFamily};">${prod.price}</span>
-            <a href="${prod.link}" class="ss-primary-bg" style="color: #ffffff; text-decoration: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; font-family: ${fontFamily};">View Item →</a>
-          </div>
-        `;
-        gridContainer.appendChild(card);
-      });
+        // D. Currency Badges
+        document.querySelectorAll('#nav-currency-badge, #local-currency-display').forEach(el => {
+            el.textContent = `${curr.code} ${curr.symbol}`;
+        });
+
+        // E. Weather Status Badge
+        const weatherBadge = document.getElementById('weather-badge');
+        if (weatherBadge) {
+            weatherBadge.textContent = `● Real-Time Geo Merchandising: ${weather} in ${city}`;
+        }
+
+        // F. Payment Trust Badges
+        const badgeContainer = document.getElementById('badge-container');
+        if (badgeContainer && curr.badges) {
+            badgeContainer.innerHTML = curr.badges.map(b => `<span>● ${b}</span>`).join('');
+        }
+
+        // G. Render Weather & Currency Adaptive Products
+        const grid = document.getElementById('product-grid');
+        const activeProducts = productCatalog[weather] || productCatalog['Clear'];
+
+        if (grid) {
+            grid.innerHTML = activeProducts.map(p => {
+                const convertedPrice = Math.round(p.baseGbp * curr.rate).toLocaleString();
+                return `
+                    <div class="group cursor-pointer bg-[#121212] p-4 border border-white/5 hover:border-gold/40 transition duration-500">
+                        <div class="overflow-hidden mb-6 aspect-[4/5] bg-[#1a1a1a] relative">
+                            <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                            <span class="absolute top-4 left-4 bg-black/80 text-gold text-[10px] tracking-widest uppercase px-3 py-1 border border-gold/30">${p.tag}</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="luxury-serif text-xl font-semibold">${p.name}</h3>
+                            <span class="text-xs text-emerald-400 bg-emerald-950/60 px-2 py-1 rounded border border-emerald-800/40">In Stock</span>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-white/10 pt-4 mt-4">
+                            <span class="product-price text-gold luxury-serif text-lg font-bold">${curr.symbol} ${convertedPrice}</span>
+                            <button class="px-4 py-2 border border-gold/50 text-gold hover:bg-gold hover:text-black transition text-xs uppercase tracking-widest">Inquire</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
     }
-  }
 
+    // 6. City Local Time Countdown Timer
+    function startCountdown() {
+        const countdownEl = document.getElementById('countdown');
+        if (!countdownEl) return;
+        
+        let hours = 4, minutes = 12, seconds = 55;
+        setInterval(() => {
+            seconds--;
+            if (seconds < 0) { seconds = 59; minutes--; }
+            if (minutes < 0) { minutes = 59; hours--; }
+            if (hours < 0) { hours = 23; }
+            countdownEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }, 1000);
+    }
+
+    // 7. URL Query String Direct Override Support (?city=Tokyo&weather=Snow)
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramCity = urlParams.get('city');
+    const paramWeather = urlParams.get('weather');
+
+    const defaultCity = paramCity || 'Dubai';
+    const defaultWeather = paramWeather || 'Clear';
+
+    applyPersonalization(defaultCity, defaultWeather);
+    startCountdown();
+
+    // 8. Listen for Live PostMessage Events from demo.html Control Panel
+    window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'SHAPESHIFTER_SIMULATE') {
+            applyPersonalization(event.data.city, event.data.weather);
+        }
+    });
 })();
