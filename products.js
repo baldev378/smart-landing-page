@@ -1,5 +1,5 @@
 /**
- * Shape-Shifter Enterprise Inventory Database (25+ Luxury Items)
+ * Shape-Shifter Inventory Database (25+ Luxury Items)
  */
 const luxuryInventory = [
     // --- SUNNY / CLEAR WEATHER COLLECTION ---
