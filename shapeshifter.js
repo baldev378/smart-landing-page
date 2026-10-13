@@ -1,10 +1,10 @@
 /**
- * Shape-Shifter Enterprise Engine v3.2 - Zero Warning Edition
+ * Shape-Shifter Engine v3.3 - Pure Native Standalone
  */
 (function() {
-    console.log("⚡ Shape-Shifter v3.2 Engine Initialized");
+    console.log("⚡ Shape-Shifter v3.3 Engine Initialized");
 
-    // 1. Currency Rates & Local Payment Badges
+    // Currency Conversion Table
     const currencyRates = {
         'Dubai': { code: 'AED', symbol: 'د.إ', rate: 4.67, badges: ['Apple Pay', 'Tabby (UAE BNPL)', 'Wire Transfer', 'Credit Card'] },
         'London': { code: 'GBP', symbol: '£', rate: 1.0, badges: ['Apple Pay', 'Klarna', 'Clearpay', 'Visa / Mastercard'] },
@@ -13,7 +13,7 @@
         'Tokyo': { code: 'JPY', symbol: '¥', rate: 191.5, badges: ['Apple Pay', 'Paidy (Japan BNPL)', 'Line Pay', 'Credit Card'] }
     };
 
-    // 2. City Weather-Matched Background Skylines
+    // City Skyline Background Images
     const cityImages = {
         'Dubai': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=2000',
         'London': 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=2000',
@@ -22,7 +22,7 @@
         'Tokyo': 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&q=80&w=2000'
     };
 
-    // 3. Native Script Cultural Greetings
+    // Native Cultural Greetings
     const cityGreetings = {
         'Dubai': 'أهلاً وسهلاً بكم في دبي | Welcome to Dubai Private Vault',
         'London': 'Welcome | London Private Collection',
@@ -31,7 +31,7 @@
         'Tokyo': 'ようこそ東京へ | Tokyo Luxury Collector Portal'
     };
 
-    // 4. Weather Visual Canvas Animation Loop
+    // Canvas Particle Animation Engine
     let canvasAnimationId = null;
     function startWeatherCanvas(weatherType) {
         const canvas = document.getElementById('weather-canvas');
@@ -90,13 +90,13 @@
         }
     }
 
-    // 5. Main Personalization Engine Function
+    // Apply Personalization Loop
     function applyPersonalization(city, weather) {
         console.log(`⚡ Personalizing for ${city} (${weather})`);
 
         const curr = currencyRates[city] || currencyRates['London'];
 
-        // Update Text Elements
+        // Update Text
         document.querySelectorAll('#city-name, #sub-city-name, #nav-city-badge, #ticker-city, #ticker-city-2').forEach(el => {
             if (el) el.textContent = city;
         });
@@ -104,26 +104,26 @@
         const greetingEl = document.getElementById('visitor-greeting');
         if (greetingEl && cityGreetings[city]) greetingEl.textContent = cityGreetings[city];
 
-        // Update Hero Background Image
+        // Update Hero Image
         const heroEl = document.getElementById('hero');
         if (heroEl && cityImages[city]) heroEl.style.backgroundImage = `url('${cityImages[city]}')`;
 
-        // Update Currencies
+        // Update Currency Badges
         document.querySelectorAll('#nav-currency-badge, #local-currency-display').forEach(el => {
             if (el) el.textContent = `${curr.code} ${curr.symbol}`;
         });
 
-        // Update Weather Badge
+        // Weather Badge
         const weatherBadge = document.getElementById('weather-badge');
         if (weatherBadge) weatherBadge.textContent = `● Real-Time Geo Merchandising: ${weather} in ${city}`;
 
-        // Update Trust Badges
+        // Payment Badges
         const badgeContainer = document.getElementById('badge-container');
         if (badgeContainer && curr.badges) {
             badgeContainer.innerHTML = curr.badges.map(b => `<span>● ${b}</span>`).join('');
         }
 
-        // Render Filtered Weather Inventory from products.js
+        // Render Filtered Products from products.js
         if (typeof luxuryInventory !== 'undefined') {
             const items = luxuryInventory.filter(item => item.weather === weather);
             const grid = document.getElementById('product-grid');
@@ -135,23 +135,22 @@
                 grid.innerHTML = items.map(item => {
                     const price = Math.round(item.baseGbp * curr.rate).toLocaleString();
                     return `
-                        <div class="group cursor-pointer bg-white border border-gray-100 p-4 shadow-sm hover:shadow-xl transition duration-500">
-                            <div class="overflow-hidden aspect-square mb-4 relative bg-gray-50">
-                                <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                                <span class="absolute top-3 left-3 bg-black text-white text-[9px] tracking-widest uppercase px-2 py-1 font-semibold">${item.tag}</span>
+                        <div class="product-card">
+                            <div class="img-wrapper">
+                                <img src="${item.img}" alt="${item.name}" class="product-img">
+                                <span class="item-tag">${item.tag}</span>
                             </div>
-                            <p class="text-[10px] tracking-widest uppercase text-amber-700 font-semibold mb-1">${item.brand}</p>
-                            <h3 class="font-serif text-lg text-black font-medium mb-1">${item.name}</h3>
-                            <p class="text-xs text-gray-500 mb-4 font-light">${item.desc}</p>
-                            <div class="flex justify-between items-center border-t border-gray-100 pt-3">
-                                <span class="font-serif text-base font-bold text-black">${curr.symbol} ${price}</span>
-                                <button class="px-3 py-1.5 bg-black text-white text-[10px] tracking-widest uppercase hover:bg-amber-600 transition">Inquire</button>
+                            <p class="brand-label">${item.brand}</p>
+                            <h3 class="item-title font-serif">${item.name}</h3>
+                            <p class="item-desc">${item.desc}</p>
+                            <div class="card-footer">
+                                <span class="item-price font-serif">${curr.symbol} ${price}</span>
+                                <button class="btn-inquire">Inquire</button>
                             </div>
                         </div>
                     `;
                 }).join('');
 
-                // Update Toast
                 if (items.length > 0) {
                     const toastImg = document.getElementById('toast-img');
                     const toastTitle = document.getElementById('toast-title');
@@ -163,11 +162,10 @@
             }
         }
 
-        // Start Weather Particle Overlay
         startWeatherCanvas(weather);
     }
 
-    // 6. Midnight Scarcity Timer
+    // Scarcity Countdown
     function startCountdown() {
         const countdownEl = document.getElementById('countdown');
         if (!countdownEl) return;
@@ -181,11 +179,11 @@
         }, 1000);
     }
 
-    // Initialize Default View
+    // Initial Load
     applyPersonalization('Dubai', 'Clear');
     startCountdown();
 
-    // Listen for Demo Simulation Messages
+    // Sandbox Listener
     window.addEventListener('message', function(event) {
         if (event.data && event.data.type === 'SHAPESHIFTER_SIMULATE') {
             applyPersonalization(event.data.city, event.data.weather);
