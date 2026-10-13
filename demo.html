@@ -3,33 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shape-Shifter Interactive Sandbox</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Shape-Shifter Interactive Sandbox Control Panel</title>
+    
+    <!-- Clean Compiled Tailwind CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #0b0f19; color: #f8fafc; }
-        .glass-panel { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        body { font-family: 'Jost', sans-serif; background-color: #0b0f19; color: #f8fafc; }
+        .glass-panel { background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen">
 
     <div class="max-w-7xl mx-auto">
-        <!-- Control Panel Header -->
+        <!-- Control Panel Bar -->
         <div class="glass-panel p-6 rounded-2xl mb-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
             <div>
-                <div class="flex items-center gap-3 mb-2">
-                    <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded-full text-xs font-semibold uppercase tracking-wider">Live Control Panel</span>
-                    <h1 class="text-2xl font-bold">Shape-Shifter Personalization Sandbox</h1>
+                <div class="flex items-center gap-3 mb-1">
+                    <span class="px-3 py-1 bg-amber-500 bg-opacity-20 text-amber-400 border border-amber-500 border-opacity-40 rounded-full text-xs font-semibold uppercase tracking-widest">Enterprise Sandbox</span>
+                    <h1 class="text-2xl font-bold tracking-wide">Shape-Shifter Control Panel</h1>
                 </div>
-                <p class="text-slate-400 text-xs">Simulate visitor cities, native script greetings, local weather, and currency formatting in real-time.</p>
+                <p class="text-gray-400 text-xs">Simulate visitor locations, native script greetings, rain/snow particle visual effects, and weather product grids.</p>
             </div>
 
-            <!-- Simulation Controls -->
+            <!-- Controls Selector Grid -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full lg:w-auto">
-                <!-- City Selector -->
                 <div>
-                    <label class="block text-[10px] uppercase tracking-widest text-slate-400 mb-1">Target Location</label>
-                    <select id="sim-city" onchange="updateSimulation()" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-3 py-2 text-xs focus:border-amber-500 outline-none">
+                    <label class="block text-xs uppercase tracking-widest text-gray-400 mb-1">Target City</label>
+                    <select id="sim-city" onchange="updateSimulation()" class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg px-3 py-2 text-xs outline-none focus:border-amber-500">
                         <option value="Dubai" selected>Dubai (AED د.إ)</option>
                         <option value="London">London (GBP £)</option>
                         <option value="New York">New York (USD $)</option>
@@ -38,37 +40,34 @@
                     </select>
                 </div>
 
-                <!-- Weather Selector -->
                 <div>
-                    <label class="block text-[10px] uppercase tracking-widest text-slate-400 mb-1">Live Weather</label>
-                    <select id="sim-weather" onchange="updateSimulation()" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-3 py-2 text-xs focus:border-amber-500 outline-none">
+                    <label class="block text-xs uppercase tracking-widest text-gray-400 mb-1">Live Weather</label>
+                    <select id="sim-weather" onchange="updateSimulation()" class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg px-3 py-2 text-xs outline-none focus:border-amber-500">
                         <option value="Clear">Sunny / Clear</option>
-                        <option value="Rainy">Rainy / Cold</option>
-                        <option value="Snow">Snow / Winter</option>
+                        <option value="Rainy">Rainy (Rain Visual)</option>
+                        <option value="Snow">Snow (Snow Visual)</option>
                     </select>
                 </div>
 
-                <!-- View Mode Selector -->
                 <div>
-                    <label class="block text-[10px] uppercase tracking-widest text-slate-400 mb-1">Device Mode</label>
-                    <select id="sim-device" onchange="updateSimulation()" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg px-3 py-2 text-xs focus:border-amber-500 outline-none">
-                        <option value="desktop">Desktop (100%)</option>
-                        <option value="mobile">Mobile (375px)</option>
+                    <label class="block text-xs uppercase tracking-widest text-gray-400 mb-1">Device View</label>
+                    <select id="sim-device" onchange="updateSimulation()" class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg px-3 py-2 text-xs outline-none focus:border-amber-500">
+                        <option value="desktop">Desktop View</option>
+                        <option value="mobile">Mobile View</option>
                     </select>
                 </div>
 
-                <!-- Apply Simulation Button -->
                 <div class="flex items-end">
-                    <button onclick="updateSimulation()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2 rounded-lg text-xs uppercase tracking-wider transition">
+                    <button onclick="updateSimulation()" class="w-full bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold py-2 rounded-lg text-xs uppercase tracking-wider transition">
                         Trigger Shift
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Live Preview Iframe Container -->
+        <!-- Live Preview Frame Container -->
         <div class="glass-panel rounded-2xl p-4 flex justify-center items-center">
-            <iframe id="preview-frame" src="index.html" class="w-full h-[800px] rounded-xl border border-slate-800 transition-all duration-500"></iframe>
+            <iframe id="preview-frame" src="index.html" class="w-full h-screen rounded-xl border border-gray-800 transition-all duration-500"></iframe>
         </div>
     </div>
 
