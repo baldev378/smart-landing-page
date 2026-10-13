@@ -3,87 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shape-Shifter | Enterprise Personalization</title>
-    <!-- Premium Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Shape-Shifter Enterprise | Real-Time Personalization</title>
+    <!-- Enterprise Luxury Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --accent: #C5A059; } /* Luxury Gold */
+        :root { --accent: #C5A059; } /* Gold Accent Color */
         .luxury-serif { font-family: 'Playfair Display', serif; }
         .premium-sans { font-family: 'Montserrat', sans-serif; }
-        .glass-dark { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(197, 160, 89, 0.2); }
+        .glass-dark { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(197, 160, 89, 0.25); }
         .hero-bg { transition: background-image 0.8s ease-in-out; background-size: cover; background-position: center; }
-        .gold-border { border-color: #C5A059; }
         .text-gold { color: #C5A059; }
+        .border-gold { border-color: #C5A059; }
+        .bg-gold { background-color: #C5A059; }
     </style>
 </head>
-<body class="bg-black text-white premium-sans overflow-x-hidden">
+<body class="bg-[#0b0b0b] text-white premium-sans overflow-x-hidden antialiased">
 
-    <!-- Dynamic Hero Section -->
-    <section id="hero" class="relative h-screen w-full flex items-center justify-center hero-bg" style="background-image: url('https://images.unsplash.com/photo-1547949003-9792a18a2601?auto=format&fit=crop&q=80&w=2000');">
-        <div class="absolute inset-0 bg-black/50"></div>
+    <!-- UPGRADE 1: Fixed Navigation Bar with Real-Time City & Currency Badges -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-dark border-b border-white/10 px-6 py-4 flex justify-between items-center">
+        <div class="luxury-serif text-2xl font-bold tracking-wider text-white flex items-center gap-2">
+            <span class="text-gold">SHAPE</span>SHIFTER
+        </div>
+        <div class="hidden md:flex items-center space-x-8 text-xs uppercase tracking-widest text-white/80">
+            <a href="#collection" class="hover:text-gold transition">Curated Vault</a>
+            <a href="#collection" class="hover:text-gold transition">New Arrivals</a>
+            <a href="#collection" class="hover:text-gold transition">Weather Edit</a>
+            <a href="#payment-badges" class="hover:text-gold transition">Trust & Checkout</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span id="nav-currency-badge" class="px-3 py-1 bg-white/10 text-gold border border-gold/30 rounded text-xs font-semibold tracking-wider">GBP £</span>
+            <span id="nav-city-badge" class="hidden sm:inline text-xs text-white/60 uppercase tracking-widest">London, UK</span>
+        </div>
+    </header>
+
+    <!-- UPGRADE 2: Geo-Adaptive Hero with High-Res Background & Native Greetings -->
+    <section id="hero" class="relative h-screen w-full flex items-center justify-center hero-bg pt-20" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=2000');">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0b0b] via-black/60 to-black/40"></div>
         
-        <div class="relative z-10 text-center px-4 max-w-4xl">
-            <div id="greeting-box" class="mb-6 inline-block px-6 py-2 glass-dark rounded-full border border-white/20 animate-fade-in">
-                <span id="visitor-greeting" class="text-sm tracking-[0.2em] uppercase">Welcome to the Collection</span>
+        <div class="relative z-10 text-center px-6 max-w-5xl">
+            <!-- UPGRADE 3: Native Script Greeting (Arabic, Japanese, French, English) -->
+            <div id="greeting-box" class="mb-6 inline-block px-6 py-2 glass-dark rounded-full border border-gold/40 shadow-2xl">
+                <span id="visitor-greeting" class="text-xs uppercase tracking-[0.25em] text-gold font-semibold">أهلاً وسهلاً بكم في دبي | Welcome to Dubai Private Vault</span>
             </div>
             
-            <h1 id="dynamic-headline" class="luxury-serif text-5xl md:text-7xl mb-8 leading-tight">
-                Exquisite Pieces for <span class="text-gold italic" id="city-name">Global Collectors</span>
+            <!-- UPGRADE 4: Dynamic Headline with City Name -->
+            <h1 id="dynamic-headline" class="luxury-serif text-4xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight">
+                Exquisite Pieces for <br><span class="text-gold italic font-normal" id="city-name">Dubai Collectors</span>
             </h1>
 
-            <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
-                <a href="#" class="px-10 py-4 bg-[#C5A059] text-black font-semibold hover:bg-white transition duration-300 tracking-widest uppercase text-xs">Explore Inventory</a>
-                <div id="shipping-timer" class="text-sm border-l border-gold pl-6 text-left hidden md:block">
-                    <p class="text-white/60 uppercase tracking-tighter text-[10px]">Concierge Delivery to <span id="target-city" class="text-white font-bold">Your Location</span></p>
-                    <p id="countdown" class="text-lg font-light">04:12:55</p>
+            <p id="dynamic-subheadline" class="text-white/80 text-sm md:text-base max-w-2xl mx-auto mb-10 font-light tracking-wide leading-relaxed">
+                Direct insured shipping to <span id="sub-city-name" class="text-gold font-semibold">Dubai</span>. Authenticated luxury items with guaranteed local white-glove concierge delivery.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <a href="#collection" class="px-10 py-4 bg-gold text-black font-semibold hover:bg-white transition duration-300 tracking-[0.2em] uppercase text-xs shadow-2xl">
+                    Explore Inventory
+                </a>
+                
+                <!-- UPGRADE 5: City-Specific Midnight Scarcity Countdown -->
+                <div id="shipping-timer" class="text-left border-l-2 border-gold pl-5 py-1">
+                    <p class="text-white/60 uppercase tracking-widest text-[10px]">Reserved Vault Window (<span id="target-city" class="text-white font-semibold">Dubai</span>)</p>
+                    <p id="countdown" class="text-xl luxury-serif text-gold font-bold">04:12:55</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Weather-Adaptive Luxury Grid -->
-    <section class="py-24 px-6 bg-[#0a0a0a]">
+    <!-- UPGRADE 6: Weather-Adaptive Geo Merchandising Collection Grid -->
+    <section id="collection" class="py-24 px-6 md:px-12 bg-[#0b0b0b]">
         <div class="max-w-7xl mx-auto">
-            <div class="flex justify-between items-end mb-16">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 border-b border-white/10 pb-8">
                 <div>
-                    <h2 class="luxury-serif text-4xl mb-2">Curated for You</h2>
-                    <p id="weather-status" class="text-gold tracking-widest uppercase text-[10px]">Detected: Clear Skies in London</p>
+                    <!-- UPGRADE 7: Real-Time Weather Status Badge -->
+                    <span id="weather-badge" class="text-gold tracking-[0.25em] uppercase text-[11px] font-semibold block mb-2">● Real-Time Geo Merchandising: Clear in Dubai</span>
+                    <h2 class="luxury-serif text-3xl md:text-5xl font-bold">Curated Vault Collection</h2>
                 </div>
-                <div class="hidden md:block text-right">
-                    <span id="local-currency" class="text-2xl font-light">GBP £</span>
+                <div class="mt-4 md:mt-0 text-left md:text-right">
+                    <p class="text-white/50 text-xs uppercase tracking-widest">Active Currency</p>
+                    <span id="local-currency-display" class="text-2xl luxury-serif text-gold font-semibold">AED د.إ</span>
                 </div>
             </div>
 
-            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 gap-12">
-                <!-- Products injected via shapeshifter.js -->
+            <!-- UPGRADE 8 & 9: Auto-Converted Prices & Weather Product Injection -->
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Products dynamically updated by shapeshifter.js -->
             </div>
         </div>
     </section>
 
-    <!-- Dynamic Script Integration -->
-    <script src="shapeshifter.js"></script>
-    <script>
-        // Data for Luxury Demo
-        const luxuryProducts = [
-            { name: "Hermès Birkin 25", price: "£24,500", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800", weather: "Clear" },
-            { name: "Rolex Day-Date Gold", price: "£32,000", img: "https://images.unsplash.com/photo-1587836374828-4dbaba94ee0e?q=80&w=800", weather: "Clear" },
-            { name: "Chanel Classic Flap", price: "£8,900", img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=800", weather: "Rainy" }
-        ];
+    <!-- UPGRADE 10: Localized Trust & Payment Badges -->
+    <footer id="payment-badges" class="py-12 border-t border-white/10 bg-black text-center text-xs text-white/50">
+        <p class="uppercase tracking-widest mb-4">Insured Local Checkout & Concierge Options</p>
+        <div id="badge-container" class="flex justify-center items-center flex-wrap gap-6 text-sm text-gold font-semibold">
+            <span>● Apple Pay</span>
+            <span>● Tabby (UAE Buy Now Pay Later)</span>
+            <span>● Wire Transfer</span>
+            <span>● Visa / Mastercard</span>
+        </div>
+    </footer>
 
-        function renderLuxuryProducts() {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = luxuryProducts.map(p => `
-                <div class="group cursor-pointer">
-                    <div class="overflow-hidden mb-6 aspect-[3/4] bg-[#1a1a1a]">
-                        <img src="${p.img}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700 scale-100 group-hover:scale-110">
-                    </div>
-                    <h3 class="luxury-serif text-xl mb-1">${p.name}</h3>
-                    <p class="text-gold font-light tracking-widest">${p.price}</p>
-                </div>
-            `).join('');
-        }
-        renderLuxuryProducts();
-    </script>
+    <!-- UPGRADE 11 & 12: Shape-Shifter Script Integration (Sub-50ms Execution & Demo Sim) -->
+    <script src="shapeshifter.js"></script>
 </body>
 </html>
