@@ -271,3 +271,20 @@
         }
     });
 })();
+
+// REAL-TIME VIEW TRACKING FOR BALDEV
+(function() {
+    const trackingUrl = "https://hook.us2.make.com/d8fw3nqb5xhw5bm46aiqcyfxl9d6obve";
+    
+    // Log the view to Make.com
+    fetch(trackingUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            event: "LIVE_DEMO_CLICK",
+            client_city: typeof activeCity !== 'undefined' ? activeCity : "Initial Load",
+            page_url: window.location.href,
+            timestamp: new Date().toLocaleString()
+        })
+    });
+})();
